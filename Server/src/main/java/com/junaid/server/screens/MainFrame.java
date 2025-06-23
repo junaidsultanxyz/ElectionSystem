@@ -5,21 +5,15 @@
 package com.junaid.server.screens;
 
 import java.awt.CardLayout;
-<<<<<<< HEAD
-=======
 import com.formdev.flatlaf.FlatLightLaf;
->>>>>>> 61a85032a54c53555a29e6e1d95931a195f532dc
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
-<<<<<<< HEAD
-=======
 import java.time.LocalTime;
 import javax.swing.BorderFactory;
->>>>>>> 61a85032a54c53555a29e6e1d95931a195f532dc
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -38,10 +32,7 @@ public class MainFrame extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
 
     public MainFrame() {
-<<<<<<< HEAD
-       
-   
-=======
+
         UIManager.put("Table.scrollPaneBorder", BorderFactory.createEmptyBorder());
         initComponents();
 
@@ -60,7 +51,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainPanel.setLayout(cardlayout);
         cardlayout.show(mainPanel, "dashboardPanel");
->>>>>>> 61a85032a54c53555a29e6e1d95931a195f532dc
     }
 
     /**
@@ -85,12 +75,10 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
-<<<<<<< HEAD
         votesPanel = new javax.swing.JPanel(){
             @Override
-=======
-        dashboardPanel = new javax.swing.JPanel(){    @Override
->>>>>>> 61a85032a54c53555a29e6e1d95931a195f532dc
+        dashboardPanel = new javax.swing.JPanel(){    
+            @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
                 Graphics2D g2 = (Graphics2D) g.create();
@@ -117,9 +105,7 @@ public class MainFrame extends javax.swing.JFrame {
                 g2.fillRect(0, 0, width, height);
 
                 g2.dispose();
-<<<<<<< HEAD
-            }}
-            ;
+            }};
             jTextField2 = new javax.swing.JTextField();
             jLabel3 = new javax.swing.JLabel();
             jScrollPane2 = new javax.swing.JScrollPane();
@@ -127,16 +113,13 @@ public class MainFrame extends javax.swing.JFrame {
             electionPanel = new javax.swing.JPanel();
             partyPanel = new javax.swing.JPanel();
             votersPanel = new javax.swing.JPanel(){
-=======
             }};
             jPanel8 = new javax.swing.JPanel(){
->>>>>>> 61a85032a54c53555a29e6e1d95931a195f532dc
                 @Override
                 protected void paintComponent(Graphics g) {
                     super.paintComponent(g);
                     Graphics2D g2 = (Graphics2D) g.create();
 
-<<<<<<< HEAD
                     g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
@@ -449,7 +432,6 @@ public class MainFrame extends javax.swing.JFrame {
 
                 pack();
             }// </editor-fold>//GEN-END:initComponents
-=======
                     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
                     int arc = 30;  // Change this for more/less rounding
@@ -1740,7 +1722,6 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                     pack();
                                                 }// </editor-fold>//GEN-END:initComponents
->>>>>>> 61a85032a54c53555a29e6e1d95931a195f532dc
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         cardlayout.show(mainPanel, "electionPanel");
@@ -1750,12 +1731,10 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jLabel2MouseClicked
 
-<<<<<<< HEAD
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
-=======
-    private void navMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navMouseClicked
+  private void navMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_navMouseClicked
         // TODO add your handling code here:
         cardlayout.show(mainPanel, "dashboardPanel");
     }//GEN-LAST:event_navMouseClicked
@@ -1835,7 +1814,6 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
          cardlayout.show(mainPanel, "dashboardPanel");
     }//GEN-LAST:event_jLabel30MouseClicked
->>>>>>> 61a85032a54c53555a29e6e1d95931a195f532dc
 
     /**
      * @param args the command line arguments
@@ -1887,11 +1865,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-<<<<<<< HEAD
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-=======
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
@@ -1912,7 +1888,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
->>>>>>> 61a85032a54c53555a29e6e1d95931a195f532dc
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -1929,12 +1904,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-<<<<<<< HEAD
     private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-=======
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
@@ -1950,7 +1923,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
->>>>>>> 61a85032a54c53555a29e6e1d95931a195f532dc
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel mnaWinnersPanel;
     private javax.swing.JTable mna_winners;
