@@ -5,7 +5,12 @@
 package com.junaid.server.screens;
 
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RadialGradientPaint;
+import java.awt.RenderingHints;
 import javax.swing.ImageIcon;
 
 /**
@@ -23,19 +28,8 @@ public class MainFrame extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
 
     public MainFrame() {
-        initComponents();
-        loadImages();
-        
-        cardlayout = new CardLayout();
-        
-        cardlayout.addLayoutComponent(dashboardPanel, "dashboardPanel");
-        cardlayout.addLayoutComponent(electionPanel, "electionPanel");
-        cardlayout.addLayoutComponent(partyPanel, "partyPanel");
-        cardlayout.addLayoutComponent(votesPanel, "votesPanel");
-        cardlayout.addLayoutComponent(votersPanel, "votersPanel");
-        
-        mainPanel.setLayout(cardlayout);
-        cardlayout.show(mainPanel, "dashboardPanel");
+       
+   
     }
 
     /**
@@ -59,220 +53,360 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jPanel9 = new javax.swing.JPanel();
         mainPanel = new javax.swing.JPanel();
-        dashboardPanel = new javax.swing.JPanel();
-        exampleLabel = new javax.swing.JLabel();
-        votesPanel = new javax.swing.JPanel();
-        electionPanel = new javax.swing.JPanel();
-        partyPanel = new javax.swing.JPanel();
-        votersPanel = new javax.swing.JPanel();
+        votesPanel = new javax.swing.JPanel(){
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g.create();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1213, 784));
+                g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        navbarPanel.setBackground(new java.awt.Color(255, 255, 255));
-        navbarPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 204)));
-        navbarPanel.setMaximumSize(new java.awt.Dimension(1920, 2147483647));
-        navbarPanel.setPreferredSize(new java.awt.Dimension(1024, 62));
-        navbarPanel.setLayout(new java.awt.BorderLayout());
+                int width = getWidth();
+                int height = getHeight();
+                float centerX = width / 2f;
+                float centerY = height / 2f;
+                float radius = Math.max(width, height);
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
+                Color centerColor = new Color(0xF8F8F8);  // Light center
+                Color edgeColor = new Color(0xECFBF4);    // Softer outer
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setPreferredSize(new java.awt.Dimension(20, 60));
+                RadialGradientPaint gradient = new RadialGradientPaint(
+                    centerX, centerY, radius,
+                    new float[]{0f, 1f},
+                    new Color[]{centerColor, edgeColor}
+                );
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 20, Short.MAX_VALUE)
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
+                g2.setPaint(gradient);
+                g2.fillRect(0, 0, width, height);
 
-        jPanel2.add(jPanel3);
-        jPanel2.add(jLabel4);
+                g2.dispose();
+            }}
+            ;
+            jTextField2 = new javax.swing.JTextField();
+            jLabel3 = new javax.swing.JLabel();
+            jScrollPane2 = new javax.swing.JScrollPane();
+            jTable2 = new javax.swing.JTable();
+            electionPanel = new javax.swing.JPanel();
+            partyPanel = new javax.swing.JPanel();
+            votersPanel = new javax.swing.JPanel(){
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    Graphics2D g2 = (Graphics2D) g.create();
 
-        navbarPanel.add(jPanel2, java.awt.BorderLayout.WEST);
+                    g2.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+                    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        jPanel4.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel4.setPreferredSize(new java.awt.Dimension(270, 60));
-        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
+                    int width = getWidth();
+                    int height = getHeight();
+                    float centerX = width / 2f;
+                    float centerY = height / 2f;
+                    float radius = Math.max(width, height);
 
-        jLabel1.setText(" Home");
-        jLabel1.setToolTipText("");
-        jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel1MouseClicked(evt);
-            }
-        });
-        jPanel4.add(jLabel1);
+                    Color centerColor = new Color(0xF8F8F8);  // Light center
+                    Color edgeColor = new Color(0xECFBF4);    // Softer outer
 
-        jPanel5.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel5.setPreferredSize(new java.awt.Dimension(20, 60));
+                    RadialGradientPaint gradient = new RadialGradientPaint(
+                        centerX, centerY, radius,
+                        new float[]{0f, 1f},
+                        new Color[]{centerColor, edgeColor}
+                    );
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
+                    g2.setPaint(gradient);
+                    g2.fillRect(0, 0, width, height);
 
-        jPanel4.add(jPanel5);
+                    g2.dispose();
+                }};
+                jTextField1 = new javax.swing.JTextField();
+                jLabel5 = new javax.swing.JLabel();
+                jScrollPane3 = new javax.swing.JScrollPane();
+                jTable3 = new javax.swing.JTable();
+                dashboardPanel = new javax.swing.JPanel();
+                exampleLabel = new javax.swing.JLabel();
 
-        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel6.setPreferredSize(new java.awt.Dimension(20, 60));
+                setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
+                jPanel1.setPreferredSize(new java.awt.Dimension(1200, 700));
 
-        jPanel4.add(jPanel6);
+                navbarPanel.setBackground(new java.awt.Color(255, 255, 255));
+                navbarPanel.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(204, 204, 204)));
+                navbarPanel.setMaximumSize(new java.awt.Dimension(1920, 2147483647));
+                navbarPanel.setPreferredSize(new java.awt.Dimension(1024, 62));
+                navbarPanel.setLayout(new java.awt.BorderLayout());
 
-        jLabel2.setText(" Settings");
-        jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel2MouseClicked(evt);
-            }
-        });
-        jPanel4.add(jLabel2);
+                jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+                jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel9.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel9.setPreferredSize(new java.awt.Dimension(20, 60));
+                jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+                jPanel3.setPreferredSize(new java.awt.Dimension(20, 60));
 
-        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
-        jPanel9.setLayout(jPanel9Layout);
-        jPanel9Layout.setHorizontalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
-        jPanel9Layout.setVerticalGroup(
-            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 60, Short.MAX_VALUE)
-        );
+                javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+                jPanel3.setLayout(jPanel3Layout);
+                jPanel3Layout.setHorizontalGroup(
+                    jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 20, Short.MAX_VALUE)
+                );
+                jPanel3Layout.setVerticalGroup(
+                    jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 60, Short.MAX_VALUE)
+                );
 
-        jPanel4.add(jPanel9);
+                jPanel2.add(jPanel3);
+                jPanel2.add(jLabel4);
 
-        navbarPanel.add(jPanel4, java.awt.BorderLayout.EAST);
+                navbarPanel.add(jPanel2, java.awt.BorderLayout.WEST);
 
-        mainPanel.setLayout(new java.awt.CardLayout());
+                jPanel4.setBackground(new java.awt.Color(255, 255, 255));
+                jPanel4.setPreferredSize(new java.awt.Dimension(270, 60));
+                jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.LINE_AXIS));
 
-        exampleLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+                jLabel1.setText(" Home");
+                jLabel1.setToolTipText("");
+                jLabel1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        jLabel1MouseClicked(evt);
+                    }
+                });
+                jPanel4.add(jLabel1);
 
-        javax.swing.GroupLayout dashboardPanelLayout = new javax.swing.GroupLayout(dashboardPanel);
-        dashboardPanel.setLayout(dashboardPanelLayout);
-        dashboardPanelLayout.setHorizontalGroup(
-            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardPanelLayout.createSequentialGroup()
-                .addContainerGap(451, Short.MAX_VALUE)
-                .addComponent(exampleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(462, 462, 462))
-        );
-        dashboardPanelLayout.setVerticalGroup(
-            dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(dashboardPanelLayout.createSequentialGroup()
-                .addGap(185, 185, 185)
-                .addComponent(exampleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(447, Short.MAX_VALUE))
-        );
+                jPanel5.setBackground(new java.awt.Color(255, 255, 255));
+                jPanel5.setPreferredSize(new java.awt.Dimension(20, 60));
 
-        mainPanel.add(dashboardPanel, "card2");
+                javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+                jPanel5.setLayout(jPanel5Layout);
+                jPanel5Layout.setHorizontalGroup(
+                    jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 60, Short.MAX_VALUE)
+                );
+                jPanel5Layout.setVerticalGroup(
+                    jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 60, Short.MAX_VALUE)
+                );
 
-        javax.swing.GroupLayout votesPanelLayout = new javax.swing.GroupLayout(votesPanel);
-        votesPanel.setLayout(votesPanelLayout);
-        votesPanelLayout.setHorizontalGroup(
-            votesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1213, Short.MAX_VALUE)
-        );
-        votesPanelLayout.setVerticalGroup(
-            votesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 716, Short.MAX_VALUE)
-        );
+                jPanel4.add(jPanel5);
 
-        mainPanel.add(votesPanel, "card2");
+                jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+                jPanel6.setPreferredSize(new java.awt.Dimension(20, 60));
 
-        javax.swing.GroupLayout electionPanelLayout = new javax.swing.GroupLayout(electionPanel);
-        electionPanel.setLayout(electionPanelLayout);
-        electionPanelLayout.setHorizontalGroup(
-            electionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1213, Short.MAX_VALUE)
-        );
-        electionPanelLayout.setVerticalGroup(
-            electionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 716, Short.MAX_VALUE)
-        );
+                javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+                jPanel6.setLayout(jPanel6Layout);
+                jPanel6Layout.setHorizontalGroup(
+                    jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 60, Short.MAX_VALUE)
+                );
+                jPanel6Layout.setVerticalGroup(
+                    jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 60, Short.MAX_VALUE)
+                );
 
-        mainPanel.add(electionPanel, "card2");
+                jPanel4.add(jPanel6);
 
-        javax.swing.GroupLayout partyPanelLayout = new javax.swing.GroupLayout(partyPanel);
-        partyPanel.setLayout(partyPanelLayout);
-        partyPanelLayout.setHorizontalGroup(
-            partyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1213, Short.MAX_VALUE)
-        );
-        partyPanelLayout.setVerticalGroup(
-            partyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 716, Short.MAX_VALUE)
-        );
+                jLabel2.setText(" Settings");
+                jLabel2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+                jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        jLabel2MouseClicked(evt);
+                    }
+                });
+                jPanel4.add(jLabel2);
 
-        mainPanel.add(partyPanel, "card2");
+                jPanel9.setBackground(new java.awt.Color(255, 255, 255));
+                jPanel9.setPreferredSize(new java.awt.Dimension(20, 60));
 
-        javax.swing.GroupLayout votersPanelLayout = new javax.swing.GroupLayout(votersPanel);
-        votersPanel.setLayout(votersPanelLayout);
-        votersPanelLayout.setHorizontalGroup(
-            votersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1213, Short.MAX_VALUE)
-        );
-        votersPanelLayout.setVerticalGroup(
-            votersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 716, Short.MAX_VALUE)
-        );
+                javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+                jPanel9.setLayout(jPanel9Layout);
+                jPanel9Layout.setHorizontalGroup(
+                    jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 60, Short.MAX_VALUE)
+                );
+                jPanel9Layout.setVerticalGroup(
+                    jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 60, Short.MAX_VALUE)
+                );
 
-        mainPanel.add(votersPanel, "card2");
+                jPanel4.add(jPanel9);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 1213, Short.MAX_VALUE)
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(navbarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+                navbarPanel.add(jPanel4, java.awt.BorderLayout.EAST);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+                mainPanel.setPreferredSize(new java.awt.Dimension(1200, 700));
+                mainPanel.setLayout(new java.awt.CardLayout());
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+                votesPanel.setPreferredSize(new java.awt.Dimension(1200, 650));
+
+                jTextField2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(31, 147, 93)));
+                jTextField2.addActionListener(new java.awt.event.ActionListener() {
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        jTextField2ActionPerformed(evt);
+                    }
+                });
+
+                jLabel3.setFont(new java.awt.Font("Bernard MT Condensed", 0, 36)); // NOI18N
+                jLabel3.setText("Votes Information");
+
+                jTable2.setModel(new javax.swing.table.DefaultTableModel(
+                    new Object [][] {
+                        {null, null, null, null}
+                    },
+                    new String [] {
+                        "ID", "Cnic", "Party Code", "Party Type"
+                    }
+                ));
+                jTable2.setPreferredSize(new java.awt.Dimension(270, 20));
+                jScrollPane2.setViewportView(jTable2);
+
+                javax.swing.GroupLayout votesPanelLayout = new javax.swing.GroupLayout(votesPanel);
+                votesPanel.setLayout(votesPanelLayout);
+                votesPanelLayout.setHorizontalGroup(
+                    votesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(votesPanelLayout.createSequentialGroup()
+                        .addGap(443, 443, 443)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, votesPanelLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(votesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 1102, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2))
+                        .addGap(60, 60, 60))
+                );
+                votesPanelLayout.setVerticalGroup(
+                    votesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(votesPanelLayout.createSequentialGroup()
+                        .addGap(16, 16, 16)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                );
+
+                mainPanel.add(votesPanel, "card2");
+
+                javax.swing.GroupLayout electionPanelLayout = new javax.swing.GroupLayout(electionPanel);
+                electionPanel.setLayout(electionPanelLayout);
+                electionPanelLayout.setHorizontalGroup(
+                    electionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 1213, Short.MAX_VALUE)
+                );
+                electionPanelLayout.setVerticalGroup(
+                    electionPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 672, Short.MAX_VALUE)
+                );
+
+                mainPanel.add(electionPanel, "card2");
+
+                javax.swing.GroupLayout partyPanelLayout = new javax.swing.GroupLayout(partyPanel);
+                partyPanel.setLayout(partyPanelLayout);
+                partyPanelLayout.setHorizontalGroup(
+                    partyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 1213, Short.MAX_VALUE)
+                );
+                partyPanelLayout.setVerticalGroup(
+                    partyPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGap(0, 672, Short.MAX_VALUE)
+                );
+
+                mainPanel.add(partyPanel, "card2");
+
+                votersPanel.setOpaque(false);
+                votersPanel.setPreferredSize(new java.awt.Dimension(1200, 638));
+
+                jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(31, 147, 93)));
+
+                jLabel5.setFont(new java.awt.Font("Bernard MT Condensed", 0, 36)); // NOI18N
+                jLabel5.setText("Voters Information");
+
+                jTable3.setModel(new javax.swing.table.DefaultTableModel(
+                    new Object [][] {
+                        {null, null, null, null, null}
+                    },
+                    new String [] {
+                        "Cnic", "Name", "Age", "Division", "Password"
+                    }
+                ));
+                jScrollPane3.setViewportView(jTable3);
+
+                javax.swing.GroupLayout votersPanelLayout = new javax.swing.GroupLayout(votersPanel);
+                votersPanel.setLayout(votersPanelLayout);
+                votersPanelLayout.setHorizontalGroup(
+                    votersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(votersPanelLayout.createSequentialGroup()
+                        .addGap(463, 463, 463)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, votersPanelLayout.createSequentialGroup()
+                        .addContainerGap(23, Short.MAX_VALUE)
+                        .addGroup(votersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 1142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(35, 35, 35))
+                );
+                votersPanelLayout.setVerticalGroup(
+                    votersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(votersPanelLayout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 481, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(53, Short.MAX_VALUE))
+                );
+
+                mainPanel.add(votersPanel, "card2");
+
+                exampleLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+                javax.swing.GroupLayout dashboardPanelLayout = new javax.swing.GroupLayout(dashboardPanel);
+                dashboardPanel.setLayout(dashboardPanelLayout);
+                dashboardPanelLayout.setHorizontalGroup(
+                    dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, dashboardPanelLayout.createSequentialGroup()
+                        .addContainerGap(451, Short.MAX_VALUE)
+                        .addComponent(exampleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(462, 462, 462))
+                );
+                dashboardPanelLayout.setVerticalGroup(
+                    dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(dashboardPanelLayout.createSequentialGroup()
+                        .addGap(185, 185, 185)
+                        .addComponent(exampleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(403, Short.MAX_VALUE))
+                );
+
+                mainPanel.add(dashboardPanel, "card2");
+
+                javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+                jPanel1.setLayout(jPanel1Layout);
+                jPanel1Layout.setHorizontalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(navbarPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                );
+                jPanel1Layout.setVerticalGroup(
+                    jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(navbarPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(mainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 672, Short.MAX_VALUE))
+                );
+
+                javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+                getContentPane().setLayout(layout);
+                layout.setHorizontalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                );
+                layout.setVerticalGroup(
+                    layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 740, Short.MAX_VALUE)
+                );
+
+                pack();
+            }// </editor-fold>//GEN-END:initComponents
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         cardlayout.show(mainPanel, "dashboardPanel");
@@ -281,6 +415,10 @@ public class MainFrame extends javax.swing.JFrame {
     private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
 
     }//GEN-LAST:event_jLabel2MouseClicked
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -313,7 +451,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel exampleLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -321,6 +461,12 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel navbarPanel;
     private javax.swing.JPanel partyPanel;
