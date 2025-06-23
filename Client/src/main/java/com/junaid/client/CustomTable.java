@@ -41,6 +41,24 @@ public class CustomTable {
         }
     };
     
+    public static DefaultTableModel MODEL_IISS = new DefaultTableModel(
+        new Object[][] {},
+        new Object[] { "code", "name", "flag", "symbol" }
+    ) {
+        @Override
+        public Class<?> getColumnClass(int columnIndex) {
+            return switch (columnIndex) {
+                case 2,3 -> ImageIcon.class;
+                default -> String.class;
+            };
+        }
+
+        @Override
+        public boolean isCellEditable(int row, int column) {
+            return column == 3;
+        }
+    };
+    
     /*######################################################################################## HELPER METHODS*/
     
     

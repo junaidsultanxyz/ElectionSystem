@@ -30,7 +30,8 @@ CREATE TABLE division (
 CREATE TABLE party (
     code VARCHAR(5) NOT NULL UNIQUE,
     name VARCHAR(100) NOT NULL UNIQUE,
-    symbol TEXT
+    symbol TEXT,
+    flag TEXT
 );
 
 
