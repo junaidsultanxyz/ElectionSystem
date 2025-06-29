@@ -1,6 +1,15 @@
 CREATE DATABASE election_system;
 use election_system;
 
+CREATE TABLE election (
+    id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    starting_time TIMESTAMP NOT NULL,
+    ending_time TIMESTAMP NOT NULL,
+    starting_date DATE NOT NULL,
+    ending_date DATE NOT NULL
+);
+
 CREATE TABLE voter (
     cnic varchar(13) PRIMARY KEY,
     name varchar(50),
@@ -38,6 +47,8 @@ CREATE TABLE party (
 
 CREATE TABLE vote (
     id INT PRIMARY KEY,
+    election_id INT NOT NULL,
+    FOREIGN KEY(election_id) REFERENCES election(id),
     cnic VARCHAR(13) NOT NULL,
     FOREIGN KEY (cnic) REFERENCES voter(cnic),
     party_code VARCHAR(5) NOT NULL,
