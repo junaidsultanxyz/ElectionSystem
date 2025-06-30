@@ -2,7 +2,7 @@ CREATE DATABASE election_system;
 use election_system;
 
 CREATE TABLE election (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
     starting_time TIMESTAMP NOT NULL,
     ending_time TIMESTAMP NOT NULL,
@@ -44,14 +44,14 @@ CREATE TABLE party (
 );
 
 
-
 CREATE TABLE vote (
-    id INT PRIMARY KEY,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     election_id INT NOT NULL,
     FOREIGN KEY(election_id) REFERENCES election(id),
     cnic VARCHAR(13) NOT NULL,
     FOREIGN KEY (cnic) REFERENCES voter(cnic),
     party_code VARCHAR(5) NOT NULL,
     FOREIGN KEY (party_code) REFERENCES party(code),
-    vote_type ENUM('NA', 'PA') NOT NULL 
+    vote_type ENUM('NA', 'PA') NOT NULL,
+    vote_time TIMESTAMP NOT NULLp
 );

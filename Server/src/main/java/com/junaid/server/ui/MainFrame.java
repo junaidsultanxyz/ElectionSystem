@@ -1,8 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
-package com.junaid.server.screens;
+package com.junaid.server.ui;
 
 import java.awt.CardLayout;
 import com.formdev.flatlaf.FlatLightLaf;
@@ -19,11 +15,11 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import raven.datetime.TimePicker;
 
-/**
- *
- * @author junaidxyz
- */
+
 public class MainFrame extends javax.swing.JFrame {
+    Thread currentThread;
+    
+    
     String imagePath; // absolute image path that database will store, will be updated based on device
     
     CardLayout cardlayout;
@@ -671,7 +667,6 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                                                                     setMinimumSize(new java.awt.Dimension(1200, 720));
-                                                                    setPreferredSize(new java.awt.Dimension(1200, 700));
                                                                     setResizable(false);
 
                                                                     jPanel1.setMinimumSize(new java.awt.Dimension(1200, 720));
@@ -2264,15 +2259,9 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jLabel54MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+
+    public static void startGUI(){
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -2283,13 +2272,12 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
-        /* Create and display the form */
+        
         java.awt.EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
     }
 
@@ -2439,6 +2427,11 @@ public class MainFrame extends javax.swing.JFrame {
         Image scaled = navIcon.getImage().getScaledInstance(150, 42, Image.SCALE_SMOOTH);
         nav.setIcon(new ImageIcon(scaled));
 
+    }
+    
+    void changeCurrentThread (Thread thread){
+        
+        currentThread = thread;
     }
 
 }

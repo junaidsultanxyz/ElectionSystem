@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.junaid.client;
+package com.junaid.client.ui;
 
+import com.junaid.client.ui.model.CustomTable;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.CardLayout;
@@ -27,7 +28,6 @@ import javax.swing.table.DefaultTableModel;
  * @author junaidxyz
  */
 public final class MainFrame extends javax.swing.JFrame {
-    CustomTable customTable = new CustomTable();
             
     ImageIcon nav_icon_image;
     FlatSVGIcon nav_home_icon;
@@ -303,7 +303,6 @@ public final class MainFrame extends javax.swing.JFrame {
                                 exampleLabel = new javax.swing.JLabel();
 
                                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-                                setMaximumSize(new java.awt.Dimension(1213, 784));
                                 setMinimumSize(new java.awt.Dimension(1213, 784));
                                 setResizable(false);
 
@@ -1308,15 +1307,9 @@ public final class MainFrame extends javax.swing.JFrame {
         cardlayout.show(mainPanel, "votingPanel");
     }//GEN-LAST:event_login_buttonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+    
+    public static void startGUI(){
+
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
@@ -1327,9 +1320,6 @@ public final class MainFrame extends javax.swing.JFrame {
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
             logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
         
         try {
             UIManager.setLookAndFeel(new FlatLightLaf());

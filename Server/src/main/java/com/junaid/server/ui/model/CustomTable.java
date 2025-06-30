@@ -1,4 +1,4 @@
-package com.junaid.server.components;
+package com.junaid.server.ui.model;
 
 import java.awt.Image;
 import java.net.MalformedURLException;
