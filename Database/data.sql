@@ -6,8 +6,6 @@ CREATE TABLE election (
     name VARCHAR(100) NOT NULL,
     starting_time TIMESTAMP NOT NULL,
     ending_time TIMESTAMP NOT NULL,
-    starting_date DATE NOT NULL,
-    ending_date DATE NOT NULL
 );
 
 CREATE TABLE voter (
@@ -53,5 +51,5 @@ CREATE TABLE vote (
     party_code VARCHAR(5) NOT NULL,
     FOREIGN KEY (party_code) REFERENCES party(code),
     vote_type ENUM('NA', 'PA') NOT NULL,
-    vote_time TIMESTAMP NOT NULLp
+    vote_time TIMESTAMP NOT NULL
 );

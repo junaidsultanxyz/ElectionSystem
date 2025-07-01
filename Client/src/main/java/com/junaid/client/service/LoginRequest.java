@@ -1,29 +1,31 @@
 
 package com.junaid.client.service;
 
+import java.io.Serializable;
+
 /**
  *
  * @author junaidxyz
  */
-public class LoginRequest {
-    private int cnic;
-    private int password;
+public class LoginRequest implements Serializable{
+    private final String cnic;
+    private final String password;
     private boolean status;
 
-    public LoginRequest(int cnic, int password) {
+    public LoginRequest(String cnic, String password) {
         this.cnic = cnic;
         this.password = password;
     }
 
-    public int getCnic() {
+    public String getCnic() {
         return cnic;
     }
 
-    public int getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 

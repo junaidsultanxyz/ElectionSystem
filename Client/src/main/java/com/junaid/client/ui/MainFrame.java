@@ -7,6 +7,8 @@ package com.junaid.client.ui;
 import com.junaid.client.ui.model.CustomTable;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.junaid.client.Main;
+import com.junaid.client.service.LoginRequest;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -49,6 +51,25 @@ public final class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     public MainFrame() {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        
+        try {
+            UIManager.setLookAndFeel(new FlatLightLaf());
+            globalTweaks();
+        }
+        catch (UnsupportedLookAndFeelException ex) {
+            System.err.println("Failed to initialize LaF");
+        }
+        
         globalTweaks();
         initComponents();
         customTweaks();
@@ -64,6 +85,8 @@ public final class MainFrame extends javax.swing.JFrame {
         
         mainPanel.setLayout(cardlayout);
         cardlayout.show(mainPanel, "loginPanel");
+        
+        
     }
 
     /**
@@ -181,7 +204,7 @@ public final class MainFrame extends javax.swing.JFrame {
                     g2.dispose();
                 }};
                 jLabel8 = new javax.swing.JLabel();
-                jLabel11 = new javax.swing.JLabel();
+                testServerResponse = new javax.swing.JLabel();
                 jPanel19 = new javax.swing.JPanel(){@Override
                     protected void paintComponent(Graphics g) {
                         super.paintComponent(g);
@@ -827,9 +850,9 @@ public final class MainFrame extends javax.swing.JFrame {
                                 jLabel8.setForeground(new java.awt.Color(31, 147, 93));
                                 jLabel8.setText("Election News");
 
-                                jLabel11.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
-                                jLabel11.setText("General Election 2025 results are supposed to be announced on June 28, 2025 at 10:50pm.");
-                                jLabel11.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+                                testServerResponse.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
+                                testServerResponse.setText("General Election 2025 results are supposed to be announced on June 28, 2025 at 10:50pm.");
+                                testServerResponse.setVerticalAlignment(javax.swing.SwingConstants.TOP);
 
                                 javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
                                 jPanel14.setLayout(jPanel14Layout);
@@ -839,7 +862,7 @@ public final class MainFrame extends javax.swing.JFrame {
                                         .addGap(12, 12, 12)
                                         .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(testServerResponse, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(15, 15, 15))
                                 );
                                 jPanel14Layout.setVerticalGroup(
@@ -848,7 +871,7 @@ public final class MainFrame extends javax.swing.JFrame {
                                         .addContainerGap()
                                         .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
+                                        .addComponent(testServerResponse, javax.swing.GroupLayout.DEFAULT_SIZE, 49, Short.MAX_VALUE)
                                         .addGap(21, 21, 21))
                                 );
 
@@ -1304,30 +1327,20 @@ public final class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_buttonActionPerformed
+       LoginRequest loginRequest = new LoginRequest(
+               login_cnic_field.getText(),
+               login_pass_field.getText()
+       );
+       
+       Main.getClient().sendMessage("[LOGIN REQUEST] : " + loginRequest.getCnic() + " , " + loginRequest.getPassword());
+       
         cardlayout.show(mainPanel, "votingPanel");
     }//GEN-LAST:event_login_buttonActionPerformed
 
     
     public static void startGUI(){
 
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
         
-        try {
-            UIManager.setLookAndFeel(new FlatLightLaf());
-            globalTweaks();
-        }
-        catch (UnsupportedLookAndFeelException ex) {
-            System.err.println("Failed to initialize LaF");
-        }
 
         SwingUtilities.invokeLater(() -> {
             new MainFrame().setVisible(true);
@@ -1348,7 +1361,6 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
@@ -1407,6 +1419,7 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel post_vote_panel;
     private javax.swing.JTable post_vote_result_table;
     private javax.swing.JPanel settingPanel;
+    private static javax.swing.JLabel testServerResponse;
     private javax.swing.JPanel vote_mna_panel;
     private javax.swing.JPanel vote_mpa_panel;
     private javax.swing.JPanel votingPanel;
@@ -1510,5 +1523,9 @@ public final class MainFrame extends javax.swing.JFrame {
         table.setTableHeader(null);
 
         ((JScrollPane) table.getParent().getParent()).setColumnHeaderView(null);
+    }
+    
+    public void setTestMessageResponse(String msg) {
+        testServerResponse.setText(msg);
     }
 }

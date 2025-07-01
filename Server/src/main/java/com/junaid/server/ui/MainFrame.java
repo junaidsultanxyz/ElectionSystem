@@ -2,6 +2,7 @@ package com.junaid.server.ui;
 
 import java.awt.CardLayout;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.junaid.server.Main;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -212,6 +213,7 @@ public class MainFrame extends javax.swing.JFrame {
                             jLabel13 = new javax.swing.JLabel();
                             jScrollPane5 = new javax.swing.JScrollPane();
                             mpa_winners = new javax.swing.JTable();
+                            jButton1 = new javax.swing.JButton();
                             votesPanel = new javax.swing.JPanel(){
                                 @Override
                                 protected void paintComponent(Graphics g) {
@@ -658,12 +660,10 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                         g2.dispose();
                                                                     }};
-                                                                    jLabel52 = new javax.swing.JLabel();
-                                                                    jLabel53 = new javax.swing.JLabel();
-                                                                    jTextField13 = new javax.swing.JTextField();
-                                                                    jScrollPane11 = new javax.swing.JScrollPane();
-                                                                    jTable13 = new javax.swing.JTable();
-                                                                    jLabel54 = new javax.swing.JLabel();
+                                                                    testServerMessageField = new javax.swing.JTextField();
+                                                                    testServerButton = new javax.swing.JButton();
+                                                                    testServerLogsScroll = new javax.swing.JScrollPane();
+                                                                    testServerLogs = new javax.swing.JTextArea();
 
                                                                     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                                                                     setMinimumSize(new java.awt.Dimension(1200, 720));
@@ -1070,6 +1070,13 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             .addContainerGap(20, Short.MAX_VALUE))
                                                                     );
 
+                                                                    jButton1.setText("test");
+                                                                    jButton1.addActionListener(new java.awt.event.ActionListener() {
+                                                                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                                                            jButton1ActionPerformed(evt);
+                                                                        }
+                                                                    });
+
                                                                     javax.swing.GroupLayout dashboardPanelLayout = new javax.swing.GroupLayout(dashboardPanel);
                                                                     dashboardPanel.setLayout(dashboardPanelLayout);
                                                                     dashboardPanelLayout.setHorizontalGroup(
@@ -1084,6 +1091,10 @@ public class MainFrame extends javax.swing.JFrame {
                                                                                 .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                 .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                             .addGap(40, 40, 40))
+                                                                        .addGroup(dashboardPanelLayout.createSequentialGroup()
+                                                                            .addGap(32, 32, 32)
+                                                                            .addComponent(jButton1)
+                                                                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                     );
                                                                     dashboardPanelLayout.setVerticalGroup(
                                                                         dashboardPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1096,7 +1107,9 @@ public class MainFrame extends javax.swing.JFrame {
                                                                                     .addGap(18, 18, 18)
                                                                                     .addComponent(jPanel12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                                                            .addContainerGap(35, Short.MAX_VALUE))
+                                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                            .addComponent(jButton1)
+                                                                            .addContainerGap(10, Short.MAX_VALUE))
                                                                     );
 
                                                                     mainPanel.add(dashboardPanel, "card2");
@@ -2006,86 +2019,52 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     settingsPanel.setPreferredSize(new java.awt.Dimension(1200, 638));
 
-                                                                    jLabel52.setFont(new java.awt.Font("Bernard MT Condensed", 1, 33)); // NOI18N
-                                                                    jLabel52.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                                                                    jLabel52.setText("MPA Winners");
-
-                                                                    jLabel53.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
-                                                                    jLabel53.setText("Search :");
-
-                                                                    jTextField13.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-                                                                    jTextField13.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jTextField13.addActionListener(new java.awt.event.ActionListener() {
+                                                                    testServerMessageField.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+                                                                    testServerMessageField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    testServerMessageField.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            jTextField13ActionPerformed(evt);
+                                                                            testServerMessageFieldActionPerformed(evt);
                                                                         }
                                                                     });
 
-                                                                    jScrollPane11.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-
-                                                                    jTable13.setModel(new javax.swing.table.DefaultTableModel(
-                                                                        new Object [][] {
-                                                                            {null, null, null, null}
-                                                                        },
-                                                                        new String [] {
-                                                                            "Party Name", "Party Code", "Division", "Votes"
-                                                                        }
-                                                                    ) {
-                                                                        boolean[] canEdit = new boolean [] {
-                                                                            false, false, false, false
-                                                                        };
-
-                                                                        public boolean isCellEditable(int rowIndex, int columnIndex) {
-                                                                            return canEdit [columnIndex];
+                                                                    testServerButton.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+                                                                    testServerButton.setText("Send");
+                                                                    testServerButton.addActionListener(new java.awt.event.ActionListener() {
+                                                                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                                                            testServerButtonActionPerformed(evt);
                                                                         }
                                                                     });
-                                                                    jTable13.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    jTable13.setRowHeight(25);
-                                                                    jTable13.setRowSelectionAllowed(false);
-                                                                    jTable13.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane11.setViewportView(jTable13);
 
-                                                                    jLabel54.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-arrow.png"))); // NOI18N
-                                                                    jLabel54.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-                                                                    jLabel54.addMouseListener(new java.awt.event.MouseAdapter() {
-                                                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                                                            jLabel54MouseClicked(evt);
-                                                                        }
-                                                                    });
+                                                                    testServerLogs.setColumns(20);
+                                                                    testServerLogs.setRows(5);
+                                                                    testServerLogsScroll.setViewportView(testServerLogs);
 
                                                                     javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
                                                                     settingsPanel.setLayout(settingsPanelLayout);
                                                                     settingsPanelLayout.setHorizontalGroup(
                                                                         settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addGroup(settingsPanelLayout.createSequentialGroup()
+                                                                            .addGap(341, 341, 341)
                                                                             .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                .addGroup(settingsPanelLayout.createSequentialGroup()
-                                                                                    .addGap(45, 45, 45)
-                                                                                    .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                        .addComponent(jLabel53)
-                                                                                        .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                                        .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                                                                .addGroup(settingsPanelLayout.createSequentialGroup()
-                                                                                    .addGap(29, 29, 29)
-                                                                                    .addComponent(jLabel54)
-                                                                                    .addGap(442, 442, 442)
-                                                                                    .addComponent(jLabel52)))
-                                                                            .addContainerGap(55, Short.MAX_VALUE))
+                                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsPanelLayout.createSequentialGroup()
+                                                                                    .addComponent(testServerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                    .addGap(442, 442, 442))
+                                                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, settingsPanelLayout.createSequentialGroup()
+                                                                                    .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                                                        .addComponent(testServerLogsScroll)
+                                                                                        .addComponent(testServerMessageField, javax.swing.GroupLayout.PREFERRED_SIZE, 542, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                                                    .addGap(317, 317, 317))))
                                                                     );
                                                                     settingsPanelLayout.setVerticalGroup(
                                                                         settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                         .addGroup(settingsPanelLayout.createSequentialGroup()
-                                                                            .addGap(14, 14, 14)
-                                                                            .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                .addComponent(jLabel54)
-                                                                                .addComponent(jLabel52))
-                                                                            .addGap(28, 28, 28)
-                                                                            .addComponent(jLabel53)
-                                                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                            .addComponent(jTextField13, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                            .addGap(18, 18, 18)
-                                                                            .addComponent(jScrollPane11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                            .addContainerGap(165, Short.MAX_VALUE))
+                                                                            .addGap(141, 141, 141)
+                                                                            .addComponent(testServerMessageField, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addGap(50, 50, 50)
+                                                                            .addComponent(testServerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addGap(88, 88, 88)
+                                                                            .addComponent(testServerLogsScroll, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addContainerGap(148, Short.MAX_VALUE))
                                                                     );
 
                                                                     mainPanel.add(settingsPanel, "card8");
@@ -2251,13 +2230,17 @@ public class MainFrame extends javax.swing.JFrame {
         cardlayout.show(mainPanel, "partyPanel");
     }//GEN-LAST:event_jLabel3MouseClicked
 
-    private void jTextField13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField13ActionPerformed
+    private void testServerMessageFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testServerMessageFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField13ActionPerformed
+    }//GEN-LAST:event_testServerMessageFieldActionPerformed
 
-    private void jLabel54MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel54MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jLabel54MouseClicked
+    private void testServerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testServerButtonActionPerformed
+        Main.getServer().sendServerBroadcast(testServerMessageField.getText());
+    }//GEN-LAST:event_testServerButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        cardlayout.show(mainPanel, "settingsPanel");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
 
     public static void startGUI(){
@@ -2288,6 +2271,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel dashboardPanel;
     private javax.swing.JPanel electionPanel;
     private javax.swing.JButton end_time;
+    private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDateChooser jDateChooser1;
     private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JLabel jLabel1;
@@ -2337,9 +2321,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
     private javax.swing.JLabel jLabel51;
-    private javax.swing.JLabel jLabel52;
-    private javax.swing.JLabel jLabel53;
-    private javax.swing.JLabel jLabel54;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2364,7 +2345,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane10;
-    private javax.swing.JScrollPane jScrollPane11;
     private javax.swing.JScrollPane jScrollPane12;
     private javax.swing.JScrollPane jScrollPane13;
     private javax.swing.JScrollPane jScrollPane2;
@@ -2378,7 +2358,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable jTable10;
     private javax.swing.JTable jTable11;
     private javax.swing.JTable jTable12;
-    private javax.swing.JTable jTable13;
     private javax.swing.JTable jTable6;
     private javax.swing.JTable jTable7;
     private javax.swing.JTable jTable8;
@@ -2387,7 +2366,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField10;
     private javax.swing.JTextField jTextField11;
     private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField13;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
@@ -2408,6 +2386,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton start_time;
     private javax.swing.JButton start_time1;
     private javax.swing.JButton start_time2;
+    private javax.swing.JButton testServerButton;
+    public static javax.swing.JTextArea testServerLogs;
+    private javax.swing.JScrollPane testServerLogsScroll;
+    private javax.swing.JTextField testServerMessageField;
     private javax.swing.JTextField time_end_field;
     private javax.swing.JTextField time_start_field;
     private javax.swing.JPanel votersPanel;

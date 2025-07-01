@@ -1023,7 +1023,7 @@
                               <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jLabel8" max="32767" attributes="0"/>
-                                  <Component id="jLabel11" max="32767" attributes="0"/>
+                                  <Component id="testServerResponse" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                           </Group>
@@ -1035,7 +1035,7 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jLabel8" min="-2" pref="48" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jLabel11" pref="49" max="32767" attributes="0"/>
+                              <Component id="testServerResponse" pref="49" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -1053,7 +1053,7 @@
                         <Property name="text" type="java.lang.String" value="Election News"/>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JLabel" name="jLabel11">
+                    <Component class="javax.swing.JLabel" name="testServerResponse">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Ubuntu" size="14" style="1"/>
@@ -1061,6 +1061,9 @@
                         <Property name="text" type="java.lang.String" value="General Election 2025 results are supposed to be announced on June 28, 2025 at 10:50pm."/>
                         <Property name="verticalAlignment" type="int" value="1"/>
                       </Properties>
+                      <AuxValues>
+                        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="10"/>
+                      </AuxValues>
                     </Component>
                   </SubComponents>
                 </Container>
