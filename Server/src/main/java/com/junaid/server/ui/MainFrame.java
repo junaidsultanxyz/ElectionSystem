@@ -3,28 +3,49 @@ package com.junaid.server.ui;
 import java.awt.CardLayout;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.junaid.server.Main;
+import com.junaid.server.model.Election;
+import com.junaid.server.model.Party;
+import com.junaid.server.model.Voter;
+import com.junaid.server.repository.DAO;
+import com.junaid.server.ui.model.CustomTable;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RadialGradientPaint;
 import java.awt.RenderingHints;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.TimerTask;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import java.util.Timer;
+import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 import raven.datetime.TimePicker;
 
-
 public class MainFrame extends javax.swing.JFrame {
-    Thread currentThread;
-    
-    
-    String imagePath; // absolute image path that database will store, will be updated based on device
-    
-    CardLayout cardlayout;
 
+    String imagePath;
+    CardLayout cardlayout;
+    private String previousSymbolName = null;
+    private String previousImageName = null;
     ImageIcon navIcon;
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
@@ -49,6 +70,8 @@ public class MainFrame extends javax.swing.JFrame {
 
         mainPanel.setLayout(cardlayout);
         cardlayout.show(mainPanel, "dashboardPanel");
+
+        loadingFunctions();
     }
 
     /**
@@ -128,7 +151,7 @@ public class MainFrame extends javax.swing.JFrame {
                 jLabel6 = new javax.swing.JLabel();
                 jLabel7 = new javax.swing.JLabel();
                 jScrollPane2 = new javax.swing.JScrollPane();
-                current_votes = new javax.swing.JTable();
+                dashboardVotes = new javax.swing.JTable();
                 jPanel10 = new javax.swing.JPanel(){
                     @Override
                     protected void paintComponent(Graphics g) {
@@ -156,7 +179,7 @@ public class MainFrame extends javax.swing.JFrame {
                     jLabel8 = new javax.swing.JLabel();
                     jLabel9 = new javax.swing.JLabel();
                     jScrollPane3 = new javax.swing.JScrollPane();
-                    country_results = new javax.swing.JTable();
+                    dashboardResults = new javax.swing.JTable();
                     jPanel11 = new javax.swing.JPanel(){
                         @Override
                         protected void paintComponent(Graphics g) {
@@ -184,7 +207,7 @@ public class MainFrame extends javax.swing.JFrame {
                         jLabel10 = new javax.swing.JLabel();
                         jLabel11 = new javax.swing.JLabel();
                         jScrollPane4 = new javax.swing.JScrollPane();
-                        mna_winners = new javax.swing.JTable();
+                        dashboardMNAWinners = new javax.swing.JTable();
                         jPanel12 = new javax.swing.JPanel(){
                             @Override
                             protected void paintComponent(Graphics g) {
@@ -212,7 +235,7 @@ public class MainFrame extends javax.swing.JFrame {
                             jLabel12 = new javax.swing.JLabel();
                             jLabel13 = new javax.swing.JLabel();
                             jScrollPane5 = new javax.swing.JScrollPane();
-                            mpa_winners = new javax.swing.JTable();
+                            dashboardMPAWinners = new javax.swing.JTable();
                             jButton1 = new javax.swing.JButton();
                             votesPanel = new javax.swing.JPanel(){
                                 @Override
@@ -244,12 +267,12 @@ public class MainFrame extends javax.swing.JFrame {
                                     g2.dispose();
                                 }
                             };
-                            jTextField8 = new javax.swing.JTextField();
+                            voteSearchTextField = new javax.swing.JTextField();
                             jLabel38 = new javax.swing.JLabel();
                             jLabel39 = new javax.swing.JLabel();
                             jLabel40 = new javax.swing.JLabel();
                             jScrollPane12 = new javax.swing.JScrollPane();
-                            jTable10 = new javax.swing.JTable();
+                            allVotes = new javax.swing.JTable();
                             electionPanel = new javax.swing.JPanel(){
                                 @Override
                                 protected void paintComponent(Graphics g) {
@@ -283,22 +306,21 @@ public class MainFrame extends javax.swing.JFrame {
                             jLabel35 = new javax.swing.JLabel();
                             jLabel4 = new javax.swing.JLabel();
                             jLabel5 = new javax.swing.JLabel();
-                            jLabel14 = new javax.swing.JLabel();
                             jLabel15 = new javax.swing.JLabel();
-                            jTextField1 = new javax.swing.JTextField();
+                            electionIdTextField = new javax.swing.JTextField();
                             jLabel16 = new javax.swing.JLabel();
-                            jDateChooser1 = new com.toedter.calendar.JDateChooser();
+                            jDateChooserStart = new com.toedter.calendar.JDateChooser();
                             jLabel17 = new javax.swing.JLabel();
-                            time_start_field = new javax.swing.JTextField();
+                            startTimePicker = new javax.swing.JTextField();
                             start_time = new javax.swing.JButton();
                             jLabel18 = new javax.swing.JLabel();
-                            jDateChooser2 = new com.toedter.calendar.JDateChooser();
+                            jDateChooserEnd = new com.toedter.calendar.JDateChooser();
                             jLabel19 = new javax.swing.JLabel();
-                            time_end_field = new javax.swing.JTextField();
+                            endTimePicker = new javax.swing.JTextField();
                             end_time = new javax.swing.JButton();
-                            jTextField4 = new javax.swing.JTextField();
+                            electionSearch = new javax.swing.JTextField();
                             jScrollPane6 = new javax.swing.JScrollPane();
-                            jTable6 = new javax.swing.JTable();
+                            electionTable = new javax.swing.JTable();
                             jLabel20 = new javax.swing.JLabel();
                             jPanel14 = new javax.swing.JPanel(){ @Override
                                 protected void paintComponent(Graphics g) {
@@ -372,6 +394,7 @@ public class MainFrame extends javax.swing.JFrame {
                                             g2.dispose();
                                         }};
                                         jLabel34 = new javax.swing.JLabel();
+                                        electionNameTextField = new javax.swing.JTextField();
                                         partyPanel = new javax.swing.JPanel(){ @Override
                                             protected void paintComponent(Graphics g) {
                                                 super.paintComponent(g);
@@ -405,14 +428,14 @@ public class MainFrame extends javax.swing.JFrame {
                                         jLabel21 = new javax.swing.JLabel();
                                         jLabel44 = new javax.swing.JLabel();
                                         jLabel45 = new javax.swing.JLabel();
-                                        jTextField10 = new javax.swing.JTextField();
+                                        partySearchTextField = new javax.swing.JTextField();
                                         jScrollPane10 = new javax.swing.JScrollPane();
-                                        jTable12 = new javax.swing.JTable();
-                                        jTextField2 = new javax.swing.JTextField();
+                                        partyTable = new javax.swing.JTable();
+                                        partyCodeTextField = new javax.swing.JTextField();
                                         jLabel46 = new javax.swing.JLabel();
-                                        jTextField3 = new javax.swing.JTextField();
+                                        partyNameTextField = new javax.swing.JTextField();
                                         jLabel47 = new javax.swing.JLabel();
-                                        jTextField11 = new javax.swing.JTextField();
+                                        flagPathTextField = new javax.swing.JTextField();
                                         start_time1 = new javax.swing.JButton();
                                         jPanel17 = new javax.swing.JPanel(){ @Override
                                             protected void paintComponent(Graphics g) {
@@ -487,12 +510,12 @@ public class MainFrame extends javax.swing.JFrame {
                                                     }};
                                                     jLabel49 = new javax.swing.JLabel();
                                                     jPanel7 = new javax.swing.JPanel();
-                                                    jLabel22 = new javax.swing.JLabel();
-                                                    jTextField12 = new javax.swing.JTextField();
+                                                    flagLabel = new javax.swing.JLabel();
+                                                    symbolPathTextField = new javax.swing.JTextField();
                                                     jLabel50 = new javax.swing.JLabel();
                                                     start_time2 = new javax.swing.JButton();
                                                     jPanel13 = new javax.swing.JPanel();
-                                                    jLabel51 = new javax.swing.JLabel();
+                                                    symbolLabel = new javax.swing.JLabel();
                                                     votersPanel = new javax.swing.JPanel(){
                                                         @Override
                                                         protected void paintComponent(Graphics g) {
@@ -526,10 +549,10 @@ public class MainFrame extends javax.swing.JFrame {
                                                     ;
                                                     jLabel41 = new javax.swing.JLabel();
                                                     jLabel42 = new javax.swing.JLabel();
-                                                    jTextField9 = new javax.swing.JTextField();
+                                                    voterSearchTextField = new javax.swing.JTextField();
                                                     jLabel43 = new javax.swing.JLabel();
                                                     jScrollPane13 = new javax.swing.JScrollPane();
-                                                    jTable11 = new javax.swing.JTable();
+                                                    voterTable = new javax.swing.JTable();
                                                     countryResultsPanel = new javax.swing.JPanel(){    @Override
                                                         protected void paintComponent(Graphics g) {
                                                             super.paintComponent(g);
@@ -559,10 +582,10 @@ public class MainFrame extends javax.swing.JFrame {
                                                             g2.dispose();
                                                         }};
                                                         jScrollPane7 = new javax.swing.JScrollPane();
-                                                        jTable7 = new javax.swing.JTable();
+                                                        fullResults = new javax.swing.JTable();
                                                         jLabel24 = new javax.swing.JLabel();
                                                         jLabel25 = new javax.swing.JLabel();
-                                                        jTextField5 = new javax.swing.JTextField();
+                                                        countrySearchTextField = new javax.swing.JTextField();
                                                         jLabel30 = new javax.swing.JLabel();
                                                         mnaWinnersPanel = new javax.swing.JPanel(){    @Override
                                                             protected void paintComponent(Graphics g) {
@@ -594,9 +617,9 @@ public class MainFrame extends javax.swing.JFrame {
                                                             }};
                                                             jLabel26 = new javax.swing.JLabel();
                                                             jLabel27 = new javax.swing.JLabel();
-                                                            jTextField6 = new javax.swing.JTextField();
+                                                            mnaSearchTextField = new javax.swing.JTextField();
                                                             jScrollPane8 = new javax.swing.JScrollPane();
-                                                            jTable8 = new javax.swing.JTable();
+                                                            allMNAWinners = new javax.swing.JTable();
                                                             jLabel31 = new javax.swing.JLabel();
                                                             mpaWinnersPanel = new javax.swing.JPanel(){    @Override
                                                                 protected void paintComponent(Graphics g) {
@@ -628,9 +651,9 @@ public class MainFrame extends javax.swing.JFrame {
                                                                 }};
                                                                 jLabel28 = new javax.swing.JLabel();
                                                                 jLabel29 = new javax.swing.JLabel();
-                                                                jTextField7 = new javax.swing.JTextField();
+                                                                mpaSearchTextField = new javax.swing.JTextField();
                                                                 jScrollPane9 = new javax.swing.JScrollPane();
-                                                                jTable9 = new javax.swing.JTable();
+                                                                allMPAWinners = new javax.swing.JTable();
                                                                 jLabel32 = new javax.swing.JLabel();
                                                                 settingsPanel = new javax.swing.JPanel(){    @Override
                                                                     protected void paintComponent(Graphics g) {
@@ -667,6 +690,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                                                                     setMinimumSize(new java.awt.Dimension(1200, 720));
+                                                                    setPreferredSize(new java.awt.Dimension(1200, 700));
                                                                     setResizable(false);
 
                                                                     jPanel1.setMinimumSize(new java.awt.Dimension(1200, 720));
@@ -825,7 +849,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     jScrollPane2.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    current_votes.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    dashboardVotes.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null, null}
                                                                         },
@@ -841,11 +865,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    current_votes.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    current_votes.setRowHeight(30);
-                                                                    current_votes.setRowSelectionAllowed(false);
-                                                                    current_votes.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane2.setViewportView(current_votes);
+                                                                    dashboardVotes.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    dashboardVotes.setRowHeight(30);
+                                                                    dashboardVotes.setRowSelectionAllowed(false);
+                                                                    dashboardVotes.setSurrendersFocusOnKeystroke(true);
+                                                                    jScrollPane2.setViewportView(dashboardVotes);
 
                                                                     javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
                                                                     jPanel8.setLayout(jPanel8Layout);
@@ -892,7 +916,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     jScrollPane3.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    country_results.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    dashboardResults.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null, null}
                                                                         },
@@ -908,11 +932,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    country_results.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    country_results.setRowHeight(30);
-                                                                    country_results.setRowSelectionAllowed(false);
-                                                                    country_results.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane3.setViewportView(country_results);
+                                                                    dashboardResults.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    dashboardResults.setRowHeight(30);
+                                                                    dashboardResults.setRowSelectionAllowed(false);
+                                                                    dashboardResults.setSurrendersFocusOnKeystroke(true);
+                                                                    jScrollPane3.setViewportView(dashboardResults);
 
                                                                     javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
                                                                     jPanel10.setLayout(jPanel10Layout);
@@ -957,7 +981,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     jScrollPane4.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    mna_winners.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    dashboardMNAWinners.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null}
                                                                         },
@@ -973,11 +997,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    mna_winners.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    mna_winners.setRowHeight(30);
-                                                                    mna_winners.setRowSelectionAllowed(false);
-                                                                    mna_winners.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane4.setViewportView(mna_winners);
+                                                                    dashboardMNAWinners.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    dashboardMNAWinners.setRowHeight(30);
+                                                                    dashboardMNAWinners.setRowSelectionAllowed(false);
+                                                                    dashboardMNAWinners.setSurrendersFocusOnKeystroke(true);
+                                                                    jScrollPane4.setViewportView(dashboardMNAWinners);
 
                                                                     javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
                                                                     jPanel11.setLayout(jPanel11Layout);
@@ -1022,7 +1046,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     jScrollPane5.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    mpa_winners.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    dashboardMPAWinners.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null}
                                                                         },
@@ -1038,11 +1062,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    mpa_winners.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    mpa_winners.setRowHeight(30);
-                                                                    mpa_winners.setRowSelectionAllowed(false);
-                                                                    mpa_winners.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane5.setViewportView(mpa_winners);
+                                                                    dashboardMPAWinners.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    dashboardMPAWinners.setRowHeight(30);
+                                                                    dashboardMPAWinners.setRowSelectionAllowed(false);
+                                                                    dashboardMPAWinners.setSurrendersFocusOnKeystroke(true);
+                                                                    jScrollPane5.setViewportView(dashboardMPAWinners);
 
                                                                     javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
                                                                     jPanel12.setLayout(jPanel12Layout);
@@ -1109,18 +1133,23 @@ public class MainFrame extends javax.swing.JFrame {
                                                                                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                             .addComponent(jButton1)
-                                                                            .addContainerGap(10, Short.MAX_VALUE))
+                                                                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                                     );
 
                                                                     mainPanel.add(dashboardPanel, "card2");
 
                                                                     votesPanel.setPreferredSize(new java.awt.Dimension(1200, 638));
 
-                                                                    jTextField8.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-                                                                    jTextField8.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jTextField8.addActionListener(new java.awt.event.ActionListener() {
+                                                                    voteSearchTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+                                                                    voteSearchTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    voteSearchTextField.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            jTextField8ActionPerformed(evt);
+                                                                            voteSearchTextFieldActionPerformed(evt);
+                                                                        }
+                                                                    });
+                                                                    voteSearchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+                                                                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                                                            voteSearchTextFieldKeyReleased(evt);
                                                                         }
                                                                     });
 
@@ -1141,31 +1170,27 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     jScrollPane12.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    jTable10.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    allVotes.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
-                                                                            {null, null, null, null, null}
+                                                                            {null, null, null, null, null, null}
                                                                         },
                                                                         new String [] {
-                                                                            "Vote ID", "Voter CNIC", "Party Code", "Division", "Vote Type"
+                                                                            "Vote ID", "Voter CNIC", "Party Code", "Division", "Vote Type", "Vote Time"
                                                                         }
                                                                     ) {
                                                                         boolean[] canEdit = new boolean [] {
-                                                                            false, false, false, false, false
+                                                                            false, false, false, false, false, false
                                                                         };
 
                                                                         public boolean isCellEditable(int rowIndex, int columnIndex) {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    jTable10.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    jTable10.setRowHeight(25);
-                                                                    jTable10.setRowSelectionAllowed(false);
-                                                                    jTable10.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane12.setViewportView(jTable10);
-                                                                    if (jTable10.getColumnModel().getColumnCount() > 0) {
-                                                                        jTable10.getColumnModel().getColumn(0).setHeaderValue("Voter ");
-                                                                        jTable10.getColumnModel().getColumn(4).setHeaderValue("Vote Type");
-                                                                    }
+                                                                    allVotes.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    allVotes.setRowHeight(25);
+                                                                    allVotes.setRowSelectionAllowed(false);
+                                                                    allVotes.setSurrendersFocusOnKeystroke(true);
+                                                                    jScrollPane12.setViewportView(allVotes);
 
                                                                     javax.swing.GroupLayout votesPanelLayout = new javax.swing.GroupLayout(votesPanel);
                                                                     votesPanel.setLayout(votesPanelLayout);
@@ -1176,7 +1201,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                                 .addGroup(votesPanelLayout.createSequentialGroup()
                                                                                     .addGap(45, 45, 45)
                                                                                     .addGroup(votesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                        .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(voteSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                         .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                                                 .addGroup(votesPanelLayout.createSequentialGroup()
                                                                                     .addGroup(votesPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1200,7 +1225,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             .addGap(26, 26, 26)
                                                                             .addComponent(jLabel40)
                                                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                            .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addComponent(voteSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addGap(18, 18, 18)
                                                                             .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addContainerGap(51, Short.MAX_VALUE))
@@ -1232,34 +1257,30 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jLabel5.setText("Election ID :");
                                                                     electionPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, -1, -1));
 
-                                                                    jLabel14.setFont(new java.awt.Font("Bernard MT Condensed", 0, 19)); // NOI18N
-                                                                    jLabel14.setText("G2023");
-                                                                    electionPanel.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 60, -1, -1));
-
                                                                     jLabel15.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel15.setText("Search :");
                                                                     electionPanel.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 80, -1, -1));
 
-                                                                    jTextField1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                                                                    jTextField1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    electionPanel.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 370, 35));
+                                                                    electionIdTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    electionIdTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    electionPanel.add(electionIdTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(145, 57, 140, 30));
 
                                                                     jLabel16.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel16.setText("Starting Date :");
                                                                     electionPanel.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 200, -1, -1));
 
-                                                                    jDateChooser1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jDateChooser1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                                                                    jDateChooser1.setPreferredSize(new java.awt.Dimension(64, 18));
-                                                                    electionPanel.add(jDateChooser1, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 240, 370, 35));
+                                                                    jDateChooserStart.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    jDateChooserStart.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    jDateChooserStart.setPreferredSize(new java.awt.Dimension(64, 18));
+                                                                    electionPanel.add(jDateChooserStart, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 240, 370, 35));
 
                                                                     jLabel17.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel17.setText("Starting Time :");
                                                                     electionPanel.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 290, -1, -1));
 
-                                                                    time_start_field.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                                                                    time_start_field.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    electionPanel.add(time_start_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, 347, 35));
+                                                                    startTimePicker.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    startTimePicker.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    electionPanel.add(startTimePicker, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 320, 347, 35));
 
                                                                     start_time.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clock.png"))); // NOI18N
                                                                     start_time.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1278,18 +1299,18 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jLabel18.setText("Ending Date :");
                                                                     electionPanel.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 370, -1, -1));
 
-                                                                    jDateChooser2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jDateChooser2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                                                                    jDateChooser2.setPreferredSize(new java.awt.Dimension(64, 18));
-                                                                    electionPanel.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, 370, 35));
+                                                                    jDateChooserEnd.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    jDateChooserEnd.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    jDateChooserEnd.setPreferredSize(new java.awt.Dimension(64, 18));
+                                                                    electionPanel.add(jDateChooserEnd, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 400, 370, 35));
 
                                                                     jLabel19.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel19.setText("Ending Time :");
                                                                     electionPanel.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 450, -1, -1));
 
-                                                                    time_end_field.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                                                                    time_end_field.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    electionPanel.add(time_end_field, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 490, 347, 35));
+                                                                    endTimePicker.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    endTimePicker.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    electionPanel.add(endTimePicker, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 490, 347, 35));
 
                                                                     end_time.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/clock.png"))); // NOI18N
                                                                     end_time.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1299,18 +1320,23 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     });
                                                                     electionPanel.add(end_time, new org.netbeans.lib.awtextra.AbsoluteConstraints(427, 490, 26, 35));
 
-                                                                    jTextField4.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-                                                                    jTextField4.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jTextField4.addActionListener(new java.awt.event.ActionListener() {
+                                                                    electionSearch.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+                                                                    electionSearch.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    electionSearch.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            jTextField4ActionPerformed(evt);
+                                                                            electionSearchActionPerformed(evt);
                                                                         }
                                                                     });
-                                                                    electionPanel.add(jTextField4, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 120, 600, 40));
+                                                                    electionSearch.addKeyListener(new java.awt.event.KeyAdapter() {
+                                                                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                                                            electionSearchKeyReleased(evt);
+                                                                        }
+                                                                    });
+                                                                    electionPanel.add(electionSearch, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 120, 600, 40));
 
                                                                     jScrollPane6.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    jTable6.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    electionTable.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null, null, null, null}
                                                                         },
@@ -1326,14 +1352,19 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    jTable6.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    jTable6.setRowHeight(25);
-                                                                    jTable6.setRowSelectionAllowed(false);
-                                                                    jTable6.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane6.setViewportView(jTable6);
-                                                                    if (jTable6.getColumnModel().getColumnCount() > 0) {
-                                                                        jTable6.getColumnModel().getColumn(4).setHeaderValue("Ending Date");
-                                                                        jTable6.getColumnModel().getColumn(5).setHeaderValue("Ending Time");
+                                                                    electionTable.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    electionTable.setRowHeight(25);
+                                                                    electionTable.setRowSelectionAllowed(false);
+                                                                    electionTable.setSurrendersFocusOnKeystroke(true);
+                                                                    electionTable.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                                            electionTableMouseClicked(evt);
+                                                                        }
+                                                                    });
+                                                                    jScrollPane6.setViewportView(electionTable);
+                                                                    if (electionTable.getColumnModel().getColumnCount() > 0) {
+                                                                        electionTable.getColumnModel().getColumn(4).setHeaderValue("Ending Date");
+                                                                        electionTable.getColumnModel().getColumn(5).setHeaderValue("Ending Time");
                                                                     }
 
                                                                     electionPanel.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 180, 604, 410));
@@ -1345,6 +1376,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jPanel14.setBackground(new java.awt.Color(31, 147, 93));
                                                                     jPanel14.setForeground(new java.awt.Color(31, 147, 93));
                                                                     jPanel14.setOpaque(false);
+                                                                    jPanel14.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                                            jPanel14MouseClicked(evt);
+                                                                        }
+                                                                    });
 
                                                                     jLabel23.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
                                                                     jLabel23.setForeground(new java.awt.Color(255, 255, 255));
@@ -1373,6 +1409,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jPanel15.setBackground(new java.awt.Color(31, 147, 93));
                                                                     jPanel15.setForeground(new java.awt.Color(31, 147, 93));
                                                                     jPanel15.setOpaque(false);
+                                                                    jPanel15.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                                            jPanel15MouseClicked(evt);
+                                                                        }
+                                                                    });
 
                                                                     jLabel33.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
                                                                     jLabel33.setForeground(new java.awt.Color(255, 255, 255));
@@ -1401,6 +1442,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jPanel16.setBackground(new java.awt.Color(31, 147, 93));
                                                                     jPanel16.setForeground(new java.awt.Color(31, 147, 93));
                                                                     jPanel16.setOpaque(false);
+                                                                    jPanel16.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                                            jPanel16MouseClicked(evt);
+                                                                        }
+                                                                    });
 
                                                                     jLabel34.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
                                                                     jLabel34.setForeground(new java.awt.Color(255, 255, 255));
@@ -1425,6 +1471,10 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     );
 
                                                                     electionPanel.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 550, 110, -1));
+
+                                                                    electionNameTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    electionNameTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    electionPanel.add(electionNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 150, 370, 35));
 
                                                                     mainPanel.add(electionPanel, "card2");
 
@@ -1454,18 +1504,23 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jLabel45.setText("Search :");
                                                                     partyPanel.add(jLabel45, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 80, -1, -1));
 
-                                                                    jTextField10.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-                                                                    jTextField10.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jTextField10.addActionListener(new java.awt.event.ActionListener() {
+                                                                    partySearchTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+                                                                    partySearchTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    partySearchTextField.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            jTextField10ActionPerformed(evt);
+                                                                            partySearchTextFieldActionPerformed(evt);
                                                                         }
                                                                     });
-                                                                    partyPanel.add(jTextField10, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 120, 600, 40));
+                                                                    partySearchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+                                                                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                                                            partySearchTextFieldKeyReleased(evt);
+                                                                        }
+                                                                    });
+                                                                    partyPanel.add(partySearchTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 120, 600, 40));
 
                                                                     jScrollPane10.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    jTable12.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    partyTable.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null, null}
                                                                         },
@@ -1481,33 +1536,38 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    jTable12.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    jTable12.setRowHeight(50);
-                                                                    jTable12.setRowSelectionAllowed(false);
-                                                                    jTable12.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane10.setViewportView(jTable12);
+                                                                    partyTable.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    partyTable.setRowHeight(70);
+                                                                    partyTable.setRowSelectionAllowed(false);
+                                                                    partyTable.setSurrendersFocusOnKeystroke(true);
+                                                                    partyTable.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                                            partyTableMouseClicked(evt);
+                                                                        }
+                                                                    });
+                                                                    jScrollPane10.setViewportView(partyTable);
 
                                                                     partyPanel.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 180, 604, 410));
 
-                                                                    jTextField2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                                                                    jTextField2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    partyPanel.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 350, 35));
+                                                                    partyCodeTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    partyCodeTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    partyPanel.add(partyCodeTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 350, 35));
 
                                                                     jLabel46.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel46.setText("Party Name :");
                                                                     partyPanel.add(jLabel46, new org.netbeans.lib.awtextra.AbsoluteConstraints(25, 150, -1, 30));
 
-                                                                    jTextField3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                                                                    jTextField3.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    partyPanel.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 350, 35));
+                                                                    partyNameTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    partyNameTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    partyPanel.add(partyNameTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 150, 350, 35));
 
                                                                     jLabel47.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel47.setText("Party Flag :");
                                                                     partyPanel.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 200, -1, 30));
 
-                                                                    jTextField11.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                                                                    jTextField11.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    partyPanel.add(jTextField11, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 330, 35));
+                                                                    flagPathTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    flagPathTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    partyPanel.add(flagPathTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 330, 35));
 
                                                                     start_time1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish.png"))); // NOI18N
                                                                     start_time1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -1525,6 +1585,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jPanel17.setBackground(new java.awt.Color(31, 147, 93));
                                                                     jPanel17.setForeground(new java.awt.Color(31, 147, 93));
                                                                     jPanel17.setOpaque(false);
+                                                                    jPanel17.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                                            jPanel17MouseClicked(evt);
+                                                                        }
+                                                                    });
 
                                                                     jLabel37.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
                                                                     jLabel37.setForeground(new java.awt.Color(255, 255, 255));
@@ -1553,6 +1618,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jPanel18.setBackground(new java.awt.Color(31, 147, 93));
                                                                     jPanel18.setForeground(new java.awt.Color(31, 147, 93));
                                                                     jPanel18.setOpaque(false);
+                                                                    jPanel18.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                                            jPanel18MouseClicked(evt);
+                                                                        }
+                                                                    });
 
                                                                     jLabel48.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
                                                                     jLabel48.setForeground(new java.awt.Color(255, 255, 255));
@@ -1581,6 +1651,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jPanel19.setBackground(new java.awt.Color(31, 147, 93));
                                                                     jPanel19.setForeground(new java.awt.Color(31, 147, 93));
                                                                     jPanel19.setOpaque(false);
+                                                                    jPanel19.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                        public void mouseClicked(java.awt.event.MouseEvent evt) {
+                                                                            jPanel19MouseClicked(evt);
+                                                                        }
+                                                                    });
 
                                                                     jLabel49.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
                                                                     jLabel49.setForeground(new java.awt.Color(255, 255, 255));
@@ -1613,18 +1688,18 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jPanel7.setLayout(jPanel7Layout);
                                                                     jPanel7Layout.setHorizontalGroup(
                                                                         jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                                                                        .addComponent(flagLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                                                                     );
                                                                     jPanel7Layout.setVerticalGroup(
                                                                         jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                                                                        .addComponent(flagLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                                                                     );
 
                                                                     partyPanel.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 250, 110, 80));
 
-                                                                    jTextField12.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-                                                                    jTextField12.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    partyPanel.add(jTextField12, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, 330, 35));
+                                                                    symbolPathTextField.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+                                                                    symbolPathTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    partyPanel.add(symbolPathTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 350, 330, 35));
 
                                                                     jLabel50.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel50.setText("Party Symbol :");
@@ -1650,11 +1725,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jPanel13.setLayout(jPanel13Layout);
                                                                     jPanel13Layout.setHorizontalGroup(
                                                                         jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel51, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
+                                                                        .addComponent(symbolLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 108, Short.MAX_VALUE)
                                                                     );
                                                                     jPanel13Layout.setVerticalGroup(
                                                                         jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                        .addComponent(jLabel51, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
+                                                                        .addComponent(symbolLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 78, Short.MAX_VALUE)
                                                                     );
 
                                                                     partyPanel.add(jPanel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 400, 110, 80));
@@ -1675,11 +1750,16 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jLabel42.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
                                                                     jLabel42.setText("Voters Information");
 
-                                                                    jTextField9.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-                                                                    jTextField9.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jTextField9.addActionListener(new java.awt.event.ActionListener() {
+                                                                    voterSearchTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+                                                                    voterSearchTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    voterSearchTextField.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            jTextField9ActionPerformed(evt);
+                                                                            voterSearchTextFieldActionPerformed(evt);
+                                                                        }
+                                                                    });
+                                                                    voterSearchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+                                                                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                                                            voterSearchTextFieldKeyReleased(evt);
                                                                         }
                                                                     });
 
@@ -1688,7 +1768,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     jScrollPane13.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    jTable11.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    voterTable.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null, null}
                                                                         },
@@ -1704,11 +1784,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    jTable11.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    jTable11.setRowHeight(25);
-                                                                    jTable11.setRowSelectionAllowed(false);
-                                                                    jTable11.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane13.setViewportView(jTable11);
+                                                                    voterTable.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    voterTable.setRowHeight(25);
+                                                                    voterTable.setRowSelectionAllowed(false);
+                                                                    voterTable.setSurrendersFocusOnKeystroke(true);
+                                                                    jScrollPane13.setViewportView(voterTable);
 
                                                                     javax.swing.GroupLayout votersPanelLayout = new javax.swing.GroupLayout(votersPanel);
                                                                     votersPanel.setLayout(votersPanelLayout);
@@ -1719,7 +1799,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                                 .addGroup(votersPanelLayout.createSequentialGroup()
                                                                                     .addGap(45, 45, 45)
                                                                                     .addGroup(votersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                        .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(voterSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                         .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                                                 .addGroup(votersPanelLayout.createSequentialGroup()
                                                                                     .addGroup(votersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1743,7 +1823,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             .addGap(26, 26, 26)
                                                                             .addComponent(jLabel43)
                                                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                            .addComponent(jTextField9, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addComponent(voterSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addGap(18, 18, 18)
                                                                             .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addContainerGap(51, Short.MAX_VALUE))
@@ -1755,7 +1835,7 @@ public class MainFrame extends javax.swing.JFrame {
 
                                                                     jScrollPane7.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    jTable7.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    fullResults.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null, null, null}
                                                                         },
@@ -1771,14 +1851,14 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    jTable7.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    jTable7.setRowHeight(25);
-                                                                    jTable7.setRowSelectionAllowed(false);
-                                                                    jTable7.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane7.setViewportView(jTable7);
-                                                                    if (jTable7.getColumnModel().getColumnCount() > 0) {
-                                                                        jTable7.getColumnModel().getColumn(0).setHeaderValue("Voter ");
-                                                                        jTable7.getColumnModel().getColumn(4).setHeaderValue("Vote Type");
+                                                                    fullResults.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    fullResults.setRowHeight(25);
+                                                                    fullResults.setRowSelectionAllowed(false);
+                                                                    fullResults.setSurrendersFocusOnKeystroke(true);
+                                                                    jScrollPane7.setViewportView(fullResults);
+                                                                    if (fullResults.getColumnModel().getColumnCount() > 0) {
+                                                                        fullResults.getColumnModel().getColumn(0).setHeaderValue("Voter ");
+                                                                        fullResults.getColumnModel().getColumn(4).setHeaderValue("Vote Type");
                                                                     }
 
                                                                     jLabel24.setFont(new java.awt.Font("Bernard MT Condensed", 1, 33)); // NOI18N
@@ -1788,11 +1868,16 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jLabel25.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel25.setText("Search :");
 
-                                                                    jTextField5.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-                                                                    jTextField5.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jTextField5.addActionListener(new java.awt.event.ActionListener() {
+                                                                    countrySearchTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+                                                                    countrySearchTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    countrySearchTextField.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            jTextField5ActionPerformed(evt);
+                                                                            countrySearchTextFieldActionPerformed(evt);
+                                                                        }
+                                                                    });
+                                                                    countrySearchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+                                                                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                                                            countrySearchTextFieldKeyReleased(evt);
                                                                         }
                                                                     });
 
@@ -1813,7 +1898,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                                 .addGroup(countryResultsPanelLayout.createSequentialGroup()
                                                                                     .addGap(45, 45, 45)
                                                                                     .addGroup(countryResultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                                                        .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(countrySearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                         .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                                                 .addGroup(countryResultsPanelLayout.createSequentialGroup()
                                                                                     .addGroup(countryResultsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1837,7 +1922,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             .addGap(26, 26, 26)
                                                                             .addComponent(jLabel25)
                                                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addComponent(countrySearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addGap(18, 18, 18)
                                                                             .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addContainerGap(51, Short.MAX_VALUE))
@@ -1854,17 +1939,22 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jLabel27.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel27.setText("Search :");
 
-                                                                    jTextField6.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-                                                                    jTextField6.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jTextField6.addActionListener(new java.awt.event.ActionListener() {
+                                                                    mnaSearchTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+                                                                    mnaSearchTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    mnaSearchTextField.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            jTextField6ActionPerformed(evt);
+                                                                            mnaSearchTextFieldActionPerformed(evt);
+                                                                        }
+                                                                    });
+                                                                    mnaSearchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+                                                                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                                                            mnaSearchTextFieldKeyReleased(evt);
                                                                         }
                                                                     });
 
                                                                     jScrollPane8.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    jTable8.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    allMNAWinners.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null, null}
                                                                         },
@@ -1880,11 +1970,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    jTable8.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    jTable8.setRowHeight(25);
-                                                                    jTable8.setRowSelectionAllowed(false);
-                                                                    jTable8.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane8.setViewportView(jTable8);
+                                                                    allMNAWinners.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    allMNAWinners.setRowHeight(25);
+                                                                    allMNAWinners.setRowSelectionAllowed(false);
+                                                                    allMNAWinners.setSurrendersFocusOnKeystroke(true);
+                                                                    jScrollPane8.setViewportView(allMNAWinners);
 
                                                                     jLabel31.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-arrow.png"))); // NOI18N
                                                                     jLabel31.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -1904,7 +1994,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                                     .addGap(45, 45, 45)
                                                                                     .addGroup(mnaWinnersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                         .addComponent(jLabel27)
-                                                                                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(mnaSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                                                 .addGroup(mnaWinnersPanelLayout.createSequentialGroup()
                                                                                     .addGap(31, 31, 31)
@@ -1923,7 +2013,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             .addGap(27, 27, 27)
                                                                             .addComponent(jLabel27)
                                                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                            .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addComponent(mnaSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addGap(18, 18, 18)
                                                                             .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addContainerGap(51, Short.MAX_VALUE))
@@ -1940,17 +2030,22 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jLabel29.setFont(new java.awt.Font("Bernard MT Condensed", 0, 17)); // NOI18N
                                                                     jLabel29.setText("Search :");
 
-                                                                    jTextField7.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-                                                                    jTextField7.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
-                                                                    jTextField7.addActionListener(new java.awt.event.ActionListener() {
+                                                                    mpaSearchTextField.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+                                                                    mpaSearchTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
+                                                                    mpaSearchTextField.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            jTextField7ActionPerformed(evt);
+                                                                            mpaSearchTextFieldActionPerformed(evt);
+                                                                        }
+                                                                    });
+                                                                    mpaSearchTextField.addKeyListener(new java.awt.event.KeyAdapter() {
+                                                                        public void keyReleased(java.awt.event.KeyEvent evt) {
+                                                                            mpaSearchTextFieldKeyReleased(evt);
                                                                         }
                                                                     });
 
                                                                     jScrollPane9.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
-                                                                    jTable9.setModel(new javax.swing.table.DefaultTableModel(
+                                                                    allMPAWinners.setModel(new javax.swing.table.DefaultTableModel(
                                                                         new Object [][] {
                                                                             {null, null, null, null}
                                                                         },
@@ -1966,11 +2061,11 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             return canEdit [columnIndex];
                                                                         }
                                                                     });
-                                                                    jTable9.setGridColor(new java.awt.Color(255, 255, 255));
-                                                                    jTable9.setRowHeight(25);
-                                                                    jTable9.setRowSelectionAllowed(false);
-                                                                    jTable9.setSurrendersFocusOnKeystroke(true);
-                                                                    jScrollPane9.setViewportView(jTable9);
+                                                                    allMPAWinners.setGridColor(new java.awt.Color(255, 255, 255));
+                                                                    allMPAWinners.setRowHeight(25);
+                                                                    allMPAWinners.setRowSelectionAllowed(false);
+                                                                    allMPAWinners.setSurrendersFocusOnKeystroke(true);
+                                                                    jScrollPane9.setViewportView(allMPAWinners);
 
                                                                     jLabel32.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/back-arrow.png"))); // NOI18N
                                                                     jLabel32.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -1990,7 +2085,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                                     .addGap(45, 45, 45)
                                                                                     .addGroup(mpaWinnersPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                                                         .addComponent(jLabel29)
-                                                                                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                        .addComponent(mpaSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 387, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                                         .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 1100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                                                                 .addGroup(mpaWinnersPanelLayout.createSequentialGroup()
                                                                                     .addGap(29, 29, 29)
@@ -2009,7 +2104,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                                             .addGap(28, 28, 28)
                                                                             .addComponent(jLabel29)
                                                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                            .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                            .addComponent(mpaSearchTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addGap(18, 18, 18)
                                                                             .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                                             .addContainerGap(51, Short.MAX_VALUE))
@@ -2098,9 +2193,9 @@ public class MainFrame extends javax.swing.JFrame {
         cardlayout.show(mainPanel, "dashboardPanel");
     }//GEN-LAST:event_navMouseClicked
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void electionSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_electionSearchActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_electionSearchActionPerformed
 
     private void start_timeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_start_timeActionPerformed
         // TODO add your handling code here:
@@ -2115,7 +2210,7 @@ public class MainFrame extends javax.swing.JFrame {
             LocalTime time = picker.getSelectedTime();
             String formattedTime = time.format(java.time.format.DateTimeFormatter.ofPattern("hh:mm a"));
 
-            time_start_field.setText(formattedTime);
+            startTimePicker.setText(formattedTime);
         });
     }//GEN-LAST:event_start_timeMouseClicked
 
@@ -2128,25 +2223,25 @@ public class MainFrame extends javax.swing.JFrame {
             LocalTime time = picker.getSelectedTime();
             String formattedTime = time.format(java.time.format.DateTimeFormatter.ofPattern("hh:mm a"));
 
-            time_end_field.setText(formattedTime);
+            endTimePicker.setText(formattedTime);
         });
     }//GEN-LAST:event_end_timeMouseClicked
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void countrySearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_countrySearchTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+    }//GEN-LAST:event_countrySearchTextFieldActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void mnaSearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnaSearchTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_mnaSearchTextFieldActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void mpaSearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mpaSearchTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+    }//GEN-LAST:event_mpaSearchTextFieldActionPerformed
 
     private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
         // TODO add your handling code here:
-         cardlayout.show(mainPanel, "resultsPanel");
+        cardlayout.show(mainPanel, "resultsPanel");
     }//GEN-LAST:event_jLabel9MouseClicked
 
     private void jLabel11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel11MouseClicked
@@ -2156,22 +2251,22 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jLabel13MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel13MouseClicked
         // TODO add your handling code here:
-         cardlayout.show(mainPanel, "mpaPanel");
+        cardlayout.show(mainPanel, "mpaPanel");
     }//GEN-LAST:event_jLabel13MouseClicked
 
     private void jLabel32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel32MouseClicked
         // TODO add your handling code here:
-         cardlayout.show(mainPanel, "dashboardPanel");
+        cardlayout.show(mainPanel, "dashboardPanel");
     }//GEN-LAST:event_jLabel32MouseClicked
 
     private void jLabel31MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel31MouseClicked
         // TODO add your handling code here:
-         cardlayout.show(mainPanel, "dashboardPanel");
+        cardlayout.show(mainPanel, "dashboardPanel");
     }//GEN-LAST:event_jLabel31MouseClicked
 
     private void jLabel30MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel30MouseClicked
         // TODO add your handling code here:
-         cardlayout.show(mainPanel, "dashboardPanel");
+        cardlayout.show(mainPanel, "dashboardPanel");
     }//GEN-LAST:event_jLabel30MouseClicked
 
     private void jLabel7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel7MouseClicked
@@ -2180,34 +2275,36 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void jLabel35MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel35MouseClicked
         cardlayout.show(mainPanel, "dashboardPanel");
+        clearElectionFields();
     }//GEN-LAST:event_jLabel35MouseClicked
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+    private void voteSearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voteSearchTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
+    }//GEN-LAST:event_voteSearchTextFieldActionPerformed
 
     private void jLabel38MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel38MouseClicked
         // TODO add your handling code here:
         cardlayout.show(mainPanel, "dashboardPanel");
     }//GEN-LAST:event_jLabel38MouseClicked
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void voterSearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_voterSearchTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_voterSearchTextFieldActionPerformed
 
     private void jLabel41MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel41MouseClicked
         // TODO add your handling code here:
-         cardlayout.show(mainPanel, "dashboardPanel");
+        cardlayout.show(mainPanel, "dashboardPanel");
     }//GEN-LAST:event_jLabel41MouseClicked
 
     private void jLabel36MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel36MouseClicked
         // TODO add your handling code here:
         cardlayout.show(mainPanel, "dashboardPanel");
+        clearPartyFields();
     }//GEN-LAST:event_jLabel36MouseClicked
 
-    private void jTextField10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField10ActionPerformed
+    private void partySearchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_partySearchTextFieldActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField10ActionPerformed
+    }//GEN-LAST:event_partySearchTextFieldActionPerformed
 
     private void start_time1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_start_time1MouseClicked
         // TODO add your handling code here:
@@ -2215,6 +2312,48 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void start_time1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_start_time1ActionPerformed
         // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select an Image");
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif"));
+
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            String fileName = selectedFile.getName();
+
+            File imageDir = new File("src/main/resources/addedImages");
+            if (!imageDir.exists()) {
+                imageDir.mkdirs();
+            }
+
+            if (previousImageName != null) {
+                File oldImage = new File(imageDir, previousImageName);
+                if (oldImage.exists()) {
+                    if (!fileName.equals(previousImageName)) {
+                        oldImage.delete();
+                    }
+                }
+            }
+
+            File destination = new File(imageDir, fileName);
+
+            try {
+                Files.copy(selectedFile.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                flagPathTextField.setText(fileName);
+                previousImageName = fileName;
+
+                ImageIcon icon = new ImageIcon(destination.getAbsolutePath());
+                Image img = icon.getImage().getScaledInstance(flagLabel.getWidth(), flagLabel.getHeight(), Image.SCALE_SMOOTH);
+                flagLabel.setIcon(new ImageIcon(img));
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to copy image: " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_start_time1ActionPerformed
 
     private void start_time2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_start_time2MouseClicked
@@ -2223,6 +2362,48 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void start_time2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_start_time2ActionPerformed
         // TODO add your handling code here:
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Select a Symbol Image");
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif"));
+
+        int result = fileChooser.showOpenDialog(this);
+
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+            String fileName = selectedFile.getName();
+
+            File imageDir = new File("src/main/resources/addedImages");
+            if (!imageDir.exists()) {
+                imageDir.mkdirs();
+            }
+
+            if (previousSymbolName != null) {
+                File oldSymbol = new File(imageDir, previousSymbolName);
+                if (oldSymbol.exists() && !fileName.equals(previousSymbolName)) {
+                    oldSymbol.delete();
+                }
+            }
+
+            File destination = new File(imageDir, fileName);
+
+            try {
+                Files.copy(selectedFile.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                symbolPathTextField.setText(fileName);
+
+                previousSymbolName = fileName;
+
+                ImageIcon icon = new ImageIcon(destination.getAbsolutePath());
+                Image img = icon.getImage().getScaledInstance(symbolLabel.getWidth(), symbolLabel.getHeight(), Image.SCALE_SMOOTH);
+                symbolLabel.setIcon(new ImageIcon(img));
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to copy symbol image: " + ex.getMessage());
+            }
+        }
+
     }//GEN-LAST:event_start_time2ActionPerformed
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
@@ -2242,8 +2423,571 @@ public class MainFrame extends javax.swing.JFrame {
         cardlayout.show(mainPanel, "settingsPanel");
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void jPanel15MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel15MouseClicked
+        // TODO add your handling code here:
+        try {
+            String idText = electionIdTextField.getText().trim();
+            if (idText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Election ID is required.");
+                return;
+            }
 
-    public static void startGUI(){
+            int id;
+            try {
+                id = Integer.parseInt(idText);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Election ID must be a valid number.");
+                return;
+            }
+
+            String name = electionNameTextField.getText().trim();
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Election name is required.");
+                return;
+            }
+
+            Date startDate = jDateChooserStart.getDate();
+            Date endDate = jDateChooserEnd.getDate();
+            if (startDate == null || endDate == null) {
+                JOptionPane.showMessageDialog(this, "Start and end dates are required.");
+                return;
+            }
+
+            String startTimeText = startTimePicker.getText().trim();
+            String endTimeText = endTimePicker.getText().trim();
+            if (startTimeText.isEmpty() || endTimeText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Start and end times are required.");
+                return;
+            }
+
+            LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate localEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+            LocalTime startTime = LocalTime.parse(startTimeText, timeFormatter);
+            LocalTime endTime = LocalTime.parse(endTimeText, timeFormatter);
+
+            LocalDateTime startingDateTime = LocalDateTime.of(localStartDate, startTime);
+            LocalDateTime endingDateTime = LocalDateTime.of(localEndDate, endTime);
+
+            Election election = new Election(id, name, startingDateTime, endingDateTime);
+
+            boolean result = DAO.addElection(election);
+
+            if (result) {
+                JOptionPane.showMessageDialog(this, "Election added successfully!");
+                clearElectionFields();
+                loadElectionTable();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to add election.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_jPanel15MouseClicked
+
+    private void jPanel14MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel14MouseClicked
+        // TODO add your handling code here:
+        try {
+            String idText = electionIdTextField.getText().trim();
+            if (idText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Election ID is required.");
+                return;
+            }
+
+            int id;
+            try {
+                id = Integer.parseInt(idText);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Election ID must be a valid number.");
+                return;
+            }
+
+            String name = electionNameTextField.getText().trim();
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Election name is required.");
+                return;
+            }
+
+            Date startDate = jDateChooserStart.getDate();
+            Date endDate = jDateChooserEnd.getDate();
+            if (startDate == null || endDate == null) {
+                JOptionPane.showMessageDialog(this, "Start and end dates are required.");
+                return;
+            }
+
+            String startTimeText = startTimePicker.getText().trim();
+            String endTimeText = endTimePicker.getText().trim();
+            if (startTimeText.isEmpty() || endTimeText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Start and end times are required.");
+                return;
+            }
+
+            LocalDate localStartDate = startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate localEndDate = endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hh:mm a");
+            LocalTime startTime = LocalTime.parse(startTimeText, timeFormatter);
+            LocalTime endTime = LocalTime.parse(endTimeText, timeFormatter);
+
+            LocalDateTime startingDateTime = LocalDateTime.of(localStartDate, startTime);
+            LocalDateTime endingDateTime = LocalDateTime.of(localEndDate, endTime);
+
+            Election election = new Election(id, name, startingDateTime, endingDateTime);
+
+            boolean result = DAO.updateElection(id, election);
+
+            if (result) {
+                JOptionPane.showMessageDialog(this, "Election updated successfully!");
+                clearElectionFields();
+                loadElectionTable();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Election with ID " + id + " not found or update failed.");
+                clearElectionFields();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_jPanel14MouseClicked
+
+    private void jPanel16MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel16MouseClicked
+        // TODO add your handling code here:
+        try {
+            String idText = electionIdTextField.getText().trim();
+            if (idText.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Election ID is required to delete.");
+                return;
+            }
+
+            int id;
+            try {
+                id = Integer.parseInt(idText);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Election ID must be a valid number.");
+                return;
+            }
+
+            int confirm = JOptionPane.showConfirmDialog(this,
+                    "Are you sure you want to delete the election with ID " + id + "?",
+                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                boolean result = DAO.deleteElection(id);
+                if (result) {
+                    JOptionPane.showMessageDialog(this, "Election deleted successfully!");
+                    clearElectionFields();
+                    loadElectionTable();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Failed to delete election. ID may not exist.");
+                    clearElectionFields();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+
+    }//GEN-LAST:event_jPanel16MouseClicked
+
+    private void electionSearchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_electionSearchKeyReleased
+        // TODO add your handling code here:
+        try {
+            String keyword = electionSearch.getText().trim();
+            ArrayList<Election> elections;
+
+            if (keyword.isEmpty()) {
+                elections = DAO.displayAllElections();
+            } else {
+                elections = DAO.searchElection(keyword);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) electionTable.getModel();
+            model.setRowCount(0);
+
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+            for (Election e : elections) {
+                model.addRow(new Object[]{
+                    e.getId(),
+                    e.getName(),
+                    e.getStartingTime().toLocalDate().format(dateFormatter),
+                    e.getStartingTime().toLocalTime().format(timeFormatter),
+                    e.getEndingTime().toLocalDate().format(dateFormatter),
+                    e.getEndingTime().toLocalTime().format(timeFormatter)
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error while searching elections: " + e.getMessage());
+        }
+    }//GEN-LAST:event_electionSearchKeyReleased
+
+    private void electionTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_electionTableMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = electionTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            String id = electionTable.getValueAt(selectedRow, 0).toString();
+            String name = electionTable.getValueAt(selectedRow, 1).toString();
+            String startingDate = electionTable.getValueAt(selectedRow, 2).toString();
+            String startingTime = electionTable.getValueAt(selectedRow, 3).toString();
+            String endingDate = electionTable.getValueAt(selectedRow, 4).toString();
+            String endingTime = electionTable.getValueAt(selectedRow, 5).toString();
+
+            electionIdTextField.setText(id);
+            electionNameTextField.setText(name);
+
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date startDate = dateFormat.parse(startingDate);
+                Date endDate = dateFormat.parse(endingDate);
+                jDateChooserStart.setDate(startDate);
+                jDateChooserEnd.setDate(endDate);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            try {
+                SimpleDateFormat inputFormat = new SimpleDateFormat("HH:mm:ss");
+                SimpleDateFormat outputFormat = new SimpleDateFormat("hh:mm a");
+                Date startTime = inputFormat.parse(startingTime);
+                Date endTime = inputFormat.parse(endingTime);
+
+                startTimePicker.setText(outputFormat.format(startTime));
+                endTimePicker.setText(outputFormat.format(endTime));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }//GEN-LAST:event_electionTableMouseClicked
+
+    private void jPanel17MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel17MouseClicked
+        // TODO add your handling code here:
+        String code = partyCodeTextField.getText().trim();
+        String name = partyNameTextField.getText().trim();
+        String flagImageName = flagPathTextField.getText().trim();
+        String symbolImageName = symbolPathTextField.getText().trim();
+
+        if (code.isEmpty() || name.isEmpty() || flagImageName.isEmpty() || symbolImageName.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled out.");
+            return;
+        }
+
+        try {
+            Party party = new Party(code, name, flagImageName, symbolImageName);
+
+            boolean result = DAO.addParty(party);
+
+            if (result) {
+                JOptionPane.showMessageDialog(this, "Party added successfully!");
+                clearPartyFields();
+                loadPartyTableData();
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to add party.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jPanel17MouseClicked
+
+    private void jPanel18MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel18MouseClicked
+        // TODO add your handling code here:
+        String code = partyCodeTextField.getText().trim();
+
+        if (code.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a Party Code to delete.");
+            return;
+        }
+
+        try {
+            boolean result = DAO.deleteParty(code);
+
+            if (result) {
+                JOptionPane.showMessageDialog(this, "Party deleted successfully.");
+                clearPartyFields();
+                loadPartyTableData();
+            } else {
+                JOptionPane.showMessageDialog(this, "Party not found or could not be deleted.");
+                clearPartyFields();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error deleting party: " + e.getMessage());
+        }
+    }//GEN-LAST:event_jPanel18MouseClicked
+
+    private void jPanel19MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jPanel19MouseClicked
+        // TODO add your handling code here:
+        String code = partyCodeTextField.getText().trim();
+        String symbolImage = symbolPathTextField.getText().trim();
+        String flagImage = flagPathTextField.getText().trim();
+
+        if (code.isEmpty() || symbolImage.isEmpty() || flagImage.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields must be filled out.");
+            return;
+        }
+
+        try {
+            Party updatedParty = new Party(code, null, flagImage, symbolImage); // name not needed for this method
+            boolean result = DAO.updateParty(code, updatedParty);
+
+            if (result) {
+                JOptionPane.showMessageDialog(this, "Party updated successfully.");
+                clearPartyFields();
+                loadPartyTableData();
+            } else {
+                JOptionPane.showMessageDialog(this, "Failed to update party.");
+                clearPartyFields();  
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }//GEN-LAST:event_jPanel19MouseClicked
+
+    private void partySearchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_partySearchTextFieldKeyReleased
+        // TODO add your handling code here:
+        String keyword = partySearchTextField.getText().trim();
+
+        try {
+            ArrayList<Party> parties;
+
+            if (keyword.isEmpty()) {
+                parties = DAO.displayAllParties();
+            } else {
+                parties = DAO.searchParty(keyword);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) partyTable.getModel();
+            model.setRowCount(0);
+
+            for (Party p : parties) {
+                String code = p.getCode();
+                String name = p.getName();
+                String flagPath = "src/main/resources/addedImages/" + p.getFlagImagePath();
+                String symbolPath = "src/main/resources/addedImages/" + p.getSymbolImagePath();
+
+                ImageIcon flagIcon = null;
+                File flagFile = new File(flagPath);
+                if (flagFile.exists()) {
+                    Image img = new ImageIcon(flagFile.getAbsolutePath()).getImage()
+                            .getScaledInstance(50, 30, Image.SCALE_SMOOTH);
+                    flagIcon = new ImageIcon(img);
+                }
+
+                ImageIcon symbolIcon = null;
+                File symbolFile = new File(symbolPath);
+                if (symbolFile.exists()) {
+                    Image img = new ImageIcon(symbolFile.getAbsolutePath()).getImage()
+                            .getScaledInstance(50, 30, Image.SCALE_SMOOTH);
+                    symbolIcon = new ImageIcon(img);
+                }
+
+                model.addRow(new Object[]{code, name, flagIcon, symbolIcon});
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading search results: " + e.getMessage());
+        }
+    }//GEN-LAST:event_partySearchTextFieldKeyReleased
+
+    private void partyTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_partyTableMouseClicked
+        // TODO add your handling code here:
+        int selectedRow = partyTable.getSelectedRow();
+        if (selectedRow >= 0) {
+            DefaultTableModel model = (DefaultTableModel) partyTable.getModel();
+            String code = model.getValueAt(selectedRow, 0).toString();
+            String name = model.getValueAt(selectedRow, 1).toString();
+
+            String flagImageName = "";
+            String symbolImageName = "";
+            try {
+                ArrayList<Party> parties = DAO.displayAllParties();
+                for (Party p : parties) {
+                    if (p.getCode().equals(code)) {
+                        flagImageName = p.getFlagImagePath();
+                        symbolImageName = p.getSymbolImagePath();
+                        break;
+                    }
+                }
+                partyCodeTextField.setText(code);
+                partyNameTextField.setText(name);
+                flagPathTextField.setText(flagImageName);
+                symbolPathTextField.setText(symbolImageName);
+
+                String imageDir = "src/main/resources/addedImages/";
+
+                File flagFile = new File(imageDir + flagImageName);
+                if (flagFile.exists()) {
+                    ImageIcon flagIcon = new ImageIcon(flagFile.getAbsolutePath());
+                    Image scaled = flagIcon.getImage().getScaledInstance(flagLabel.getWidth(), flagLabel.getHeight(), Image.SCALE_SMOOTH);
+                    flagLabel.setIcon(new ImageIcon(scaled));
+                } else {
+                    flagLabel.setIcon(null);
+                }
+
+                File symbolFile = new File(imageDir + symbolImageName);
+                if (symbolFile.exists()) {
+                    ImageIcon symbolIcon = new ImageIcon(symbolFile.getAbsolutePath());
+                    Image scaled = symbolIcon.getImage().getScaledInstance(symbolLabel.getWidth(), symbolLabel.getHeight(), Image.SCALE_SMOOTH);
+                    symbolLabel.setIcon(new ImageIcon(scaled));
+                } else {
+                    symbolLabel.setIcon(null);
+                }
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Failed to load party info: " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_partyTableMouseClicked
+
+    private void voteSearchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_voteSearchTextFieldKeyReleased
+        // TODO add your handling code here:
+        String keyword = voteSearchTextField.getText().trim();
+
+        try {
+            ArrayList<String[]> votes;
+
+            if (keyword.isEmpty()) {
+                votes = DAO.getCurrentVotes();
+            } else {
+                votes = DAO.searchCurrentVotes(keyword);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) allVotes.getModel();
+            model.setRowCount(0);
+
+            for (String[] row : votes) {
+                model.addRow(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error searching votes: " + e.getMessage());
+        }
+    }//GEN-LAST:event_voteSearchTextFieldKeyReleased
+
+    private void voterSearchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_voterSearchTextFieldKeyReleased
+        // TODO add your handling code here:
+        String keyword = voterSearchTextField.getText().trim();
+
+        try {
+            ArrayList<Voter> voters;
+
+            if (keyword.isEmpty()) {
+                voters = DAO.getTotalVoters();
+            } else {
+                voters = DAO.searchTotalVoters(keyword);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) voterTable.getModel();
+            model.setRowCount(0);
+
+            for (Voter v : voters) {
+                model.addRow(new Object[]{
+                    v.getCnic(),
+                    v.getName(),
+                    v.getAge(),
+                    v.getDivision().getId()
+                });
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading voters: " + e.getMessage());
+        }
+    }//GEN-LAST:event_voterSearchTextFieldKeyReleased
+
+    private void mnaSearchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mnaSearchTextFieldKeyReleased
+        // TODO add your handling code here:
+        String keyword = mnaSearchTextField.getText().trim();
+
+        try {
+            ArrayList<String[]> results;
+            if (keyword.isEmpty()) {
+                results = DAO.getMNAWinners();
+            } else {
+                results = DAO.searchMNAWinners(keyword);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) allMNAWinners.getModel();
+            model.setRowCount(0);
+
+            for (String[] row : results) {
+                model.addRow(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading MNA winners: " + e.getMessage());
+        }
+    }//GEN-LAST:event_mnaSearchTextFieldKeyReleased
+
+    private void mpaSearchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_mpaSearchTextFieldKeyReleased
+        // TODO add your handling code here:
+        String keyword = mpaSearchTextField.getText().trim();
+
+        try {
+            ArrayList<String[]> results;
+            if (keyword.isEmpty()) {
+                results = DAO.getMPAWinners();
+            } else {
+                results = DAO.searchMPAWinners(keyword);
+            }
+
+            DefaultTableModel model = (DefaultTableModel) allMPAWinners.getModel();
+            model.setRowCount(0);
+
+            for (String[] row : results) {
+                model.addRow(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading MPA winners: " + e.getMessage());
+        }
+    }//GEN-LAST:event_mpaSearchTextFieldKeyReleased
+
+    private void countrySearchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_countrySearchTextFieldKeyReleased
+        // TODO add your handling code here:
+        String keyword = countrySearchTextField.getText().trim();
+
+        try {
+            ArrayList<String[]> results;
+            if (keyword.isEmpty()) {
+                results = DAO.getCountryResult(); 
+            } else {
+                results = DAO.searchCountryResult(keyword);
+            }
+            DefaultTableModel model = (DefaultTableModel) fullResults.getModel();
+            model.setRowCount(0); 
+
+            for (String[] row : results) {
+                model.addRow(row);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading country results: " + e.getMessage());
+        }
+    }//GEN-LAST:event_countrySearchTextFieldKeyReleased
+
+    public static void startGUI() {
 
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -2260,26 +3004,39 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (UnsupportedLookAndFeelException ex) {
             System.err.println("Failed to initialize LaF");
         }
-        
+
         java.awt.EventQueue.invokeLater(() -> new MainFrame().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable allMNAWinners;
+    private javax.swing.JTable allMPAWinners;
+    private javax.swing.JTable allVotes;
     private javax.swing.JPanel countryResultsPanel;
-    private javax.swing.JTable country_results;
-    private javax.swing.JTable current_votes;
+    private javax.swing.JTextField countrySearchTextField;
+    private javax.swing.JTable dashboardMNAWinners;
+    private javax.swing.JTable dashboardMPAWinners;
     private javax.swing.JPanel dashboardPanel;
+    private javax.swing.JTable dashboardResults;
+    private javax.swing.JTable dashboardVotes;
+    private javax.swing.JTextField electionIdTextField;
+    private javax.swing.JTextField electionNameTextField;
     private javax.swing.JPanel electionPanel;
+    private javax.swing.JTextField electionSearch;
+    private javax.swing.JTable electionTable;
+    private javax.swing.JTextField endTimePicker;
     private javax.swing.JButton end_time;
+    private javax.swing.JLabel flagLabel;
+    private javax.swing.JTextField flagPathTextField;
+    private javax.swing.JTable fullResults;
     private javax.swing.JButton jButton1;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
+    private com.toedter.calendar.JDateChooser jDateChooserEnd;
+    private com.toedter.calendar.JDateChooser jDateChooserStart;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
@@ -2288,7 +3045,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
@@ -2320,7 +3076,6 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel49;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel50;
-    private javax.swing.JLabel jLabel51;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
@@ -2355,65 +3110,305 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
-    private javax.swing.JTable jTable10;
-    private javax.swing.JTable jTable11;
-    private javax.swing.JTable jTable12;
-    private javax.swing.JTable jTable6;
-    private javax.swing.JTable jTable7;
-    private javax.swing.JTable jTable8;
-    private javax.swing.JTable jTable9;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField10;
-    private javax.swing.JTextField jTextField11;
-    private javax.swing.JTextField jTextField12;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
     private javax.swing.JPanel mainPanel;
+    private javax.swing.JTextField mnaSearchTextField;
     private javax.swing.JPanel mnaWinnersPanel;
-    private javax.swing.JTable mna_winners;
+    private javax.swing.JTextField mpaSearchTextField;
     private javax.swing.JPanel mpaWinnersPanel;
-    private javax.swing.JTable mpa_winners;
     private javax.swing.JLabel nav;
     private javax.swing.JPanel navbarPanel;
+    private javax.swing.JTextField partyCodeTextField;
+    private javax.swing.JTextField partyNameTextField;
     private javax.swing.JPanel partyPanel;
+    private javax.swing.JTextField partySearchTextField;
+    private javax.swing.JTable partyTable;
     private javax.swing.JPanel settingsPanel;
+    private javax.swing.JTextField startTimePicker;
     private javax.swing.JButton start_time;
     private javax.swing.JButton start_time1;
     private javax.swing.JButton start_time2;
+    private javax.swing.JLabel symbolLabel;
+    private javax.swing.JTextField symbolPathTextField;
     private javax.swing.JButton testServerButton;
     public static javax.swing.JTextArea testServerLogs;
     private javax.swing.JScrollPane testServerLogsScroll;
     private javax.swing.JTextField testServerMessageField;
-    private javax.swing.JTextField time_end_field;
-    private javax.swing.JTextField time_start_field;
+    private javax.swing.JTextField voteSearchTextField;
+    private javax.swing.JTextField voterSearchTextField;
+    private javax.swing.JTable voterTable;
     private javax.swing.JPanel votersPanel;
     private javax.swing.JPanel votesPanel;
     // End of variables declaration//GEN-END:variables
-    
-    public String getImagePath(){
+
+    public String getImagePath() {
         return imagePath;
     }
-    
-    public void setImagePath (String path){
+
+    public void setImagePath(String path) {
         this.imagePath = path;
     }
-    
+
     void loadImages() {
         navIcon = new ImageIcon(getClass().getResource("/images/logo.png"));
         Image scaled = navIcon.getImage().getScaledInstance(150, 42, Image.SCALE_SMOOTH);
         nav.setIcon(new ImageIcon(scaled));
 
     }
-    
-    void changeCurrentThread (Thread thread){
-        
-        currentThread = thread;
+
+    private void startResultUpdater() {
+        int delayInMillis = 1 * 60 * 1000;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                SwingUtilities.invokeLater(() -> updateResultTables());
+                SwingUtilities.invokeLater(() -> updateVoteTables());
+                SwingUtilities.invokeLater(() -> updateMNATables());
+                SwingUtilities.invokeLater(() -> updateMPATables());
+            }
+        }, 0, delayInMillis);
+    }
+
+    private void clearElectionFields() {
+        electionIdTextField.setText("");
+        electionNameTextField.setText("");
+        jDateChooserStart.setDate(null);
+        jDateChooserEnd.setDate(null);
+        startTimePicker.setText("");
+        endTimePicker.setText("");
+    }
+
+    private void clearPartyFields() {
+        partyCodeTextField.setText("");
+        partyNameTextField.setText("");
+        flagPathTextField.setText("");
+        symbolPathTextField.setText("");
+        flagLabel.setIcon(null);
+        symbolLabel.setIcon(null);
+    }
+
+    private void loadElectionTable() {
+        try {
+            ArrayList<Election> elections = DAO.displayAllElections();
+
+            DefaultTableModel model = (DefaultTableModel) electionTable.getModel();
+
+            model.setRowCount(0);
+
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+            for (Election e : elections) {
+                model.addRow(new Object[]{
+                    e.getId(),
+                    e.getName(),
+                    e.getStartingTime().toLocalDate().format(dateFormatter),
+                    e.getStartingTime().toLocalTime().format(timeFormatter),
+                    e.getEndingTime().toLocalDate().format(dateFormatter),
+                    e.getEndingTime().toLocalTime().format(timeFormatter)
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error loading election data: " + e.getMessage());
+        }
+    }
+
+    private void loadPartyTableData() {
+        try {
+            ArrayList<Party> parties = DAO.displayAllParties();
+
+            DefaultTableModel model = (DefaultTableModel) partyTable.getModel();
+            model.setRowCount(0);
+
+            for (Party p : parties) {
+                String code = p.getCode();
+                String name = p.getName();
+                String flagPath = "src/main/resources/addedImages/" + p.getFlagImagePath();
+                String symbolPath = "src/main/resources/addedImages/" + p.getSymbolImagePath();
+
+                ImageIcon flagIcon = null;
+                File flagFile = new File(flagPath);
+                if (flagFile.exists()) {
+                    Image flagImage = new ImageIcon(flagFile.getAbsolutePath()).getImage()
+                            .getScaledInstance(70, 50, Image.SCALE_SMOOTH);
+                    flagIcon = new ImageIcon(flagImage);
+                }
+
+                ImageIcon symbolIcon = null;
+                File symbolFile = new File(symbolPath);
+                if (symbolFile.exists()) {
+                    Image symbolImage = new ImageIcon(symbolFile.getAbsolutePath()).getImage()
+                            .getScaledInstance(70, 50, Image.SCALE_SMOOTH);
+                    symbolIcon = new ImageIcon(symbolImage);
+                }
+                model.addRow(new Object[]{code, name, flagIcon, symbolIcon});
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Failed to load party data: " + e.getMessage());
+        }
+    }
+
+    private void loadingFunctions() {
+        partyTable.setModel(CustomTable.MODEL_IISS);
+        loadElectionTable();
+        loadPartyTableData();
+        startResultUpdater();
+        updateVoterTable();
+    }
+
+    private void updateResultTables() {
+        try {
+            ArrayList<String[]> results = DAO.getCountryResult();
+
+            DefaultTableModel model1 = (DefaultTableModel) dashboardResults.getModel();
+            model1.setRowCount(0);
+            DefaultTableModel model2 = (DefaultTableModel) fullResults.getModel();
+            model2.setRowCount(0);
+
+            for (String[] row : results) {
+
+                model1.addRow(new Object[]{
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[4]
+                });
+
+                model2.addRow(new Object[]{
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[4]
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to load results: " + e.getMessage());
+        }
+    }
+
+    private void updateVoteTables() {
+        try {
+            ArrayList<String[]> votes = DAO.getCurrentVotes();
+
+            DefaultTableModel model1 = (DefaultTableModel) dashboardVotes.getModel();
+            model1.setRowCount(0);
+
+            DefaultTableModel model2 = (DefaultTableModel) allVotes.getModel();
+            model2.setRowCount(0);
+
+            for (String[] row : votes) {
+
+                model1.addRow(new Object[]{
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[4]
+                });
+
+                model2.addRow(new Object[]{
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3],
+                    row[4],
+                    row[5]
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to load vote data: " + e.getMessage());
+        }
+    }
+
+    private void updateMNATables() {
+        try {
+            ArrayList<String[]> winners = DAO.getMNAWinners();
+
+            DefaultTableModel model1 = (DefaultTableModel) dashboardMNAWinners.getModel();
+            model1.setRowCount(0);
+
+            DefaultTableModel model2 = (DefaultTableModel) allMNAWinners.getModel();
+            model2.setRowCount(0);
+
+            for (String[] row : winners) {
+                model1.addRow(new Object[]{
+                    row[0],
+                    row[1],
+                    row[2]
+                });
+
+                model2.addRow(new Object[]{
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3]
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to load MNA winners: " + e.getMessage());
+        }
+    }
+
+    private void updateMPATables() {
+        try {
+            ArrayList<String[]> winners = DAO.getMPAWinners();
+
+            DefaultTableModel model1 = (DefaultTableModel) dashboardMPAWinners.getModel();
+            model1.setRowCount(0);
+
+            DefaultTableModel model2 = (DefaultTableModel) allMPAWinners.getModel();
+            model2.setRowCount(0);
+
+            for (String[] row : winners) {
+                model1.addRow(new Object[]{
+                    row[0],
+                    row[1],
+                    row[2]
+                });
+
+                model2.addRow(new Object[]{
+                    row[0],
+                    row[1],
+                    row[2],
+                    row[3]
+                });
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to load MPA winners: " + e.getMessage());
+        }
+    }
+
+    private void updateVoterTable() {
+        try {
+            ArrayList<Voter> voters = DAO.getTotalVoters();
+
+            DefaultTableModel model = (DefaultTableModel) voterTable.getModel();
+            model.setRowCount(0);
+
+            for (Voter v : voters) {
+                model.addRow(new Object[]{
+                    v.getCnic(),
+                    v.getName(),
+                    v.getAge(),
+                    v.getDivision().getId()
+                });
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Failed to load voter data: " + e.getMessage());
+        }
     }
 
 }

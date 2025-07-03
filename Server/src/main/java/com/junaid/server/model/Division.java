@@ -3,13 +3,13 @@ package com.junaid.server.model;
 // @author junaidxyz
 
 public class Division {
-    private final int id;
+    private final String id;
 
-    public Division(int id) {
+    public Division(String id) {
         this.id = id;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 }
