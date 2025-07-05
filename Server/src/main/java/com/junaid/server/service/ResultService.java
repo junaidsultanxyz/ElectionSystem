@@ -2,6 +2,6 @@ package com.junaid.server.service;
 
 // @author junaidxyz
 
-public class LoginService {
-
+public class ResultService {
+    
 }

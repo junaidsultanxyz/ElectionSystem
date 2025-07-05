@@ -34,18 +34,7 @@ class ClientHandler implements Runnable {
             String response;
             while (isConnected && (response = in.readLine()) != null) {
                 System.out.println("[" + clientId + "] : " + response);
-                MainFrame.testServerLogs.append(in.readLine());
-                
-//                java.awt.EventQueue.invokeLater(() -> {
-//                    try {
-//                        
-//                    }
-//                    catch (IOException ex) {
-//                        System.out.println(ex.getMessage());
-//                    }
-//                });
-
-
+                MainFrame.testServerLogs.append(response);
             }
         }
         catch (IOException e) {

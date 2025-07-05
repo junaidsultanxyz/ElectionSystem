@@ -4,8 +4,10 @@ use election_system;
 CREATE TABLE election (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100) NOT NULL,
-    starting_time TIMESTAMP NOT NULL,
-    ending_time TIMESTAMP NOT NULL,
+    starting_time TIME NOT NULL,
+    ending_time TIME NOT NULL,
+    starting_date DATE NOT NULL,
+    ending_date DATE NOT NULL
 );
 
 CREATE TABLE voter (
@@ -13,6 +15,7 @@ CREATE TABLE voter (
     name varchar(50),
     age int NOT NULL,
     division_id INT NOT NULL,
+    FOREIGN KEY (division_id) REFERENCES division(id),
     password varchar(50) NOT NULL
 );
 
@@ -30,7 +33,7 @@ CREATE TABLE city (
 
 CREATE TABLE division (
     id INT PRIMARY KEY,
-    city_id VARCHAR(5),
+    city_id INT NOT NULL,
     FOREIGN KEY (city_id) REFERENCES city(id)
 );
 
