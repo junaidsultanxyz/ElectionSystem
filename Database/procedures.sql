@@ -1,5 +1,10 @@
 use election_system;
 
+
+-- ************************************************************
+-- ELECTION
+-- ************************************************************
+
 DELIMITER $$
 CREATE PROCEDURE insert_election (
     IN p_name VARCHAR(100),
@@ -37,7 +42,7 @@ BEGIN
         ending_time = p_ending_time
     WHERE id = p_id;
 END$$
-DELIMITER ;
+DELIMITER ; 
 
 
 
@@ -67,6 +72,9 @@ END$$
 DELIMITER ;
 
 
+-- ************************************************************
+-- PARTY
+-- ************************************************************
 
 DELIMITER $$
 CREATE PROCEDURE insert_party (
@@ -132,6 +140,9 @@ END$$
 DELIMITER ;
 
 
+-- ************************************************************
+-- RESULTS
+-- ************************************************************
 
 DELIMITER $$
 CREATE PROCEDURE country_result()
@@ -152,7 +163,6 @@ BEGIN
     ORDER BY prov.name, p.name, v.vote_type;
 END$$
 DELIMITER ;
-
 
 
 DELIMITER $$
@@ -268,6 +278,9 @@ END$$
 DELIMITER ;
 
 
+-- ************************************************************
+-- VOTING
+-- ************************************************************
 
 DELIMITER $$
 CREATE PROCEDURE cast_vote (
@@ -284,9 +297,63 @@ END$$
 DELIMITER ;
 
 
+-- ************************************************************
+-- AUTHENTICATION
+-- ************************************************************
+
+DELIMITER $$
+CREATE PROCEDURE validate_voter_login (
+    IN p_cnic VARCHAR(13),
+    IN p_password VARCHAR(50),
+    OUT p_found BOOLEAN,
+    OUT p_name VARCHAR(50),
+    OUT p_division_id INT
+)
+BEGIN
+    DECLARE v_count INT;
+
+    SELECT COUNT(*) INTO v_count
+    FROM voter
+    WHERE cnic = p_cnic AND password = p_password;
+
+    IF v_count = 1 THEN
+        SET p_found = TRUE;
+
+        SELECT name, division_id
+        INTO p_name, p_division_id
+        FROM voter
+        WHERE cnic = p_cnic;
+    ELSE
+        SET p_found = FALSE;
+        SET p_name = NULL;
+        SET p_division_id = NULL;
+    END IF;
+END$$
+DELIMITER ;
+
+
+-- ************************************************************
+-- VOTER
+-- ************************************************************
 
 DELIMITER $$
 CREATE PROCEDURE getTotalVoters()
+BEGIN
+    SELECT 
+        vr.cnic,
+        vr.name,
+        vr.age,
+        vr.division_id
+    FROM voter vr
+    JOIN division d ON vr.division_id = d.id
+    JOIN city c ON d.city_id = c.id
+    JOIN province p ON c.province_code = p.code;
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE PROCEDURE search_total_voters()
 BEGIN
     SELECT 
         vr.cnic,
@@ -296,10 +363,29 @@ BEGIN
     FROM voter vr
     JOIN division d ON vr.division_id = d.id
     JOIN city c ON d.city_id = c.id
-    JOIN province p ON c.province_code = p.code;
+    JOIN province p ON c.province_code = p.code
+    WHERE
+        vr.cnic LIKE CONCAT('%', keyword, '%') OR
+        vr.name LIKE CONCAT('%', keyword, '%') OR
+        CAST(vr.age AS CHAR) LIKE CONCAT('%', keyword, '%') OR
+        CONCAT(p.code, '-', vr.division_id) LIKE CONCAT('%', keyword, '%');
 END$$
 DELIMITER ;
 
+-- DELIMITER $$
+-- CREATE PROCEDURE getTotalVotersWithDivision()
+-- BEGIN
+--     SELECT 
+--         vr.cnic,
+--         vr.name,
+--         vr.age,
+--         CONCAT(p.code, '-', vr.division_id) AS division
+--     FROM voter vr
+--     JOIN division d ON vr.division_id = d.id
+--     JOIN city c ON d.city_id = c.id
+--     JOIN province p ON c.province_code = p.code;
+-- END$$
+-- DELIMITER ;
 
 
 DELIMITER $$
@@ -316,6 +402,9 @@ END$$
 DELIMITER ;
 
 
+-- ************************************************************
+-- RESULTS
+-- ************************************************************
 
 DELIMITER $$
 CREATE PROCEDURE getMnaVoteDetails(IN v_cnic VARCHAR(13))

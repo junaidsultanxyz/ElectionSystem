@@ -13,6 +13,13 @@ public class City {
         this.name = name;
     }
 
+    public City(String name, ArrayList<Division> divisions) {
+        this.name = name;
+        this.divisions = divisions;
+    }
+    
+    
+
     public String getName() {
         return name;
     }

@@ -2,7 +2,10 @@ package com.junaid.server.model;
 
 // @author junaidxyz
 
-public class Party {
+import java.io.Serializable;
+
+
+public class Party implements Serializable{
     private String code;
     private String name;
     private String flagImagePath;

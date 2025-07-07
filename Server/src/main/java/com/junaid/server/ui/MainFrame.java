@@ -3,11 +3,14 @@ package com.junaid.server.ui;
 import java.awt.CardLayout;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.junaid.server.Main;
+import com.junaid.server.data.DataStore;
 import com.junaid.server.model.Election;
 import com.junaid.server.model.Party;
+import com.junaid.server.model.Province;
 import com.junaid.server.model.Voter;
 import com.junaid.server.repository.DAO;
 import com.junaid.server.ui.model.CustomTable;
+import com.junaid.server.util.ImagePickerUtil;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -436,7 +439,7 @@ public class MainFrame extends javax.swing.JFrame {
                                         partyNameTextField = new javax.swing.JTextField();
                                         jLabel47 = new javax.swing.JLabel();
                                         flagPathTextField = new javax.swing.JTextField();
-                                        start_time1 = new javax.swing.JButton();
+                                        party_flag_picker_button = new javax.swing.JButton();
                                         jPanel17 = new javax.swing.JPanel(){ @Override
                                             protected void paintComponent(Graphics g) {
                                                 super.paintComponent(g);
@@ -513,7 +516,7 @@ public class MainFrame extends javax.swing.JFrame {
                                                     flagLabel = new javax.swing.JLabel();
                                                     symbolPathTextField = new javax.swing.JTextField();
                                                     jLabel50 = new javax.swing.JLabel();
-                                                    start_time2 = new javax.swing.JButton();
+                                                    party_symbol_picker_button = new javax.swing.JButton();
                                                     jPanel13 = new javax.swing.JPanel();
                                                     symbolLabel = new javax.swing.JLabel();
                                                     votersPanel = new javax.swing.JPanel(){
@@ -1569,18 +1572,18 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     flagPathTextField.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
                                                                     partyPanel.add(flagPathTextField, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 200, 330, 35));
 
-                                                                    start_time1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish.png"))); // NOI18N
-                                                                    start_time1.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                    party_flag_picker_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish.png"))); // NOI18N
+                                                                    party_flag_picker_button.addMouseListener(new java.awt.event.MouseAdapter() {
                                                                         public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                                                            start_time1MouseClicked(evt);
+                                                                            party_flag_picker_buttonMouseClicked(evt);
                                                                         }
                                                                     });
-                                                                    start_time1.addActionListener(new java.awt.event.ActionListener() {
+                                                                    party_flag_picker_button.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            start_time1ActionPerformed(evt);
+                                                                            party_flag_picker_buttonActionPerformed(evt);
                                                                         }
                                                                     });
-                                                                    partyPanel.add(start_time1, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 200, 26, 35));
+                                                                    partyPanel.add(party_flag_picker_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 200, 26, 35));
 
                                                                     jPanel17.setBackground(new java.awt.Color(31, 147, 93));
                                                                     jPanel17.setForeground(new java.awt.Color(31, 147, 93));
@@ -1705,18 +1708,18 @@ public class MainFrame extends javax.swing.JFrame {
                                                                     jLabel50.setText("Party Symbol :");
                                                                     partyPanel.add(jLabel50, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 350, -1, 30));
 
-                                                                    start_time2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish.png"))); // NOI18N
-                                                                    start_time2.addMouseListener(new java.awt.event.MouseAdapter() {
+                                                                    party_symbol_picker_button.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/finish.png"))); // NOI18N
+                                                                    party_symbol_picker_button.addMouseListener(new java.awt.event.MouseAdapter() {
                                                                         public void mouseClicked(java.awt.event.MouseEvent evt) {
-                                                                            start_time2MouseClicked(evt);
+                                                                            party_symbol_picker_buttonMouseClicked(evt);
                                                                         }
                                                                     });
-                                                                    start_time2.addActionListener(new java.awt.event.ActionListener() {
+                                                                    party_symbol_picker_button.addActionListener(new java.awt.event.ActionListener() {
                                                                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                                                            start_time2ActionPerformed(evt);
+                                                                            party_symbol_picker_buttonActionPerformed(evt);
                                                                         }
                                                                     });
-                                                                    partyPanel.add(start_time2, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 26, 35));
+                                                                    partyPanel.add(party_symbol_picker_button, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 350, 26, 35));
 
                                                                     jPanel13.setBackground(new java.awt.Color(255, 255, 255));
                                                                     jPanel13.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(31, 147, 93), 1, true));
@@ -2306,105 +2309,125 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_partySearchTextFieldActionPerformed
 
-    private void start_time1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_start_time1MouseClicked
+    private void party_flag_picker_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_party_flag_picker_buttonMouseClicked
+            // TODO add your handling code here:
+    }//GEN-LAST:event_party_flag_picker_buttonMouseClicked
+
+    private void party_flag_picker_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_party_flag_picker_buttonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_start_time1MouseClicked
+//        JFileChooser fileChooser = new JFileChooser();
+//        fileChooser.setDialogTitle("Select an Image");
+//        fileChooser.setAcceptAllFileFilterUsed(false);
+//        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif"));
+//
+//        int result = fileChooser.showOpenDialog(this);
+//
+//        if (result == JFileChooser.APPROVE_OPTION) {
+//            File selectedFile = fileChooser.getSelectedFile();
+//            String fileName = selectedFile.getName();
+//
+//            File imageDir = new File("src/main/resources/addedImages");
+//            if (!imageDir.exists()) {
+//                imageDir.mkdirs();
+//            }
+//
+//            if (previousImageName != null) {
+//                File oldImage = new File(imageDir, previousImageName);
+//                if (oldImage.exists()) {
+//                    if (!fileName.equals(previousImageName)) {
+//                        oldImage.delete();
+//                    }
+//                }
+//            }
+//
+//            File destination = new File(imageDir, fileName);
+//
+//            try {
+//                Files.copy(selectedFile.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//
+//                flagPathTextField.setText(fileName);
+//                previousImageName = fileName;
+//
+//                ImageIcon icon = new ImageIcon(destination.getAbsolutePath());
+//                Image img = icon.getImage().getScaledInstance(flagLabel.getWidth(), flagLabel.getHeight(), Image.SCALE_SMOOTH);
+//                flagLabel.setIcon(new ImageIcon(img));
+//
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//                JOptionPane.showMessageDialog(this, "Failed to copy image: " + ex.getMessage());
+//            }
+//        }
+        
+        String flagPath = ImagePickerUtil.pickAndSaveFlag(party_flag_picker_button, partyCodeTextField.getText());
+        
+        System.out.println("flag saved!");
+        System.out.println(flagPath);
+        
+        ImageIcon icon = new ImageIcon(ImagePickerUtil.baseImageDir + flagPath);
+        Image img = icon.getImage().getScaledInstance(flagLabel.getWidth(), flagLabel.getHeight(), Image.SCALE_SMOOTH);
 
-    private void start_time1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_start_time1ActionPerformed
+        flagLabel.setIcon(new ImageIcon(img));
+        flagPathTextField.setText(flagPath);
+    }//GEN-LAST:event_party_flag_picker_buttonActionPerformed
+
+    private void party_symbol_picker_buttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_party_symbol_picker_buttonMouseClicked
         // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Select an Image");
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif"));
+    }//GEN-LAST:event_party_symbol_picker_buttonMouseClicked
 
-        int result = fileChooser.showOpenDialog(this);
+    private void party_symbol_picker_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_party_symbol_picker_buttonActionPerformed
+//        // TODO add your handling code here:
+//        JFileChooser fileChooser = new JFileChooser();
+//        fileChooser.setDialogTitle("Select a Symbol Image");
+//        fileChooser.setAcceptAllFileFilterUsed(false);
+//        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif"));
+//
+//        int result = fileChooser.showOpenDialog(this);
+//
+//        if (result == JFileChooser.APPROVE_OPTION) {
+//            File selectedFile = fileChooser.getSelectedFile();
+//            String fileName = selectedFile.getName();
+//
+//            File imageDir = new File("src/main/resources/addedImages");
+//            if (!imageDir.exists()) {
+//                imageDir.mkdirs();
+//            }
+//
+//            if (previousSymbolName != null) {
+//                File oldSymbol = new File(imageDir, previousSymbolName);
+//                if (oldSymbol.exists() && !fileName.equals(previousSymbolName)) {
+//                    oldSymbol.delete();
+//                }
+//            }
+//
+//            File destination = new File(imageDir, fileName);
+//
+//            try {
+//                Files.copy(selectedFile.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
+//
+//                symbolPathTextField.setText(fileName);
+//
+//                previousSymbolName = fileName;
+//
+//                ImageIcon icon = new ImageIcon(destination.getAbsolutePath());
+//                Image img = icon.getImage().getScaledInstance(symbolLabel.getWidth(), symbolLabel.getHeight(), Image.SCALE_SMOOTH);
+//                symbolLabel.setIcon(new ImageIcon(img));
+//
+//            } catch (IOException ex) {
+//                ex.printStackTrace();
+//                JOptionPane.showMessageDialog(this, "Failed to copy symbol image: " + ex.getMessage());
+//            }
+//        }
+        String symbolPath = ImagePickerUtil.pickAndSaveSymbol(party_symbol_picker_button, partyCodeTextField.getText());
+        
+        System.out.println("symbol saved!");
+        System.out.println(symbolPath);
+        
+        ImageIcon icon = new ImageIcon(ImagePickerUtil.baseImageDir + symbolPath);
+        Image img = icon.getImage().getScaledInstance(flagLabel.getWidth(), flagLabel.getHeight(), Image.SCALE_SMOOTH);
 
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            String fileName = selectedFile.getName();
-
-            File imageDir = new File("src/main/resources/addedImages");
-            if (!imageDir.exists()) {
-                imageDir.mkdirs();
-            }
-
-            if (previousImageName != null) {
-                File oldImage = new File(imageDir, previousImageName);
-                if (oldImage.exists()) {
-                    if (!fileName.equals(previousImageName)) {
-                        oldImage.delete();
-                    }
-                }
-            }
-
-            File destination = new File(imageDir, fileName);
-
-            try {
-                Files.copy(selectedFile.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-                flagPathTextField.setText(fileName);
-                previousImageName = fileName;
-
-                ImageIcon icon = new ImageIcon(destination.getAbsolutePath());
-                Image img = icon.getImage().getScaledInstance(flagLabel.getWidth(), flagLabel.getHeight(), Image.SCALE_SMOOTH);
-                flagLabel.setIcon(new ImageIcon(img));
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Failed to copy image: " + ex.getMessage());
-            }
-        }
-    }//GEN-LAST:event_start_time1ActionPerformed
-
-    private void start_time2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_start_time2MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_start_time2MouseClicked
-
-    private void start_time2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_start_time2ActionPerformed
-        // TODO add your handling code here:
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Select a Symbol Image");
-        fileChooser.setAcceptAllFileFilterUsed(false);
-        fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Image Files", "jpg", "jpeg", "png", "gif"));
-
-        int result = fileChooser.showOpenDialog(this);
-
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            String fileName = selectedFile.getName();
-
-            File imageDir = new File("src/main/resources/addedImages");
-            if (!imageDir.exists()) {
-                imageDir.mkdirs();
-            }
-
-            if (previousSymbolName != null) {
-                File oldSymbol = new File(imageDir, previousSymbolName);
-                if (oldSymbol.exists() && !fileName.equals(previousSymbolName)) {
-                    oldSymbol.delete();
-                }
-            }
-
-            File destination = new File(imageDir, fileName);
-
-            try {
-                Files.copy(selectedFile.toPath(), destination.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-                symbolPathTextField.setText(fileName);
-
-                previousSymbolName = fileName;
-
-                ImageIcon icon = new ImageIcon(destination.getAbsolutePath());
-                Image img = icon.getImage().getScaledInstance(symbolLabel.getWidth(), symbolLabel.getHeight(), Image.SCALE_SMOOTH);
-                symbolLabel.setIcon(new ImageIcon(img));
-
-            } catch (IOException ex) {
-                ex.printStackTrace();
-                JOptionPane.showMessageDialog(this, "Failed to copy symbol image: " + ex.getMessage());
-            }
-        }
-
-    }//GEN-LAST:event_start_time2ActionPerformed
+        symbolLabel.setIcon(new ImageIcon(img));
+        symbolPathTextField.setText(symbolPath);
+    }//GEN-LAST:event_party_symbol_picker_buttonActionPerformed
 
     private void jLabel3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel3MouseClicked
         // TODO add your handling code here:
@@ -2777,8 +2800,8 @@ public class MainFrame extends javax.swing.JFrame {
             for (Party p : parties) {
                 String code = p.getCode();
                 String name = p.getName();
-                String flagPath = "src/main/resources/addedImages/" + p.getFlagImagePath();
-                String symbolPath = "src/main/resources/addedImages/" + p.getSymbolImagePath();
+                String flagPath = ImagePickerUtil.baseImageDir + p.getFlagImagePath();
+                String symbolPath = ImagePickerUtil.baseImageDir + p.getSymbolImagePath();
 
                 ImageIcon flagIcon = null;
                 File flagFile = new File(flagPath);
@@ -2829,22 +2852,18 @@ public class MainFrame extends javax.swing.JFrame {
                 flagPathTextField.setText(flagImageName);
                 symbolPathTextField.setText(symbolImageName);
 
-                String imageDir = "src/main/resources/addedImages/";
-
-                File flagFile = new File(imageDir + flagImageName);
+                File flagFile = new File(ImagePickerUtil.baseImageDir + flagImageName);
                 if (flagFile.exists()) {
-                    ImageIcon flagIcon = new ImageIcon(flagFile.getAbsolutePath());
-                    Image scaled = flagIcon.getImage().getScaledInstance(flagLabel.getWidth(), flagLabel.getHeight(), Image.SCALE_SMOOTH);
-                    flagLabel.setIcon(new ImageIcon(scaled));
+                    Image flagImage = new ImageIcon(ImagePickerUtil.baseImageDir + flagImageName).getImage().getScaledInstance(70, 50, Image.SCALE_SMOOTH);
+                    flagLabel.setIcon(new ImageIcon(flagImage));
                 } else {
                     flagLabel.setIcon(null);
                 }
 
-                File symbolFile = new File(imageDir + symbolImageName);
+                File symbolFile = new File(ImagePickerUtil.baseImageDir + symbolImageName);
                 if (symbolFile.exists()) {
-                    ImageIcon symbolIcon = new ImageIcon(symbolFile.getAbsolutePath());
-                    Image scaled = symbolIcon.getImage().getScaledInstance(symbolLabel.getWidth(), symbolLabel.getHeight(), Image.SCALE_SMOOTH);
-                    symbolLabel.setIcon(new ImageIcon(scaled));
+                    Image symbolImage = new ImageIcon(ImagePickerUtil.baseImageDir + symbolImageName).getImage().getScaledInstance(70, 50, Image.SCALE_SMOOTH);
+                    symbolLabel.setIcon(new ImageIcon(symbolImage));
                 } else {
                     symbolLabel.setIcon(null);
                 }
@@ -2886,30 +2905,26 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         String keyword = voterSearchTextField.getText().trim();
 
-        try {
-            ArrayList<Voter> voters;
-
-            if (keyword.isEmpty()) {
-                voters = DAO.getTotalVoters();
-            } else {
-                voters = DAO.searchTotalVoters(keyword);
-            }
-
-            DefaultTableModel model = (DefaultTableModel) voterTable.getModel();
-            model.setRowCount(0);
-
-            for (Voter v : voters) {
-                model.addRow(new Object[]{
-                    v.getCnic(),
-                    v.getName(),
-                    v.getAge(),
-                    v.getDivision().getId()
-                });
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error loading voters: " + e.getMessage());
+        ArrayList<Voter> voters;//            e.printStackTrace();
+//            JOptionPane.showMessageDialog(this, "Error loading voters: " + e.getMessage());
+        if (keyword.isEmpty()) {
+            voters = DataStore.Voters.getAllVoters();
+        } else {
+            voters = DataStore.Voters.searchVoters(keyword);
+        }
+        
+        DefaultTableModel model = (DefaultTableModel) voterTable.getModel();
+        model.setRowCount(0);
+        
+        for (Voter v : voters) {
+            int div_id = v.getDivision();
+            Province province = (Province) DataStore.Provinces.getDivisionInfo(div_id)[0];
+            model.addRow(new Object[]{
+                v.getCnic(),
+                v.getName(),
+                v.getAge(),
+                province.getCode() + "-" + div_id
+            });
         }
     }//GEN-LAST:event_voterSearchTextFieldKeyReleased
 
@@ -3122,11 +3137,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel partyPanel;
     private javax.swing.JTextField partySearchTextField;
     private javax.swing.JTable partyTable;
+    private javax.swing.JButton party_flag_picker_button;
+    private javax.swing.JButton party_symbol_picker_button;
     private javax.swing.JPanel settingsPanel;
     private javax.swing.JTextField startTimePicker;
     private javax.swing.JButton start_time;
-    private javax.swing.JButton start_time1;
-    private javax.swing.JButton start_time2;
     private javax.swing.JLabel symbolLabel;
     private javax.swing.JTextField symbolPathTextField;
     private javax.swing.JButton testServerButton;
@@ -3225,22 +3240,20 @@ public class MainFrame extends javax.swing.JFrame {
             for (Party p : parties) {
                 String code = p.getCode();
                 String name = p.getName();
-                String flagPath = "src/main/resources/addedImages/" + p.getFlagImagePath();
-                String symbolPath = "src/main/resources/addedImages/" + p.getSymbolImagePath();
+                String flagPath = ImagePickerUtil.baseImageDir + p.getFlagImagePath();
+                String symbolPath = ImagePickerUtil.baseImageDir + p.getSymbolImagePath();
 
                 ImageIcon flagIcon = null;
                 File flagFile = new File(flagPath);
                 if (flagFile.exists()) {
-                    Image flagImage = new ImageIcon(flagFile.getAbsolutePath()).getImage()
-                            .getScaledInstance(70, 50, Image.SCALE_SMOOTH);
+                    Image flagImage = new ImageIcon(flagPath).getImage().getScaledInstance(70, 50, Image.SCALE_SMOOTH);
                     flagIcon = new ImageIcon(flagImage);
                 }
 
                 ImageIcon symbolIcon = null;
                 File symbolFile = new File(symbolPath);
                 if (symbolFile.exists()) {
-                    Image symbolImage = new ImageIcon(symbolFile.getAbsolutePath()).getImage()
-                            .getScaledInstance(70, 50, Image.SCALE_SMOOTH);
+                    Image symbolImage = new ImageIcon(symbolPath).getImage().getScaledInstance(70, 50, Image.SCALE_SMOOTH);
                     symbolIcon = new ImageIcon(symbolImage);
                 }
                 model.addRow(new Object[]{code, name, flagIcon, symbolIcon});
@@ -3397,16 +3410,19 @@ public class MainFrame extends javax.swing.JFrame {
             model.setRowCount(0);
 
             for (Voter v : voters) {
+                int div_id = v.getDivision();
+                Province province = (Province) DataStore.Provinces.getDivisionInfo(div_id)[0];
+                
                 model.addRow(new Object[]{
                     v.getCnic(),
                     v.getName(),
                     v.getAge(),
-                    v.getDivision().getId()
+                    province.getCode() + "-" + div_id
                 });
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        }
+        catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Failed to load voter data: " + e.getMessage());
         }
     }

@@ -1,27 +1,41 @@
 package com.junaid.client.controller;
 
+import com.junaid.client.model.Voter;
+import com.junaid.client.service.LoginRequest;
+import static com.junaid.client.service.LoginRequest.LoginStatus.*;
+import com.junaid.client.ui.MainFrame;
+import com.junaid.client.ui.model.OptionPane;
 import java.io.*;
 import java.net.*;
 import javax.swing.JOptionPane;
 
 public class Client {
     private Socket clientSocket;
+    
     private PrintWriter out;
     private BufferedReader in;
+    
+    private ObjectInputStream objIn;
+    private ObjectOutputStream objOut;
+    
     private boolean isConnected = false;
     private Thread messageListener;
     
+    private static Voter currentUser;
     
     public boolean startConnection(String ip, int port) {
         try {
             clientSocket = new Socket(ip, port);
+            
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            objOut = new ObjectOutputStream(clientSocket.getOutputStream());
+            objIn = new ObjectInputStream(clientSocket.getInputStream());
+            
             isConnected = true;
             
             System.out.println("[CLIENT] : Connected to server at " + ip + ":" + port);
             
-            // Start the message listener thread
             startMessageListener();
             
             return true;
@@ -36,15 +50,46 @@ public class Client {
             try {
                 String response;
                 while (isConnected && (response = in.readLine()) != null) {
-                    System.out.println("[Server] : " + response);
+                    String[] response_chunk = response.split(",");
+                    System.out.println(response);
                     
-                    final String msg = response; // make effectively final
+                    if (response_chunk[0].equals("LOGIN")){
+                        System.out.println("inside if of client response");
+                        
+                        if (response_chunk[1].equals("REJECTED")){
+                            LoginRequest.setStatus(INVALID);
+                            System.out.println("login rejected at client");
+                        }
+                        
+                        if (response_chunk[1].equals("APPROVED")){
+                            LoginRequest.setStatus(APPROVED);
+                            System.out.println("login accepted at client");
+                            
+                            Object userObj = objIn.readObject();
+                            if (userObj instanceof Voter voter){
+                                currentUser = voter;
+                                MainFrame.login();
+                            }
+                            else {
+                                OptionPane.showMessage("Error while getting credentials");
+                            }
+                        }
+                    }
                     
+                    if (response_chunk[0].equalsIgnoreCase("VOTING")){
+                        
+                    }
+                    
+                    if (response_chunk[0].equalsIgnoreCase("RESULT")){
+                        
+                    }
                 }
             } catch (IOException e) {
                 if (isConnected) {
                     System.err.println("[CLIENT] : Error reading from server: " + e.getMessage());
                 }
+            } catch (ClassNotFoundException ex) {
+                System.getLogger(Client.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
         });
         messageListener.start();
@@ -62,22 +107,14 @@ public class Client {
         isConnected = false;
         
         try {
-            if (messageListener != null && messageListener.isAlive()) {
-                messageListener.interrupt();
-            }
-            
-            if (out != null) {
-                out.close();
-            }
-            if (in != null) {
-                in.close();
-            }
-            if (clientSocket != null) {
-                clientSocket.close();
-            }
-            
+            if (in != null) in.close();
+            if (out != null) out.close();
+            if (objIn != null) objIn.close();
+            if (objOut != null) objOut.close();
+            if (clientSocket != null) clientSocket.close();
             System.out.println("[CLIENT] : Disconnected from server");
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.err.println("[CLIENT] : Error closing connection: " + e.getMessage());
         }
     }
@@ -86,6 +123,9 @@ public class Client {
         return isConnected && clientSocket != null && !clientSocket.isClosed();
     }
     
+    public static Voter getCurrentUser(){
+        return currentUser;
+    }
 }
 
 

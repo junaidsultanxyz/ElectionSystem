@@ -8,7 +8,10 @@ import com.junaid.client.ui.model.CustomTable;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.junaid.client.Main;
+import com.junaid.client.controller.Client;
 import com.junaid.client.service.LoginRequest;
+import static com.junaid.client.service.LoginRequest.LoginStatus.*;
+import com.junaid.client.ui.model.OptionPane;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -43,7 +46,7 @@ public final class MainFrame extends javax.swing.JFrame {
     
     
     
-    CardLayout cardlayout;
+    static CardLayout cardlayout;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(MainFrame.class.getName());
 
@@ -1327,14 +1330,9 @@ public final class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_buttonActionPerformed
-       LoginRequest loginRequest = new LoginRequest(
-               login_cnic_field.getText(),
-               login_pass_field.getText()
-       );
        
-       Main.getClient().sendMessage("[LOGIN REQUEST] : " + loginRequest.getCnic() + " , " + loginRequest.getPassword());
-       
-        cardlayout.show(mainPanel, "votingPanel");
+        Main.getClient().sendMessage(LoginRequest.sendRequest(login_cnic_field.getText(), login_pass_field.getText()));
+        
     }//GEN-LAST:event_login_buttonActionPerformed
 
     
@@ -1408,7 +1406,7 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTextField login_cnic_field;
     private javax.swing.JLabel login_image;
     private javax.swing.JPasswordField login_pass_field;
-    private javax.swing.JPanel mainPanel;
+    private static javax.swing.JPanel mainPanel;
     private javax.swing.JLabel nav_home;
     private javax.swing.JLabel nav_icon;
     private javax.swing.JLabel nav_setting;
@@ -1527,5 +1525,14 @@ public final class MainFrame extends javax.swing.JFrame {
     
     public void setTestMessageResponse(String msg) {
         testServerResponse.setText(msg);
+    }
+    
+    public static void login(){
+        if (LoginRequest.getStatus() == APPROVED){
+            OptionPane.showMessage("login success: " + Client.getCurrentUser().getCnic() + "," + Client.getCurrentUser().getName() + "," + Client.getCurrentUser().getDivision());
+            cardlayout.show(mainPanel, "votingPanel");
+        }
+        else
+            OptionPane.showMessage("Invalid User Credentials, please try again");
     }
 }

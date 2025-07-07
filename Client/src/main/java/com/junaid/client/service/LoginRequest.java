@@ -1,6 +1,7 @@
 
 package com.junaid.client.service;
 
+import static com.junaid.client.service.LoginRequest.LoginStatus.*;
 import java.io.Serializable;
 
 /**
@@ -8,28 +9,37 @@ import java.io.Serializable;
  * @author junaidxyz
  */
 public class LoginRequest implements Serializable{
-    private final String cnic;
-    private final String password;
-    private boolean status;
+    static String cnic;
+    static String password;
+    static LoginStatus status;
 
-    public LoginRequest(String cnic, String password) {
-        this.cnic = cnic;
-        this.password = password;
+    public static String sendRequest(String cnic, String password) {
+        LoginRequest.cnic = cnic;
+        LoginRequest.password = password;
+        status = PENDING;
+        
+        return "LOGIN," + cnic + "," + password;
     }
 
-    public String getCnic() {
+    public static String getCnic() {
         return cnic;
     }
 
-    public String getPassword() {
+    public static String getPassword() {
         return password;
     }
 
-    public boolean getStatus() {
+    public static LoginStatus getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public static void setStatus(LoginStatus status) {
+        LoginRequest.status = status;
+    }
+    
+    public enum LoginStatus {
+        INVALID,
+        PENDING,
+        APPROVED
     }
 }

@@ -2,10 +2,11 @@ package com.junaid.server.model;
 
 // @author junaidxyz
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 
-public class Vote {
+public class Vote implements Serializable{
     private int id;
     private String voterCNIC;
     private String partyCode;

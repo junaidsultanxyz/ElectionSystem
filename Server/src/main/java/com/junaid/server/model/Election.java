@@ -2,11 +2,12 @@ package com.junaid.server.model;
 
 // @author junaidxyz
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 
-public class Election {
+public class Election implements Serializable{
     private int id;
     private String name;
     private LocalDateTime startingTime;

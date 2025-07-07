@@ -1,23 +1,30 @@
-package com.junaid.server.model;
+package com.junaid.client.model;
 
 // @author junaidxyz
 
-public class Voter {
+import java.io.Serializable;
+
+
+public class Voter implements Serializable{
     private String cnic;
     private String name;
     private int age;
-    private Division division;
+    private int division;
     private String password;
 
-    public Voter(String cnic, String name, int age, Division division, String password) {
+    public Voter(String cnic, String name, int age, int division, String password) {
         this.cnic = cnic;
         this.name = name;
         this.age = age;
         this.division = division;
         this.password = password;
     }
-    
-    
+
+    public Voter(String cnic, String name, int division) {
+        this.cnic = cnic;
+        this.name = name;
+        this.division = division;
+    }
 
     public String getCnic() {
         return cnic;
@@ -43,11 +50,11 @@ public class Voter {
         this.age = age;
     }
 
-    public Division getDivision() {
+    public int getDivision() {
         return division;
     }
 
-    public void setDivision(Division division) {
+    public void setDivision(int division) {
         this.division = division;
     }
 
