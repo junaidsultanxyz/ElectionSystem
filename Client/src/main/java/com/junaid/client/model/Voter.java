@@ -1,4 +1,4 @@
-package com.junaid.client.model;
+package com.junaid.server.model;
 
 // @author junaidxyz
 
@@ -6,10 +6,10 @@ public class Voter {
     private String cnic;
     private String name;
     private int age;
-    private int division;
+    private Division division;
     private String password;
 
-    public Voter(String cnic, String name, int age, int division, String password) {
+    public Voter(String cnic, String name, int age, Division division, String password) {
         this.cnic = cnic;
         this.name = name;
         this.age = age;
@@ -43,11 +43,11 @@ public class Voter {
         this.age = age;
     }
 
-    public int getDivision() {
+    public Division getDivision() {
         return division;
     }
 
-    public void setDivision(int division) {
+    public void setDivision(Division division) {
         this.division = division;
     }
 
