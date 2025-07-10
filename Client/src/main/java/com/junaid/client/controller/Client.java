@@ -11,12 +11,9 @@ import javax.swing.JOptionPane;
 
 public class Client {
     private Socket clientSocket;
-    
-    private PrintWriter out;
-    private BufferedReader in;
-    
-    private ObjectInputStream objIn;
-    private ObjectOutputStream objOut;
+
+    private ObjectInputStream in;  
+    private ObjectOutputStream out;
     
     private boolean isConnected = false;
     private Thread messageListener;
@@ -97,7 +94,13 @@ public class Client {
     
     public void sendMessage(String message) {
         if (isConnected && out != null) {
-            out.println(message);
+            try {
+                out.writeObject(message);
+                out.flush();
+            }
+            catch (IOException ex) {
+                System.err.println(ex.getMessage());
+            }
         } else {
             System.err.println("[CLIENT] : Not connected to server");
         }
@@ -109,8 +112,6 @@ public class Client {
         try {
             if (in != null) in.close();
             if (out != null) out.close();
-            if (objIn != null) objIn.close();
-            if (objOut != null) objOut.close();
             if (clientSocket != null) clientSocket.close();
             System.out.println("[CLIENT] : Disconnected from server");
         }
