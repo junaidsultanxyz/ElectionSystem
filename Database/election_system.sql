@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 05, 2025 at 02:08 AM
+-- Generation Time: Jul 10, 2025 at 04:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -118,7 +118,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getTotalVoters` ()   BEGIN
         vr.cnic,
         vr.name,
         vr.age,
-        CONCAT(p.code, '-', vr.division_id) AS division
+        vr.division_id
     FROM voter vr
     JOIN division d ON vr.division_id = d.id
     JOIN city c ON d.city_id = c.id
@@ -390,6 +390,27 @@ IF ROW_COUNT() = 0 THEN
     SET MESSAGE_TEXT = 'Party code not found. Update failed.';
 END IF;
 
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `validate_voter_login` (IN `p_cnic` VARCHAR(13), IN `p_password` VARCHAR(50), OUT `p_found` BOOLEAN, OUT `p_name` VARCHAR(50), OUT `p_division_id` INT)   BEGIN
+    DECLARE v_count INT;
+
+    SELECT COUNT(*) INTO v_count
+    FROM voter
+    WHERE cnic = p_cnic AND password = p_password;
+
+    IF v_count = 1 THEN
+        SET p_found = TRUE;
+
+        SELECT name, division_id
+        INTO p_name, p_division_id
+        FROM voter
+        WHERE cnic = p_cnic;
+    ELSE
+        SET p_found = FALSE;
+        SET p_name = NULL;
+        SET p_division_id = NULL;
+    END IF;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `your_area_result` (IN `_division_id` INT)   BEGIN
@@ -899,16 +920,16 @@ CREATE TABLE `party` (
 --
 
 INSERT INTO `party` (`code`, `name`, `symbol`, `flag`) VALUES
-('ANP', 'Awami National Party', 'images/symbols/anp.png', 'images/flags/anp_flag.png'),
-('BNP', 'Balochistan National Party', 'images/symbols/bnp.png', 'images/flags/bnp_flag.png'),
-('GDA', 'Grand Democratic Alliance', 'images/symbols/gda.png', 'images/flags/gda_flag.png'),
-('JI', 'Jamaat-e-Islami', 'images/symbols/ji.png', 'images/flags/ji_flag.png'),
-('JUIF', 'Jamiat Ulema-e-Islam (F)', 'images/symbols/juif.png', 'images/flags/juif_flag.png'),
-('MQM', 'Muttahida Qaumi Movement', 'images/symbols/mqm.png', 'images/flags/mqm_flag.png'),
-('PMLN', 'Pakistan Muslim League (N)', 'images/symbols/pmln.png', 'images/flags/pmln_flag.png'),
-('PPP', 'Pakistan Peoples Party', 'images/symbols/ppp.png', 'images/flags/ppp_flag.png'),
-('PTI', 'Pakistan Tehreek-e-Insaf', 'images/symbols/pti.png', 'images/flags/pti_flag.png'),
-('TLP', 'Tehreek-e-Labbaik Pakistan', 'images/symbols/tlp.png', 'images/flags/tlp_flag.png');
+('ANP', 'Awami National Party', 'symbol/ANP.png', 'flag/ANP.png'),
+('BNP', 'Balochistan National Party', 'symbol/BNP.png', 'flag/BNP.png'),
+('GDA', 'Grand Democratic Alliance', 'symbol/GDA.png', 'flag/GDA.jpg'),
+('JI', 'Jamaat-e-Islami', 'symbol/JI.png', 'flag/JI.png'),
+('JUIF', 'Jamiat Ulema-e-Islam (F)', 'symbol/JUIF.png', 'flag/JUIF.png'),
+('MQM', 'Muttahida Qaumi Movement', 'symbol/MQM.png', 'flag/MQM.png'),
+('PMLN', 'Pakistan Muslim League (N)', 'symbol/PMLN.jpg', 'flag/PMLN.png'),
+('PPP', 'Pakistan Peoples Party', 'symbol/PPP.png', 'flag/PPP.png'),
+('PTI', 'Pakistan Tehreek-e-Insaf', 'symbol/PTI.png', 'flag/PTI.png'),
+('TLP', 'Tehreek-e-Labbaik Pakistan', 'symbol/TLP.png', 'flag/TLP.jpg');
 
 -- --------------------------------------------------------
 

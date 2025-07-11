@@ -23,11 +23,9 @@ public class Client {
     public boolean startConnection(String ip, int port) {
         try {
             clientSocket = new Socket(ip, port);
-            
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            objOut = new ObjectOutputStream(clientSocket.getOutputStream());
-            objIn = new ObjectInputStream(clientSocket.getInputStream());
+
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
+            in = new ObjectInputStream(clientSocket.getInputStream());
             
             isConnected = true;
             
@@ -62,7 +60,7 @@ public class Client {
                             LoginRequest.setStatus(APPROVED);
                             System.out.println("login accepted at client");
                             
-                            Object userObj = objIn.readObject();
+                            Object userObj = in.readObject();
                             if (userObj instanceof Voter voter){
                                 currentUser = voter;
                                 MainFrame.login();
