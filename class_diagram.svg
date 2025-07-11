@@ -1,0 +1,350 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <!-- White Background -->
+  <rect x="0" y="0" width="1600" height="1000" fill="white" stroke="none" />
+  
+  <!-- Definitions -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#000" />
+    </marker>
+    <marker id="diamond" markerWidth="12" markerHeight="12" refX="6" refY="6" orient="auto">
+      <polygon points="0 6, 6 0, 12 6, 6 12" fill="white" stroke="#000" stroke-width="1" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="800" y="30" font-family="Arial" font-size="20" text-anchor="middle" font-weight="bold">Class Diagram - Pakistan Election System</text>
+  <text x="800" y="50" font-family="Arial" font-size="14" text-anchor="middle">Java Object-Oriented Design</text>
+
+  <!-- Model Classes -->
+  
+  <!-- Voter Class -->
+  <rect x="50" y="100" width="200" height="220" fill="#E3F2FD" stroke="#1976D2" stroke-width="2" />
+  <text x="150" y="120" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Voter</text>
+  <line x1="50" y1="130" x2="250" y2="130" stroke="#1976D2" stroke-width="1" />
+  
+  <!-- Voter Attributes -->
+  <text x="60" y="150" font-family="Arial" font-size="10">- cnic: String</text>
+  <text x="60" y="165" font-family="Arial" font-size="10">- name: String</text>
+  <text x="60" y="180" font-family="Arial" font-size="10">- age: int</text>
+  <text x="60" y="195" font-family="Arial" font-size="10">- division: int</text>
+  <text x="60" y="210" font-family="Arial" font-size="10">- password: String</text>
+  
+  <line x1="50" y1="220" x2="250" y2="220" stroke="#1976D2" stroke-width="1" />
+  
+  <!-- Voter Methods -->
+  <text x="60" y="240" font-family="Arial" font-size="10">+ getCnic(): String</text>
+  <text x="60" y="255" font-family="Arial" font-size="10">+ getName(): String</text>
+  <text x="60" y="270" font-family="Arial" font-size="10">+ getAge(): int</text>
+  <text x="60" y="285" font-family="Arial" font-size="10">+ getDivision(): int</text>
+  <text x="60" y="300" font-family="Arial" font-size="10">+ toString(): String</text>
+
+  <!-- Party Class -->
+  <rect x="300" y="100" width="200" height="220" fill="#E8F5E8" stroke="#2E7D32" stroke-width="2" />
+  <text x="400" y="120" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Party</text>
+  <line x1="300" y1="130" x2="500" y2="130" stroke="#2E7D32" stroke-width="1" />
+  
+  <!-- Party Attributes -->
+  <text x="310" y="150" font-family="Arial" font-size="10">- code: String</text>
+  <text x="310" y="165" font-family="Arial" font-size="10">- name: String</text>
+  <text x="310" y="180" font-family="Arial" font-size="10">- flagImagePath: String</text>
+  <text x="310" y="195" font-family="Arial" font-size="10">- symbolImagePath: String</text>
+  
+  <line x1="300" y1="205" x2="500" y2="205" stroke="#2E7D32" stroke-width="1" />
+  
+  <!-- Party Methods -->
+  <text x="310" y="225" font-family="Arial" font-size="10">+ getCode(): String</text>
+  <text x="310" y="240" font-family="Arial" font-size="10">+ getName(): String</text>
+  <text x="310" y="255" font-family="Arial" font-size="10">+ getFlagImagePath(): String</text>
+  <text x="310" y="270" font-family="Arial" font-size="10">+ getSymbolImagePath(): String</text>
+  <text x="310" y="285" font-family="Arial" font-size="10">+ setCode(String): void</text>
+  <text x="310" y="300" font-family="Arial" font-size="10">+ setName(String): void</text>
+
+  <!-- Vote Class -->
+  <rect x="550" y="100" width="200" height="240" fill="#FFF3E0" stroke="#F57C00" stroke-width="2" />
+  <text x="650" y="120" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Vote</text>
+  <line x1="550" y1="130" x2="750" y2="130" stroke="#F57C00" stroke-width="1" />
+  
+  <!-- Vote Attributes -->
+  <text x="560" y="150" font-family="Arial" font-size="10">- id: int</text>
+  <text x="560" y="165" font-family="Arial" font-size="10">- voterCNIC: String</text>
+  <text x="560" y="180" font-family="Arial" font-size="10">- partyCode: String</text>
+  <text x="560" y="195" font-family="Arial" font-size="10">- voteType: VoteType</text>
+  <text x="560" y="210" font-family="Arial" font-size="10">- timestamp: LocalDateTime</text>
+  
+  <line x1="550" y1="220" x2="750" y2="220" stroke="#F57C00" stroke-width="1" />
+  
+  <!-- Vote Methods -->
+  <text x="560" y="240" font-family="Arial" font-size="10">+ getId(): int</text>
+  <text x="560" y="255" font-family="Arial" font-size="10">+ getVoterCNIC(): String</text>
+  <text x="560" y="270" font-family="Arial" font-size="10">+ getPartyCode(): String</text>
+  <text x="560" y="285" font-family="Arial" font-size="10">+ getVoteType(): VoteType</text>
+  <text x="560" y="300" font-family="Arial" font-size="10">+ getTimestamp(): LocalDateTime</text>
+  <text x="560" y="315" font-family="Arial" font-size="10">+ setId(int): void</text>
+  <text x="560" y="330" font-family="Arial" font-size="10">+ setVoterCNIC(String): void</text>
+
+  <!-- Election Class -->
+  <rect x="800" y="100" width="200" height="240" fill="#F3E5F5" stroke="#7B1FA2" stroke-width="2" />
+  <text x="900" y="120" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">Election</text>
+  <line x1="800" y1="130" x2="1000" y2="130" stroke="#7B1FA2" stroke-width="1" />
+  
+  <!-- Election Attributes -->
+  <text x="810" y="150" font-family="Arial" font-size="10">- id: int</text>
+  <text x="810" y="165" font-family="Arial" font-size="10">- name: String</text>
+  <text x="810" y="180" font-family="Arial" font-size="10">- startingTime: LocalDateTime</text>
+  <text x="810" y="195" font-family="Arial" font-size="10">- endingTime: LocalDateTime</text>
+  <text x="810" y="210" font-family="Arial" font-size="10">- votes: ArrayList&lt;Vote&gt;</text>
+  
+  <line x1="800" y1="220" x2="1000" y2="220" stroke="#7B1FA2" stroke-width="1" />
+  
+  <!-- Election Methods -->
+  <text x="810" y="240" font-family="Arial" font-size="10">+ getId(): int</text>
+  <text x="810" y="255" font-family="Arial" font-size="10">+ getName(): String</text>
+  <text x="810" y="270" font-family="Arial" font-size="10">+ getStartingTime(): LocalDateTime</text>
+  <text x="810" y="285" font-family="Arial" font-size="10">+ getEndingTime(): LocalDateTime</text>
+  <text x="810" y="300" font-family="Arial" font-size="10">+ getVotes(): ArrayList&lt;Vote&gt;</text>
+  <text x="810" y="315" font-family="Arial" font-size="10">+ setId(int): void</text>
+  <text x="810" y="330" font-family="Arial" font-size="10">+ setName(String): void</text>
+
+  <!-- VoteType Enum -->
+  <rect x="1050" y="100" width="150" height="120" fill="#FFEBEE" stroke="#C62828" stroke-width="2" />
+  <text x="1125" y="120" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">&lt;&lt;enumeration&gt;&gt;</text>
+  <text x="1125" y="135" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">VoteType</text>
+  <line x1="1050" y1="145" x2="1200" y2="145" stroke="#C62828" stroke-width="1" />
+  
+  <text x="1060" y="165" font-family="Arial" font-size="10">NA</text>
+  <text x="1060" y="180" font-family="Arial" font-size="10">PA</text>
+
+  <!-- Service/Repository Classes -->
+  
+  <!-- DAO Class -->
+  <rect x="50" y="400" width="250" height="280" fill="#FFF8E1" stroke="#FF8F00" stroke-width="2" />
+  <text x="175" y="420" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">DAO</text>
+  <line x1="50" y1="430" x2="300" y2="430" stroke="#FF8F00" stroke-width="1" />
+  
+  <!-- DAO Methods -->
+  <text x="60" y="450" font-family="Arial" font-size="10">+ validateLogin(String, String): Voter</text>
+  <text x="60" y="465" font-family="Arial" font-size="10">+ addElection(Election): boolean</text>
+  <text x="60" y="480" font-family="Arial" font-size="10">+ updateElection(int, Election): boolean</text>
+  <text x="60" y="495" font-family="Arial" font-size="10">+ deleteElection(int): boolean</text>
+  <text x="60" y="510" font-family="Arial" font-size="10">+ searchElection(String): ArrayList&lt;Election&gt;</text>
+  <text x="60" y="525" font-family="Arial" font-size="10">+ displayAllElections(): ArrayList&lt;Election&gt;</text>
+  <text x="60" y="540" font-family="Arial" font-size="10">+ addParty(Party): boolean</text>
+  <text x="60" y="555" font-family="Arial" font-size="10">+ deleteParty(String): boolean</text>
+  <text x="60" y="570" font-family="Arial" font-size="10">+ updateParty(String, Party): boolean</text>
+  <text x="60" y="585" font-family="Arial" font-size="10">+ searchParty(String): ArrayList&lt;Party&gt;</text>
+  <text x="60" y="600" font-family="Arial" font-size="10">+ displayAllParties(): ArrayList&lt;Party&gt;</text>
+  <text x="60" y="615" font-family="Arial" font-size="10">+ getCurrentVotes(): ArrayList&lt;String[]&gt;</text>
+  <text x="60" y="630" font-family="Arial" font-size="10">+ getTotalVoters(): ArrayList&lt;Voter&gt;</text>
+  <text x="60" y="645" font-family="Arial" font-size="10">+ getMNAWinners(): ArrayList&lt;String[]&gt;</text>
+  <text x="60" y="660" font-family="Arial" font-size="10">+ getMPAWinners(): ArrayList&lt;String[]&gt;</text>
+
+  <!-- DataStore Class -->
+  <rect x="350" y="400" width="200" height="160" fill="#E1F5FE" stroke="#0277BD" stroke-width="2" />
+  <text x="450" y="420" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">DataStore</text>
+  <line x1="350" y1="430" x2="550" y2="430" stroke="#0277BD" stroke-width="1" />
+  
+  <!-- DataStore Inner Classes -->
+  <text x="360" y="450" font-family="Arial" font-size="10" font-weight="bold">+ Voters</text>
+  <text x="370" y="465" font-family="Arial" font-size="9">- voters: ArrayList&lt;Voter&gt;</text>
+  <text x="370" y="480" font-family="Arial" font-size="9">+ loadVoters(): void</text>
+  <text x="370" y="495" font-family="Arial" font-size="9">+ getAllVoters(): ArrayList&lt;Voter&gt;</text>
+  
+  <text x="360" y="515" font-family="Arial" font-size="10" font-weight="bold">+ Parties</text>
+  <text x="370" y="530" font-family="Arial" font-size="9">+ getAllParties(): ArrayList&lt;Party&gt;</text>
+  
+  <text x="360" y="545" font-family="Arial" font-size="10" font-weight="bold">+ Provinces</text>
+  <text x="370" y="560" font-family="Arial" font-size="9">+ getDivisionInfo(int): Object[]</text>
+
+  <!-- UI Classes -->
+  
+  <!-- MainFrame Class (Server) -->
+  <rect x="600" y="400" width="220" height="200" fill="#FCE4EC" stroke="#AD1457" stroke-width="2" />
+  <text x="710" y="420" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">MainFrame (Server)</text>
+  <line x1="600" y1="430" x2="820" y2="430" stroke="#AD1457" stroke-width="1" />
+  
+  <!-- MainFrame Attributes -->
+  <text x="610" y="450" font-family="Arial" font-size="10">- cardLayout: CardLayout</text>
+  <text x="610" y="465" font-family="Arial" font-size="10">- electionTable: JTable</text>
+  <text x="610" y="480" font-family="Arial" font-size="10">- partyTable: JTable</text>
+  <text x="610" y="495" font-family="Arial" font-size="10">- voterTable: JTable</text>
+  
+  <line x1="600" y1="505" x2="820" y2="505" stroke="#AD1457" stroke-width="1" />
+  
+  <!-- MainFrame Methods -->
+  <text x="610" y="525" font-family="Arial" font-size="10">+ loadElectionTable(): void</text>
+  <text x="610" y="540" font-family="Arial" font-size="10">+ loadPartyTableData(): void</text>
+  <text x="610" y="555" font-family="Arial" font-size="10">+ updateVoteTables(): void</text>
+  <text x="610" y="570" font-family="Arial" font-size="10">+ updateResultTables(): void</text>
+  <text x="610" y="585" font-family="Arial" font-size="10">+ clearElectionFields(): void</text>
+
+  <!-- MainFrame Class (Client) -->
+  <rect x="860" y="400" width="220" height="180" fill="#E8EAF6" stroke="#303F9F" stroke-width="2" />
+  <text x="970" y="420" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">MainFrame (Client)</text>
+  <line x1="860" y1="430" x2="1080" y2="430" stroke="#303F9F" stroke-width="1" />
+  
+  <!-- Client MainFrame Attributes -->
+  <text x="870" y="450" font-family="Arial" font-size="10">- currentVoter: Voter</text>
+  <text x="870" y="465" font-family="Arial" font-size="10">- votingPanel: JPanel</text>
+  <text x="870" y="480" font-family="Arial" font-size="10">- loginPanel: JPanel</text>
+  
+  <line x1="860" y1="490" x2="1080" y2="490" stroke="#303F9F" stroke-width="1" />
+  
+  <!-- Client MainFrame Methods -->
+  <text x="870" y="510" font-family="Arial" font-size="10">+ authenticateVoter(): boolean</text>
+  <text x="870" y="525" font-family="Arial" font-size="10">+ displayCandidates(): void</text>
+  <text x="870" y="540" font-family="Arial" font-size="10">+ castVote(Vote): boolean</text>
+  <text x="870" y="555" font-family="Arial" font-size="10">+ showVoteConfirmation(): void</text>
+  <text x="870" y="570" font-family="Arial" font-size="10">+ logout(): void</text>
+
+  <!-- Controller Classes -->
+  
+  <!-- ClientHandler Class -->
+  <rect x="1120" y="400" width="200" height="160" fill="#F1F8E9" stroke="#558B2F" stroke-width="2" />
+  <text x="1220" y="420" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">ClientHandler</text>
+  <line x1="1120" y1="430" x2="1320" y2="430" stroke="#558B2F" stroke-width="1" />
+  
+  <!-- ClientHandler Attributes -->
+  <text x="1130" y="450" font-family="Arial" font-size="10">- socket: Socket</text>
+  <text x="1130" y="465" font-family="Arial" font-size="10">- input: ObjectInputStream</text>
+  <text x="1130" y="480" font-family="Arial" font-size="10">- output: ObjectOutputStream</text>
+  
+  <line x1="1120" y1="490" x2="1320" y2="490" stroke="#558B2F" stroke-width="1" />
+  
+  <!-- ClientHandler Methods -->
+  <text x="1130" y="510" font-family="Arial" font-size="10">+ run(): void</text>
+  <text x="1130" y="525" font-family="Arial" font-size="10">+ handleVoteRequest(): void</text>
+  <text x="1130" y="540" font-family="Arial" font-size="10">+ sendResponse(): void</text>
+  <text x="1130" y="555" font-family="Arial" font-size="10">+ closeConnection(): void</text>
+
+  <!-- Service Classes -->
+  
+  <!-- LoginService Class -->
+  <rect x="350" y="600" width="200" height="120" fill="#EFEBE9" stroke="#5D4037" stroke-width="2" />
+  <text x="450" y="620" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">LoginService</text>
+  <line x1="350" y1="630" x2="550" y2="630" stroke="#5D4037" stroke-width="1" />
+  
+  <!-- LoginService Methods -->
+  <text x="360" y="650" font-family="Arial" font-size="10">+ authenticate(String, String): Voter</text>
+  <text x="360" y="665" font-family="Arial" font-size="10">+ validateCredentials(String, String): boolean</text>
+  <text x="360" y="680" font-family="Arial" font-size="10">+ logout(String): void</text>
+  <text x="360" y="695" font-family="Arial" font-size="10">+ isVoterLoggedIn(String): boolean</text>
+
+  <!-- VotingService Class -->
+  <rect x="600" y="650" width="200" height="100" fill="#E0F2F1" stroke="#00695C" stroke-width="2" />
+  <text x="700" y="670" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">VotingService</text>
+  <line x1="600" y1="680" x2="800" y2="680" stroke="#00695C" stroke-width="1" />
+  
+  <!-- VotingService Methods -->
+  <text x="610" y="700" font-family="Arial" font-size="10">+ processVote(Vote): boolean</text>
+  <text x="610" y="715" font-family="Arial" font-size="10">+ validateVote(Vote): boolean</text>
+  <text x="610" y="730" font-family="Arial" font-size="10">+ saveVote(Vote): void</text>
+
+  <!-- Relationships -->
+  
+  <!-- Vote uses VoteType -->
+  <line x1="750" y1="197" x2="1050" y2="160" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="900" y="175" font-family="Arial" font-size="9" text-anchor="middle">uses</text>
+
+  <!-- Election contains Votes -->
+  <line x1="800" y1="210" x2="750" y2="210" stroke="#000" stroke-width="2" />
+  <polygon points="800,210 790,205 790,215" fill="#000" />
+  <text x="775" y="205" font-family="Arial" font-size="9" text-anchor="middle">1</text>
+  <text x="760" y="205" font-family="Arial" font-size="9" text-anchor="middle">*</text>
+  <text x="775" y="225" font-family="Arial" font-size="9" text-anchor="middle">contains</text>
+
+  <!-- Vote references Party -->
+  <line x1="550" y1="180" x2="500" y2="180" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="525" y="175" font-family="Arial" font-size="9" text-anchor="middle">references</text>
+
+  <!-- Vote references Voter -->
+  <line x1="550" y1="200" x2="250" y2="200" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="400" y="195" font-family="Arial" font-size="9" text-anchor="middle">references</text>
+
+  <!-- DAO manages all model classes -->
+  <line x1="175" y1="400" x2="150" y2="320" stroke="#000" stroke-width="1" stroke-dasharray="3,3" />
+  <line x1="175" y1="400" x2="400" y2="320" stroke="#000" stroke-width="1" stroke-dasharray="3,3" />
+  <line x1="175" y1="400" x2="650" y2="340" stroke="#000" stroke-width="1" stroke-dasharray="3,3" />
+  <line x1="175" y1="400" x2="900" y2="340" stroke="#000" stroke-width="1" stroke-dasharray="3,3" />
+  <text x="175" y="390" font-family="Arial" font-size="9" text-anchor="middle">manages</text>
+
+  <!-- MainFrame uses DAO -->
+  <line x1="600" y1="500" x2="300" y2="500" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="450" y="495" font-family="Arial" font-size="9" text-anchor="middle">uses</text>
+
+  <!-- ClientHandler uses Services -->
+  <line x1="1120" y1="530" x2="800" y2="720" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <line x1="1120" y1="520" x2="550" y2="660" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="960" y="620" font-family="Arial" font-size="9" text-anchor="middle">uses</text>
+
+  <!-- Legend -->
+  <rect x="50" y="780" width="500" height="180" fill="none" stroke="#000" stroke-width="1" />
+  <text x="300" y="800" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">LEGEND</text>
+  
+  <!-- Class Box -->
+  <rect x="70" y="820" width="100" height="60" fill="#E3F2FD" stroke="#1976D2" stroke-width="1" />
+  <text x="120" y="835" font-family="Arial" font-size="10" text-anchor="middle" font-weight="bold">ClassName</text>
+  <line x1="70" y1="840" x2="170" y2="840" stroke="#1976D2" stroke-width="1" />
+  <text x="80" y="855" font-family="Arial" font-size="9">- attribute: type</text>
+  <line x1="70" y1="860" x2="170" y2="860" stroke="#1976D2" stroke-width="1" />
+  <text x="80" y="875" font-family="Arial" font-size="9">+ method(): type</text>
+  
+  <!-- Relationship Lines -->
+  <line x1="200" y1="820" x2="260" y2="820" stroke="#000" stroke-width="2" />
+  <polygon points="260,820 250,815 250,825" fill="#000" />
+  <text x="230" y="815" font-family="Arial" font-size="9" text-anchor="middle">Composition</text>
+  
+  <line x1="200" y1="840" x2="260" y2="840" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <text x="230" y="835" font-family="Arial" font-size="9" text-anchor="middle">Dependency</text>
+  
+  <line x1="200" y1="860" x2="260" y2="860" stroke="#000" stroke-width="1" stroke-dasharray="3,3" />
+  <text x="230" y="855" font-family="Arial" font-size="9" text-anchor="middle">Association</text>
+  
+  <!-- Visibility -->
+  <text x="300" y="830" font-family="Arial" font-size="10" font-weight="bold">Visibility:</text>
+  <text x="310" y="845" font-family="Arial" font-size="9">+ Public</text>
+  <text x="310" y="860" font-family="Arial" font-size="9">- Private</text>
+  <text x="310" y="875" font-family="Arial" font-size="9"># Protected</text>
+  
+  <!-- Multiplicity -->
+  <text x="400" y="830" font-family="Arial" font-size="10" font-weight="bold">Multiplicity:</text>
+  <text x="410" y="845" font-family="Arial" font-size="9">1 - One</text>
+  <text x="410" y="860" font-family="Arial" font-size="9">* - Many</text>
+  <text x="410" y="875" font-family="Arial" font-size="9">0..1 - Zero or One</text>
+
+  <!-- Architecture Notes -->
+  <rect x="600" y="780" width="450" height="180" fill="#F5F5F5" stroke="#666" stroke-width="1" />
+  <text x="825" y="800" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">ARCHITECTURE NOTES</text>
+  
+  <text x="620" y="820" font-family="Arial" font-size="10" font-weight="bold">Model Classes:</text>
+  <text x="630" y="835" font-family="Arial" font-size="9">• Voter, Party, Vote, Election - Core domain entities</text>
+  <text x="630" y="850" font-family="Arial" font-size="9">• VoteType - Enumeration for National/Provincial Assembly votes</text>
+  
+  <text x="620" y="870" font-family="Arial" font-size="10" font-weight="bold">Data Access:</text>
+  <text x="630" y="885" font-family="Arial" font-size="9">• DAO - Database operations using stored procedures</text>
+  <text x="630" y="900" font-family="Arial" font-size="9">• DataStore - In-memory caching for frequently accessed data</text>
+  
+  <text x="620" y="920" font-family="Arial" font-size="10" font-weight="bold">UI Layer:</text>
+  <text x="630" y="935" font-family="Arial" font-size="9">• MainFrame (Server) - Admin interface for election management</text>
+  <text x="630" y="950" font-family="Arial" font-size="9">• MainFrame (Client) - Voter interface for casting votes</text>
+
+  <!-- Package Information -->
+  <rect x="1150" y="780" width="350" height="180" fill="#FAFAFA" stroke="#999" stroke-width="1" />
+  <text x="1325" y="800" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">PACKAGE STRUCTURE</text>
+  
+  <text x="1170" y="820" font-family="Arial" font-size="10" font-weight="bold">com.junaid.server.model</text>
+  <text x="1180" y="835" font-family="Arial" font-size="9">• Core entity classes (Server-side)</text>
+  
+  <text x="1170" y="855" font-family="Arial" font-size="10" font-weight="bold">com.junaid.client.model</text>
+  <text x="1180" y="870" font-family="Arial" font-size="9">• Core entity classes (Client-side)</text>
+  
+  <text x="1170" y="890" font-family="Arial" font-size="10" font-weight="bold">com.junaid.server.repository</text>
+  <text x="1180" y="905" font-family="Arial" font-size="9">• DAO and database access</text>
+  
+  <text x="1170" y="925" font-family="Arial" font-size="10" font-weight="bold">com.junaid.server.ui</text>
+  <text x="1180" y="940" font-family="Arial" font-size="9">• Server-side user interface</text>
+  
+  <text x="1170" y="960" font-family="Arial" font-size="10" font-weight="bold">com.junaid.client.ui</text>
+  <text x="1180" y="975" font-family="Arial" font-size="9">• Client-side user interface</text>
+
+</svg>

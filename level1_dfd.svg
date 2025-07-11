@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="800" viewBox="0 0 1200 800">
+  <!-- White Background -->
+  <rect x="0" y="0" width="1200" height="800" fill="white" stroke="none" />
+  
+  <!-- External Entities -->
+  <rect x="50" y="80" width="120" height="60" fill="#FFE4E1" stroke="#000" stroke-width="2" />
+  <text x="110" y="115" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Voter</text>
+  
+  <rect x="50" y="300" width="120" height="60" fill="#FFE4E1" stroke="#000" stroke-width="2" />
+  <text x="110" y="335" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">Admin</text>
+
+  <!-- Level 1 Processes -->
+  <!-- Authentication Process -->
+  <ellipse cx="350" cy="110" rx="80" ry="40" fill="#E6F3FF" stroke="#000" stroke-width="2" />
+  <text x="350" y="105" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">1.0</text>
+  <text x="350" y="120" font-family="Arial" font-size="12" text-anchor="middle">Authentication</text>
+
+  <!-- Voting Process -->
+  <ellipse cx="350" cy="200" rx="80" ry="40" fill="#E6F3FF" stroke="#000" stroke-width="2" />
+  <text x="350" y="195" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">2.0</text>
+  <text x="350" y="210" font-family="Arial" font-size="12" text-anchor="middle">Vote Casting</text>
+
+  <!-- Result Computation Process -->
+  <ellipse cx="350" cy="290" rx="80" ry="40" fill="#E6F3FF" stroke="#000" stroke-width="2" />
+  <text x="350" y="285" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">3.0</text>
+  <text x="350" y="300" font-family="Arial" font-size="12" text-anchor="middle">Result Computation</text>
+
+  <!-- Election Management Process -->
+  <ellipse cx="350" cy="380" rx="80" ry="40" fill="#E6F3FF" stroke="#000" stroke-width="2" />
+  <text x="350" y="375" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">4.0</text>
+  <text x="350" y="390" font-family="Arial" font-size="12" text-anchor="middle">Election Management</text>
+
+  <!-- Candidate Management Process -->
+  <ellipse cx="350" cy="470" rx="80" ry="40" fill="#E6F3FF" stroke="#000" stroke-width="2" />
+  <text x="350" y="465" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">5.0</text>
+  <text x="350" y="480" font-family="Arial" font-size="12" text-anchor="middle">Candidate Management</text>
+
+  <!-- Client-Server Communication Process -->
+  <ellipse cx="600" cy="200" rx="80" ry="40" fill="#FFE6CC" stroke="#000" stroke-width="2" />
+  <text x="600" y="195" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">6.0</text>
+  <text x="600" y="210" font-family="Arial" font-size="12" text-anchor="middle">Communication</text>
+
+  <!-- Data Stores -->
+  <rect x="900" y="80" width="150" height="50" fill="#F0F8FF" stroke="#000" stroke-width="2" />
+  <text x="920" y="110" font-family="Arial" font-size="12" font-weight="bold">D1: Voter Database</text>
+
+  <rect x="900" y="160" width="150" height="50" fill="#F0F8FF" stroke="#000" stroke-width="2" />
+  <text x="920" y="190" font-family="Arial" font-size="12" font-weight="bold">D2: Candidate Database</text>
+
+  <rect x="900" y="240" width="150" height="50" fill="#F0F8FF" stroke="#000" stroke-width="2" />
+  <text x="920" y="270" font-family="Arial" font-size="12" font-weight="bold">D3: Vote Database</text>
+
+  <rect x="900" y="320" width="150" height="50" fill="#F0F8FF" stroke="#000" stroke-width="2" />
+  <text x="920" y="350" font-family="Arial" font-size="12" font-weight="bold">D4: Election Database</text>
+
+  <rect x="900" y="400" width="150" height="50" fill="#F0F8FF" stroke="#000" stroke-width="2" />
+  <text x="920" y="430" font-family="Arial" font-size="12" font-weight="bold">D5: Party Database</text>
+
+  <!-- Data Flows -->
+  <!-- Voter to Authentication -->
+  <line x1="170" y1="110" x2="270" y2="110" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="200" y="100" font-family="Arial" font-size="10">Login Request</text>
+
+  <!-- Authentication to Voter Database -->
+  <line x1="430" y1="110" x2="900" y2="105" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="650" y="100" font-family="Arial" font-size="10">Validate Credentials</text>
+
+  <!-- Voter to Voting -->
+  <line x1="170" y1="130" x2="270" y2="180" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="200" y="160" font-family="Arial" font-size="10">Vote Submission</text>
+
+  <!-- Voting to Vote Database -->
+  <line x1="430" y1="210" x2="900" y2="250" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="650" y="240" font-family="Arial" font-size="10">Store Vote</text>
+
+  <!-- Voting to Candidate Database -->
+  <line x1="400" y1="180" x2="900" y2="165" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="630" y="170" font-family="Arial" font-size="10">Get Candidates</text>
+
+  <!-- Admin to Election Management -->
+  <line x1="170" y1="320" x2="270" y2="360" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="200" y="350" font-family="Arial" font-size="10">Manage Elections</text>
+
+  <!-- Admin to Candidate Management -->
+  <line x1="170" y1="340" x2="270" y2="450" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="200" y="410" font-family="Arial" font-size="10">Manage Candidates</text>
+
+  <!-- Election Management to Election Database -->
+  <line x1="430" y1="370" x2="900" y2="340" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="650" y="360" font-family="Arial" font-size="10">Store/Update Elections</text>
+
+  <!-- Candidate Management to Candidate Database -->
+  <line x1="430" y1="460" x2="900" y2="185" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="650" y="320" font-family="Arial" font-size="10">Store/Update Candidates</text>
+
+  <!-- Candidate Management to Party Database -->
+  <line x1="430" y1="480" x2="900" y2="415" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="650" y="450" font-family="Arial" font-size="10">Store/Update Parties</text>
+
+  <!-- Result Computation to Vote Database -->
+  <line x1="430" y1="280" x2="900" y2="265" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="650" y="280" font-family="Arial" font-size="10">Read Votes</text>
+
+  <!-- Communication Process Flows -->
+  <line x1="430" y1="200" x2="520" y2="200" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="460" y="190" font-family="Arial" font-size="10">Request</text>
+
+  <line x1="520" y1="180" x2="430" y2="180" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="460" y="170" font-family="Arial" font-size="10">Response</text>
+
+  <!-- Result Display -->
+  <line x1="270" y1="290" x2="170" y2="130" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="150" y="220" font-family="Arial" font-size="10">Display Results</text>
+
+  <line x1="270" y1="310" x2="170" y2="340" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="150" y="330" font-family="Arial" font-size="10">View Results</text>
+
+  <!-- Internal Process Communications -->
+  <line x1="350" y1="150" x2="350" y2="160" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <line x1="350" y1="240" x2="350" y2="250" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <line x1="350" y1="330" x2="350" y2="340" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+  <line x1="350" y1="420" x2="350" y2="430" stroke="#000" stroke-width="1" stroke-dasharray="5,5" />
+
+  <!-- Legend -->
+  <rect x="50" y="600" width="300" height="150" fill="none" stroke="#000" stroke-width="1" />
+  <text x="200" y="620" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">LEGEND</text>
+  
+  <rect x="60" y="635" width="80" height="30" fill="#FFE4E1" stroke="#000" />
+  <text x="100" y="655" font-family="Arial" font-size="10" text-anchor="middle">External Entity</text>
+  
+  <ellipse cx="100" cy="680" rx="40" ry="20" fill="#E6F3FF" stroke="#000" />
+  <text x="100" y="685" font-family="Arial" font-size="10" text-anchor="middle">Process</text>
+  
+  <rect x="160" y="665" width="80" height="30" fill="#F0F8FF" stroke="#000" />
+  <text x="200" y="685" font-family="Arial" font-size="10" text-anchor="middle">Data Store</text>
+  
+  <line x1="60" y1="710" x2="120" y2="710" stroke="#000" stroke-width="2" marker-end="url(#arrowhead)" />
+  <text x="190" y="715" font-family="Arial" font-size="10">Data Flow</text>
+
+  <!-- Title -->
+  <text x="600" y="30" font-family="Arial" font-size="18" text-anchor="middle" font-weight="bold">Level 1 Data Flow Diagram - Pakistan Election System</text>
+
+  <!-- Arrowhead Marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#000" />
+    </marker>
+  </defs>
+</svg>

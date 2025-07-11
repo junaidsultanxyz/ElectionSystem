@@ -23,9 +23,16 @@ public class Client {
     public boolean startConnection(String ip, int port) {
         try {
             clientSocket = new Socket(ip, port);
+<<<<<<< HEAD
 
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
+=======
+            
+            in = new ObjectInputStream(clientSocket.getInputStream());
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
+
+>>>>>>> refs/remotes/origin/main
             
             isConnected = true;
             
@@ -90,7 +97,7 @@ public class Client {
         messageListener.start();
     }
     
-    public void sendMessage(String message) {
+    public void sendMessage(Message message) {
         if (isConnected && out != null) {
             try {
                 out.writeObject(message);
