@@ -1,0 +1,187 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900">
+  <!-- White Background -->
+  <rect x="0" y="0" width="1400" height="900" fill="white" stroke="none" />
+  
+  <!-- Definitions -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#000" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="700" y="30" font-family="Arial" font-size="20" text-anchor="middle" font-weight="bold">Entity-Relationship Diagram (ERD)</text>
+  <text x="700" y="50" font-family="Arial" font-size="16" text-anchor="middle">Pakistan Election System Database</text>
+
+  <!-- PROVINCE Entity -->
+  <rect x="80" y="100" width="150" height="120" fill="#E8F5E8" stroke="#2E7D32" stroke-width="2" />
+  <text x="155" y="120" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">PROVINCE</text>
+  <line x1="80" y1="130" x2="230" y2="130" stroke="#2E7D32" stroke-width="1" />
+  <text x="90" y="145" font-family="Arial" font-size="10" font-weight="bold" text-decoration="underline">code (PK)</text>
+  <text x="90" y="160" font-family="Arial" font-size="10">name</text>
+
+  <!-- CITY Entity -->
+  <rect x="320" y="100" width="150" height="140" fill="#E8F5E8" stroke="#2E7D32" stroke-width="2" />
+  <text x="395" y="120" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">CITY</text>
+  <line x1="320" y1="130" x2="470" y2="130" stroke="#2E7D32" stroke-width="1" />
+  <text x="330" y="145" font-family="Arial" font-size="10" font-weight="bold" text-decoration="underline">id (PK)</text>
+  <text x="330" y="160" font-family="Arial" font-size="10">name</text>
+  <text x="330" y="175" font-family="Arial" font-size="10" font-style="italic" text-decoration="underline">province_code (FK)</text>
+
+  <!-- DIVISION Entity -->
+  <rect x="560" y="100" width="150" height="140" fill="#E8F5E8" stroke="#2E7D32" stroke-width="2" />
+  <text x="635" y="120" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">DIVISION</text>
+  <line x1="560" y1="130" x2="710" y2="130" stroke="#2E7D32" stroke-width="1" />
+  <text x="570" y="145" font-family="Arial" font-size="10" font-weight="bold" text-decoration="underline">id (PK)</text>
+  <text x="570" y="160" font-family="Arial" font-size="10" font-style="italic" text-decoration="underline">city_id (FK)</text>
+
+  <!-- VOTER Entity -->
+  <rect x="800" y="100" width="150" height="180" fill="#E8F5E8" stroke="#2E7D32" stroke-width="2" />
+  <text x="875" y="120" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">VOTER</text>
+  <line x1="800" y1="130" x2="950" y2="130" stroke="#2E7D32" stroke-width="1" />
+  <text x="810" y="145" font-family="Arial" font-size="10" font-weight="bold" text-decoration="underline">cnic (PK)</text>
+  <text x="810" y="160" font-family="Arial" font-size="10">name</text>
+  <text x="810" y="175" font-family="Arial" font-size="10">age</text>
+  <text x="810" y="190" font-family="Arial" font-size="10" font-style="italic" text-decoration="underline">division_id (FK)</text>
+  <text x="810" y="205" font-family="Arial" font-size="10">password</text>
+
+  <!-- PARTY Entity -->
+  <rect x="320" y="350" width="150" height="160" fill="#E8F5E8" stroke="#2E7D32" stroke-width="2" />
+  <text x="395" y="370" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">PARTY</text>
+  <line x1="320" y1="380" x2="470" y2="380" stroke="#2E7D32" stroke-width="1" />
+  <text x="330" y="395" font-family="Arial" font-size="10" font-weight="bold" text-decoration="underline">code (PK)</text>
+  <text x="330" y="410" font-family="Arial" font-size="10">name</text>
+  <text x="330" y="425" font-family="Arial" font-size="10">symbol</text>
+  <text x="330" y="440" font-family="Arial" font-size="10">flag</text>
+
+  <!-- ELECTION Entity -->
+  <rect x="80" y="350" width="150" height="180" fill="#E8F5E8" stroke="#2E7D32" stroke-width="2" />
+  <text x="155" y="370" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">ELECTION</text>
+  <line x1="80" y1="380" x2="230" y2="380" stroke="#2E7D32" stroke-width="1" />
+  <text x="90" y="395" font-family="Arial" font-size="10" font-weight="bold" text-decoration="underline">id (PK)</text>
+  <text x="90" y="410" font-family="Arial" font-size="10">name</text>
+  <text x="90" y="425" font-family="Arial" font-size="10">starting_time</text>
+  <text x="90" y="440" font-family="Arial" font-size="10">ending_time</text>
+  <text x="90" y="455" font-family="Arial" font-size="10">starting_date</text>
+  <text x="90" y="470" font-family="Arial" font-size="10">ending_date</text>
+
+  <!-- VOTE Entity -->
+  <rect x="560" y="350" width="150" height="200" fill="#E8F5E8" stroke="#2E7D32" stroke-width="2" />
+  <text x="635" y="370" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">VOTE</text>
+  <line x1="560" y1="380" x2="710" y2="380" stroke="#2E7D32" stroke-width="1" />
+  <text x="570" y="395" font-family="Arial" font-size="10" font-weight="bold" text-decoration="underline">id (PK)</text>
+  <text x="570" y="410" font-family="Arial" font-size="10" font-style="italic" text-decoration="underline">election_id (FK)</text>
+  <text x="570" y="425" font-family="Arial" font-size="10" font-style="italic" text-decoration="underline">cnic (FK)</text>
+  <text x="570" y="440" font-family="Arial" font-size="10" font-style="italic" text-decoration="underline">party_code (FK)</text>
+  <text x="570" y="455" font-family="Arial" font-size="10">vote_type</text>
+  <text x="570" y="470" font-family="Arial" font-size="10">vote_time</text>
+
+  <!-- Relationships -->
+  
+  <!-- Province to City (1:M) -->
+  <line x1="230" y1="160" x2="320" y2="160" stroke="#000" stroke-width="2" />
+  <circle cx="230" cy="160" r="3" fill="#000" />
+  <text x="275" y="150" font-family="Arial" font-size="10" text-anchor="middle">1</text>
+  <text x="320" y="150" font-family="Arial" font-size="10" text-anchor="middle">M</text>
+  <text x="275" y="175" font-family="Arial" font-size="9" text-anchor="middle">has</text>
+
+  <!-- City to Division (1:M) -->
+  <line x1="470" y1="170" x2="560" y2="170" stroke="#000" stroke-width="2" />
+  <circle cx="470" cy="170" r="3" fill="#000" />
+  <text x="515" y="160" font-family="Arial" font-size="10" text-anchor="middle">1</text>
+  <text x="560" y="160" font-family="Arial" font-size="10" text-anchor="middle">M</text>
+  <text x="515" y="185" font-family="Arial" font-size="9" text-anchor="middle">contains</text>
+
+  <!-- Division to Voter (1:M) -->
+  <line x1="710" y1="170" x2="800" y2="170" stroke="#000" stroke-width="2" />
+  <circle cx="710" cy="170" r="3" fill="#000" />
+  <text x="755" y="160" font-family="Arial" font-size="10" text-anchor="middle">1</text>
+  <text x="800" y="160" font-family="Arial" font-size="10" text-anchor="middle">M</text>
+  <text x="755" y="185" font-family="Arial" font-size="9" text-anchor="middle">belongs to</text>
+
+  <!-- Election to Vote (1:M) -->
+  <line x1="230" y1="440" x2="560" y2="440" stroke="#000" stroke-width="2" />
+  <circle cx="230" cy="440" r="3" fill="#000" />
+  <text x="300" y="430" font-family="Arial" font-size="10" text-anchor="middle">1</text>
+  <text x="560" y="430" font-family="Arial" font-size="10" text-anchor="middle">M</text>
+  <text x="395" y="455" font-family="Arial" font-size="9" text-anchor="middle">has</text>
+
+  <!-- Party to Vote (1:M) -->
+  <line x1="470" y1="430" x2="560" y2="430" stroke="#000" stroke-width="2" />
+  <circle cx="470" cy="430" r="3" fill="#000" />
+  <text x="515" y="420" font-family="Arial" font-size="10" text-anchor="middle">1</text>
+  <text x="560" y="420" font-family="Arial" font-size="10" text-anchor="middle">M</text>
+  <text x="515" y="445" font-family="Arial" font-size="9" text-anchor="middle">receives</text>
+
+  <!-- Voter to Vote (1:M) -->
+  <line x1="800" y1="280" x2="800" y2="300" stroke="#000" stroke-width="2" />
+  <line x1="800" y1="300" x2="635" y2="300" stroke="#000" stroke-width="2" />
+  <line x1="635" y1="300" x2="635" y2="350" stroke="#000" stroke-width="2" />
+  <circle cx="800" cy="280" r="3" fill="#000" />
+  <text x="815" y="290" font-family="Arial" font-size="10">1</text>
+  <text x="650" y="340" font-family="Arial" font-size="10">M</text>
+  <text x="720" y="295" font-family="Arial" font-size="9" text-anchor="middle">casts</text>
+
+  <!-- Cardinality and Relationship Names -->
+  
+  <!-- Legend -->
+  <rect x="1050" y="100" width="300" height="220" fill="none" stroke="#000" stroke-width="1" />
+  <text x="1200" y="120" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">LEGEND</text>
+  
+  <rect x="1070" y="140" width="80" height="40" fill="#E8F5E8" stroke="#2E7D32" stroke-width="2" />
+  <text x="1110" y="165" font-family="Arial" font-size="10" text-anchor="middle" font-weight="bold">Entity</text>
+  
+  <text x="1180" y="155" font-family="Arial" font-size="10" font-weight="bold" text-decoration="underline">Primary Key</text>
+  <text x="1180" y="170" font-family="Arial" font-size="10" font-style="italic" text-decoration="underline">Foreign Key</text>
+  
+  <line x1="1070" y1="190" x2="1120" y2="190" stroke="#000" stroke-width="2" />
+  <circle cx="1070" cy="190" r="3" fill="#000" />
+  <text x="1190" y="195" font-family="Arial" font-size="10">One-to-Many</text>
+  
+  <text x="1070" y="215" font-family="Arial" font-size="10" font-weight="bold">Relationships:</text>
+  <text x="1070" y="230" font-family="Arial" font-size="9">• Province contains Cities</text>
+  <text x="1070" y="245" font-family="Arial" font-size="9">• City has Divisions</text>
+  <text x="1070" y="260" font-family="Arial" font-size="9">• Division contains Voters</text>
+  <text x="1070" y="275" font-family="Arial" font-size="9">• Election has Votes</text>
+  <text x="1070" y="290" font-family="Arial" font-size="9">• Party receives Votes</text>
+  <text x="1070" y="305" font-family="Arial" font-size="9">• Voter casts Votes</text>
+
+  <!-- Database Constraints -->
+  <rect x="1050" y="350" width="300" height="150" fill="#F5F5F5" stroke="#666" stroke-width="1" />
+  <text x="1200" y="370" font-family="Arial" font-size="14" text-anchor="middle" font-weight="bold">CONSTRAINTS</text>
+  
+  <text x="1060" y="390" font-family="Arial" font-size="10" font-weight="bold">Vote Type:</text>
+  <text x="1060" y="405" font-family="Arial" font-size="9">• ENUM('NA', 'PA')</text>
+  <text x="1060" y="420" font-family="Arial" font-size="9">• NA = National Assembly</text>
+  <text x="1060" y="435" font-family="Arial" font-size="9">• PA = Provincial Assembly</text>
+  
+  <text x="1060" y="455" font-family="Arial" font-size="10" font-weight="bold">Business Rules:</text>
+  <text x="1060" y="470" font-family="Arial" font-size="9">• Each voter can vote once per type</text>
+  <text x="1060" y="485" font-family="Arial" font-size="9">• Vote time must be within election period</text>
+
+  <!-- Entity Descriptions -->
+  <rect x="80" y="600" width="1000" height="120" fill="#F9F9F9" stroke="#999" stroke-width="1" />
+  <text x="580" y="620" font-family="Arial" font-size="12" text-anchor="middle" font-weight="bold">ENTITY DESCRIPTIONS</text>
+  
+  <text x="100" y="640" font-family="Arial" font-size="10" font-weight="bold">PROVINCE:</text>
+  <text x="180" y="640" font-family="Arial" font-size="9">Administrative divisions of Pakistan (Punjab, Sindh, KPK, Balochistan)</text>
+  
+  <text x="100" y="655" font-family="Arial" font-size="10" font-weight="bold">CITY:</text>
+  <text x="140" y="655" font-family="Arial" font-size="9">Major cities within each province</text>
+  
+  <text x="100" y="670" font-family="Arial" font-size="10" font-weight="bold">DIVISION:</text>
+  <text x="160" y="670" font-family="Arial" font-size="9">Electoral constituencies within cities</text>
+  
+  <text x="500" y="640" font-family="Arial" font-size="10" font-weight="bold">VOTER:</text>
+  <text x="540" y="640" font-family="Arial" font-size="9">Registered citizens eligible to vote</text>
+  
+  <text x="500" y="655" font-family="Arial" font-size="10" font-weight="bold">PARTY:</text>
+  <text x="540" y="655" font-family="Arial" font-size="9">Political parties participating in elections</text>
+  
+  <text x="500" y="670" font-family="Arial" font-size="10" font-weight="bold">ELECTION:</text>
+  <text x="560" y="670" font-family="Arial" font-size="9">Election events with specific time periods</text>
+  
+  <text x="500" y="685" font-family="Arial" font-size="10" font-weight="bold">VOTE:</text>
+  <text x="535" y="685" font-family="Arial" font-size="9">Individual votes cast by voters for parties in elections</text>
+
+</svg>

@@ -9,6 +9,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.junaid.client.Main;
 import com.junaid.client.controller.Client;
+import com.junaid.client.controller.Message;
 import com.junaid.client.service.LoginRequest;
 import static com.junaid.client.service.LoginRequest.LoginStatus.*;
 import com.junaid.client.ui.model.OptionPane;
@@ -1331,7 +1332,7 @@ public final class MainFrame extends javax.swing.JFrame {
 
     private void login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_buttonActionPerformed
        
-        Main.getClient().sendMessage(LoginRequest.sendRequest(login_cnic_field.getText(), login_pass_field.getText()));
+        Main.getClient().sendMessage(new Message(LoginRequest.sendRequest(login_cnic_field.getText(), login_pass_field.getText())));
         
     }//GEN-LAST:event_login_buttonActionPerformed
 
