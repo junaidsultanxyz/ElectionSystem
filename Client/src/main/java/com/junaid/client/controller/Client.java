@@ -23,16 +23,9 @@ public class Client {
     public boolean startConnection(String ip, int port) {
         try {
             clientSocket = new Socket(ip, port);
-<<<<<<< HEAD
 
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
-=======
-            
-            in = new ObjectInputStream(clientSocket.getInputStream());
-            out = new ObjectOutputStream(clientSocket.getOutputStream());
-
->>>>>>> refs/remotes/origin/main
             
             isConnected = true;
             

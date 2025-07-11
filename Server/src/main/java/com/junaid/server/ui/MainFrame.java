@@ -3242,6 +3242,9 @@ public class MainFrame extends javax.swing.JFrame {
                 String name = p.getName();
                 String flagPath = ImagePickerUtil.baseImageDir + p.getFlagImagePath();
                 String symbolPath = ImagePickerUtil.baseImageDir + p.getSymbolImagePath();
+                
+                System.out.println(flagPath);
+                System.out.println(symbolPath);
 
                 ImageIcon flagIcon = null;
                 File flagFile = new File(flagPath);

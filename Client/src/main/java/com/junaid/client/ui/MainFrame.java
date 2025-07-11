@@ -1489,23 +1489,37 @@ public final class MainFrame extends javax.swing.JFrame {
         voting_mna_table.setModel(CustomTable.MODEL_IISR);
         voting_mna_table.setRowHeight(70);
         
+        voting_mpa_table.setModel(CustomTable.MODEL_IISR);
+        voting_mpa_table.setRowHeight(70);
+        
         try {
-            addRowVoting(voting_mna_table, "https://i.postimg.cc/bYB4G61J/symbol-pti.png", "PTI", "https://i.postimg.cc/bYB4G61J/symbol-pti.png");
-            addRowVoting(voting_mna_table, "https://i.postimg.cc/bYB4G61J/symbol-pti.png", "PTI", "https://i.postimg.cc/bYB4G61J/symbol-pti.png");
-            addRowVoting(voting_mna_table, "https://i.postimg.cc/bYB4G61J/symbol-pti.png", "PTI", "https://i.postimg.cc/bYB4G61J/symbol-pti.png");
-            addRowVoting(voting_mna_table, "https://i.postimg.cc/bYB4G61J/symbol-pti.png", "PTI", "https://i.postimg.cc/bYB4G61J/symbol-pti.png");
+            addRowVoting(voting_mna_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
+            addRowVoting(voting_mna_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
+            addRowVoting(voting_mna_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
+            addRowVoting(voting_mna_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
+            addRowVoting(voting_mna_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
+            addRowVoting(voting_mna_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
+            addRowVoting(voting_mna_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
+            
+            addRowVoting(voting_mpa_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
+            addRowVoting(voting_mpa_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
+            addRowVoting(voting_mpa_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
+            addRowVoting(voting_mpa_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
+            addRowVoting(voting_mpa_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
+            addRowVoting(voting_mpa_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
+            addRowVoting(voting_mpa_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
         } catch (MalformedURLException ex) {
             System.getLogger(MainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
     }
     
     
-    public void addRowVoting(JTable table, String partyFlagURL, String partyName, String partySymbolURL) throws MalformedURLException{
-        ImageIcon partyFlag     = new ImageIcon(new URL(partyFlagURL));
-        ImageIcon partySymbol   = new ImageIcon(new URL(partySymbolURL));
+    public void addRowVoting(JTable table, String partyFlagPath, String partyName, String partySymbolURL) throws MalformedURLException{
+        ImageIcon partyFlag     = new ImageIcon(partyFlagPath);
+        ImageIcon partySymbol   = new ImageIcon(partySymbolURL);
         
-        Image scaled_partyFlag = partyFlag.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
-        Image scaled_partySymbol = partySymbol.getImage().getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+        Image scaled_partyFlag = partyFlag.getImage().getScaledInstance(80, 65, Image.SCALE_SMOOTH);
+        Image scaled_partySymbol = partySymbol.getImage().getScaledInstance(80, 65, Image.SCALE_SMOOTH);
         
         Object[] data = new Object[] {
             new ImageIcon(scaled_partyFlag),

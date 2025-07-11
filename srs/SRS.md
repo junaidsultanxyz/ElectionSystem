@@ -86,20 +86,29 @@ The primary customers are the Election Commission of Pakistan and other governme
 - **Postconditions**: The vote is securely recorded in the database.
 
 ### 3.6 User Interfaces
-*(Insert mock screens or descriptions of the login screen, voting screen, and result screen)*
+#### 3.6.1 Server Side
+![alt text](gui/image.png)
+![alt text](<gui/image copy 2.png>)
+![alt text](<gui/image copy.png>)
+
+#### 3.6.1 Client Side
+![alt text](<gui/image copy 3.png>)
+![alt text](<gui/image copy 4.png>)
+![alt text](<gui/image copy 6.png>)
+![alt text](<gui/image copy 5.png>)
 
 ---
 
 ## Data Flow Diagrams
 
 ### 4.1 Level 0 Data Flow Diagram
-![Level 0 DFD](level0_dfd.svg)
+![alt text](diagrams/level0_dfd.svg)
 
 The Level 0 DFD provides a high-level overview of the Pakistan Election System, showing the system as a single process that interacts with external entities (Voter and Admin) and data stores (Voter Database, Candidate Database, and Vote Database).
 
 ### 4.2 Level 1 Data Flow Diagram
-![Level 1 DFD](level1_dfd.svg)
-![alt text](dfd.drawio.svg)
+![alt text](diagrams/dfd.drawio.svg)
+![alt text](diagrams/level1_dfd.svg)
 
 The Level 1 DFD decomposes the central Election System into six major subsystems:
 
@@ -148,7 +157,7 @@ The Level 2 DFD provides a detailed decomposition of the Vote Casting Process (2
 ## System Design
 
 ### 5.1 Class Diagram
-![Class Diagram](class_diagram.svg)
+![alt text](diagrams/class_diagram.svg)
 
 The Class Diagram illustrates the object-oriented design of the Pakistan Election System, showing the main classes, their attributes, methods, and relationships:
 
@@ -178,8 +187,8 @@ The Class Diagram illustrates the object-oriented design of the Pakistan Electio
 - DAO manages all model classes
 - UI classes use services for business logic
 
-### 5.5 ERD (Entity-Relationship Diagram)
-![ERD](erd.svg)
+### 5.2 ERD (Entity-Relationship Diagram)
+![alt text](diagrams/erd.svg)
 
 The Entity-Relationship Diagram shows the database schema and relationships between entities:
 
@@ -206,7 +215,7 @@ The Entity-Relationship Diagram shows the database schema and relationships betw
 - Votes must be cast within the election time period
 - Foreign key constraints ensure data integrity
 
-### 5.6 Data Dictionary
+### 5.3 Data Dictionary
 **VOTER Table**:
 - `cnic` (VARCHAR(13), PK): Unique 13-digit national identity number
 - `name` (VARCHAR(50)): Voter's full name
