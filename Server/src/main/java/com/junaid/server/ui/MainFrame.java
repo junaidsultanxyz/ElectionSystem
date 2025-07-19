@@ -4,13 +4,11 @@ import java.awt.CardLayout;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.junaid.server.Main;
 import com.junaid.server.data.DataStore;
-import com.junaid.server.model.Election;
-import com.junaid.server.model.Party;
-import com.junaid.server.model.Province;
-import com.junaid.server.model.Voter;
 import com.junaid.server.repository.DAO;
 import com.junaid.server.ui.model.CustomTable;
 import com.junaid.server.util.ImagePickerUtil;
+import com.junaid.shared_library.country.*;
+import com.junaid.shared_library.election.*;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -2439,7 +2437,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_testServerMessageFieldActionPerformed
 
     private void testServerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_testServerButtonActionPerformed
-        Main.getServer().sendServerBroadcast(testServerMessageField.getText());
+        
     }//GEN-LAST:event_testServerButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed

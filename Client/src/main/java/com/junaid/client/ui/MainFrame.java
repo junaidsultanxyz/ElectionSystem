@@ -7,12 +7,13 @@ package com.junaid.client.ui;
 import com.junaid.client.ui.model.CustomTable;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.junaid.client.Main;
-import com.junaid.client.controller.Client;
-import com.junaid.client.controller.Message;
-import com.junaid.client.service.LoginRequest;
-import static com.junaid.client.service.LoginRequest.LoginStatus.*;
-import com.junaid.client.ui.model.OptionPane;
+import com.junaid.client.SessionData;
+import com.junaid.client.service.Services;
+import com.junaid.client.util.Popup;
+import com.junaid.shared_library.election.Party;
+import com.junaid.shared_library.election.Vote;
+import com.junaid.shared_library.election.VoteType;
+import static com.junaid.shared_library.sockets.LoginRequest.LoginStatus.APPROVED;
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Graphics;
@@ -1071,7 +1072,7 @@ public final class MainFrame extends javax.swing.JFrame {
                                         {null, null, null, null}
                                     },
                                     new String [] {
-                                        "", "", "", ""
+                                        "", "", "", "selected"
                                     }
                                 ) {
                                     boolean[] canEdit = new boolean [] {
@@ -1182,17 +1183,17 @@ public final class MainFrame extends javax.swing.JFrame {
 
                                 post_vote_result_table.setModel(new javax.swing.table.DefaultTableModel(
                                     new Object [][] {
-                                        {null, null, null},
-                                        {null, null, null},
-                                        {null, null, null},
-                                        {null, null, null}
+                                        {null, null, null, null},
+                                        {null, null, null, null},
+                                        {null, null, null, null},
+                                        {null, null, null, null}
                                     },
                                     new String [] {
-                                        "", "", ""
+                                        "flag", "party_code", "symbol", "vote_type"
                                     }
                                 ) {
                                     boolean[] canEdit = new boolean [] {
-                                        false, false, false
+                                        false, false, false, false
                                     };
 
                                     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -1208,6 +1209,7 @@ public final class MainFrame extends javax.swing.JFrame {
                                     post_vote_result_table.getColumnModel().getColumn(0).setResizable(false);
                                     post_vote_result_table.getColumnModel().getColumn(1).setResizable(false);
                                     post_vote_result_table.getColumnModel().getColumn(2).setResizable(false);
+                                    post_vote_result_table.getColumnModel().getColumn(3).setResizable(false);
                                 }
 
                                 jButton4.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
@@ -1323,7 +1325,42 @@ public final class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        cardlayout.show(mainPanel, "postVotingPanel");
+        boolean valid = false;
+        Vote[] votes = null;
+        
+        if (CustomTable.getSelectedRadioRow(voting_mna_table, 3) == -1 &&
+            CustomTable.getSelectedRadioRow(voting_mpa_table, 3) == -1)
+        {
+            Popup.showMessage("Select atleast one party", "Select Party");
+        }
+        else if (CustomTable.getSelectedRadioRow(voting_mna_table, 3) != -1 &&
+            CustomTable.getSelectedRadioRow(voting_mpa_table, 3) != -1)
+        {
+            if (Popup.showYesNo("Confirm Votes? You won't be able to redo")) {
+                votes = new Vote[2];
+                valid = true;
+            }
+            
+        }
+        else {
+            valid = true;
+        }
+        
+        if (valid) {
+            votes[0] = new Vote(
+                    SessionData.getCurrentUser().getCnic(),
+                    voting_mna_table.getValueAt(CustomTable.getSelectedRadioRow(voting_mna_table, 3), 1).toString(),
+                    VoteType.NA
+            );
+            votes[1] = new Vote(
+                    SessionData.getCurrentUser().getCnic(),
+                    voting_mpa_table.getValueAt(CustomTable.getSelectedRadioRow(voting_mpa_table, 3), 1).toString(),
+                    VoteType.PA
+            );
+            
+            Services.sendCastVoteRequest(votes);
+            cardlayout.show(mainPanel, "postVotingPanel");
+        }
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
@@ -1331,15 +1368,12 @@ public final class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void login_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_login_buttonActionPerformed
-       
-        Main.getClient().sendMessage(new Message(LoginRequest.sendRequest(login_cnic_field.getText(), login_pass_field.getText())));
-        
+        Services.sendLoginRequest(login_cnic_field.getText(), login_pass_field.getText());
+        LoadVotingScreen();
     }//GEN-LAST:event_login_buttonActionPerformed
 
     
     public static void startGUI(){
-
-        
 
         SwingUtilities.invokeLater(() -> {
             new MainFrame().setVisible(true);
@@ -1486,31 +1520,34 @@ public final class MainFrame extends javax.swing.JFrame {
         hideTableHeader(dash_area_result);
         hideTableHeader(dash_country_result);
 
-        voting_mna_table.setModel(CustomTable.MODEL_IISR);
+        voting_mna_table.setModel(CustomTable.getModelInstance_IISR());
         voting_mna_table.setRowHeight(70);
         
-        voting_mpa_table.setModel(CustomTable.MODEL_IISR);
+        voting_mpa_table.setModel(CustomTable.getModelInstance_IISR());
         voting_mpa_table.setRowHeight(70);
         
-        try {
-            addRowVoting(voting_mna_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
-            addRowVoting(voting_mna_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
-            addRowVoting(voting_mna_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
-            addRowVoting(voting_mna_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
-            addRowVoting(voting_mna_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
-            addRowVoting(voting_mna_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
-            addRowVoting(voting_mna_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
-            
-            addRowVoting(voting_mpa_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
-            addRowVoting(voting_mpa_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
-            addRowVoting(voting_mpa_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
-            addRowVoting(voting_mpa_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
-            addRowVoting(voting_mpa_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
-            addRowVoting(voting_mpa_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
-            addRowVoting(voting_mpa_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
-        } catch (MalformedURLException ex) {
-            System.getLogger(MainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
+        post_vote_result_table.setModel(CustomTable.getModelInstance_IISS_PV());
+        post_vote_result_table.setRowHeight(70);
+        
+        CustomTable CT = new CustomTable();
+        CT.setRadioRenderer(voting_mna_table, 3);
+        CT.setRadioRenderer(voting_mpa_table, 3);
+        
+//            addRowVoting(voting_mna_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
+//            
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
     }
     
     
@@ -1542,12 +1579,67 @@ public final class MainFrame extends javax.swing.JFrame {
         testServerResponse.setText(msg);
     }
     
-    public static void login(){
-        if (LoginRequest.getStatus() == APPROVED){
-            OptionPane.showMessage("login success: " + Client.getCurrentUser().getCnic() + "," + Client.getCurrentUser().getName() + "," + Client.getCurrentUser().getDivision());
+    public void login(){
+        Popup.showMessage("login success: " + SessionData.getCurrentUser().getCnic() + "," + SessionData.getCurrentUser().getName() + "," + SessionData.getCurrentUser().getDivision());
+    }
+    
+    public void voteSummary(){
+        LoadPostVoteScreen();
+        cardlayout.show(mainPanel, "postVotePanel");
+    }
+    
+    
+    
+    public void LoadVotingScreen(){
+        
+        if (SessionData.getPartyData() == null){
+            Services.sendPartyInfoRequest();
+        }
+        else {
             cardlayout.show(mainPanel, "votingPanel");
         }
-        else
-            OptionPane.showMessage("Invalid User Credentials, please try again");
+    }
+    
+    public void LoadVotingTable(){
+        if (SessionData.getPartyData() != null){
+            
+        try {
+            String basePath = "../shared_images/";
+            
+            System.out.println("");
+            
+            for (Party p: SessionData.getPartyData()){
+                addRowVoting(voting_mna_table, basePath + p.getFlagImagePath(), p.getCode(), basePath + p.getSymbolImagePath());
+                addRowVoting(voting_mpa_table, basePath + p.getFlagImagePath(), p.getCode(), basePath + p.getSymbolImagePath());
+            }
+//            addRowVoting(voting_mna_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
+//            addRowVoting(voting_mna_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
+//            
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
+//            addRowVoting(voting_mpa_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
+
+        }
+        catch (MalformedURLException ex) {
+               System.getLogger(MainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+           }
+        }
+        else {
+            System.out.println("still null at mainframe");
+        }
+    }
+    
+    
+    public void LoadPostVoteScreen(){
+        
     }
 }

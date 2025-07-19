@@ -1,4 +1,4 @@
-package com.junaid.server.model;
+package com.junaid.shared_library.election;
 
 // @author junaidxyz
 
@@ -17,6 +17,7 @@ public class Vote implements Serializable{
         this.voterCNIC = voterCNIC;
         this.partyCode = partyCode;
         this.voteType = voteType;
+        this.timestamp = LocalDateTime.now();
     }
 
     public Vote(int id, String voterCNIC, String partyCode, VoteType voteType, LocalDateTime timestamp) {

@@ -2,12 +2,9 @@ package com.junaid.server.data;
 
 // @author junaidxyz
 
-import com.junaid.server.model.City;
-import com.junaid.server.model.Division;
-import com.junaid.server.model.Party;
-import com.junaid.server.model.Province;
-import com.junaid.server.model.Voter;
 import com.junaid.server.repository.DAO;
+import com.junaid.shared_library.country.*;
+import com.junaid.shared_library.election.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;

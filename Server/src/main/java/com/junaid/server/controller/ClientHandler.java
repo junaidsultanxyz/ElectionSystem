@@ -1,25 +1,25 @@
 package com.junaid.server.controller;
 
 
-import com.junaid.server.model.Voter;
-import com.junaid.server.service.LoginService;
-import com.junaid.server.ui.MainFrame;
-import java.io.BufferedReader;
+import com.junaid.server.repository.DAO;
+import com.junaid.shared_library.election.*;
+import com.junaid.shared_library.sockets.LoginRequest;
+
+import com.junaid.shared_library.sockets.Message;
+
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
+import java.sql.SQLException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 class ClientHandler implements Runnable {
     private final Socket clientSocket;
     
-    private PrintWriter out;        // to send string message to client
-    private BufferedReader in;      // to get string message from client
-    
-    private ObjectInputStream objIn;
-    private ObjectOutputStream objOut;
+    private ObjectInputStream in;
+    private ObjectOutputStream out;
     
     private final String clientId;
     private final Server server;
@@ -34,42 +34,76 @@ class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-            out = new PrintWriter(clientSocket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             
-            objOut = new ObjectOutputStream(clientSocket.getOutputStream());
-            objIn = new ObjectInputStream(clientSocket.getInputStream());
+            out = new ObjectOutputStream(clientSocket.getOutputStream());
+            in = new ObjectInputStream(clientSocket.getInputStream());
 
-            out.println("Welcome! You are connected as " + clientId);
+            sendMessage(new Message("CONNECTION", "You are connected as " + clientId));
             
-            String response;
-            while (isConnected && (response = in.readLine()) != null) {
-                System.out.println("[" + clientId + "] : " + response);
-                MainFrame.testServerLogs.append(response);
+            Message response;
+            while (isConnected && (response = (Message) in.readObject()) != null) {
+                    
+                if (response.getType().equalsIgnoreCase("LOGIN")){
+                    LoginRequest loginRequest = (LoginRequest) response.getMessage();
+                    
+                    Voter voter = null;
+                    try {
+                        voter = DAO.validateLogin(loginRequest.getCnic(), loginRequest.getPassword());
+                    }
+                    catch (SQLException ex) {
+                        System.out.println("[AUTH]: Login Failed {" + loginRequest.getCnic() + "}");
+                        System.getLogger(ClientHandler.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    }
+                    
+                    if (voter != null){
+                        loginRequest.setStatus(LoginRequest.LoginStatus.APPROVED);
+                        sendMessage(new Message("LOGIN", voter));
+                    }
+                    else{
+                        loginRequest.setStatus(LoginRequest.LoginStatus.REJECTED);
+                        sendMessage(new Message("LOGIN", null));
+                    }
+                }
                 
-                String[] response_chunk = response.split(",");
-                    
-                    if (response_chunk[0].equalsIgnoreCase("LOGIN")){
-                        Voter voter = LoginService.validateLogin(response_chunk[1], response_chunk[2]);
-                        if (voter != null){
-                            sendMessage(LoginService.sendApproved());
-                            sendObject(voter);
-                        }
-                        else
-                            sendMessage(LoginService.sendRejected());
+                
+                
+                if (response.getType().equalsIgnoreCase("PARTY")){
+                    try {
+                        ArrayList<Party> parties = DAO.displayAllParties();
+                        sendMessage(new Message("PARTY", parties));
+                        System.out.println("parties sent to client");
                     }
-                    
-                    if (response_chunk[0].equalsIgnoreCase("VOTING")){
+                    catch (SQLException ex) {
+                        System.out.println("error while getting parties");
+                        System.getLogger(ClientHandler.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                    }
+                }
+                
+                
+                
+                if (response.getType().equalsIgnoreCase("VOTE")){
+                    if (response.getMessage() == null){
+                        System.out.println("unexpected error happened");
+                        sendMessage(new Message("VOTE", null));
                         
                     }
-                    
-                    if (response_chunk[0].equalsIgnoreCase("RESULT")){
+                    else {
+                        Vote[] votes = (Vote[]) response.getMessage();
+                        DAO.castVote(votes[0].getVoterCNIC(), votes[0].getPartyCode(), votes[0].getVoteType(), votes[0].getTimestamp()); // mna vote
+                        DAO.castVote(votes[1].getVoterCNIC(), votes[1].getPartyCode(), votes[1].getVoteType(), votes[1].getTimestamp()); // mpa vote
                         
+                        System.out.println("[SERVER]: vote casted successful");
+                        
+                        sendMessage(new Message("VOTE", votes));
                     }
+                }
+                   
             }
         }
         catch (IOException e) {
             System.err.println("Error handling client " + clientId + ": " + e.getMessage());
+        } catch (ClassNotFoundException ex) {
+            System.getLogger(ClientHandler.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         }
         finally {
             closeConnection();
@@ -77,21 +111,15 @@ class ClientHandler implements Runnable {
         }
     }
     
-    public void sendMessage(String message) {
+    public void sendMessage(Message message) {
         if (out != null && isConnected) {
-            out.println(message);
-        }
-    }
-    
-    public void sendObject (Object obj){
-        try {
-            if (obj != null && isConnected){
-                objOut.writeObject(obj);
-                objOut.flush();
+            try {
+                out.writeObject(message);
+                out.flush();
+            } 
+            catch (IOException ex) {
+                System.getLogger(ClientHandler.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
-        }
-        catch (IOException e){
-            System.out.println(e.getMessage());
         }
     }
     
@@ -100,8 +128,6 @@ class ClientHandler implements Runnable {
         try {
             if (in != null) in.close();
             if (out != null) out.close();
-            if (objIn != null) objIn.close();
-            if (objOut != null) objOut.close();
             if (clientSocket != null) clientSocket.close();
         } catch (IOException e) {
             System.err.println("Error closing connection for " + clientId + ": " + e.getMessage());

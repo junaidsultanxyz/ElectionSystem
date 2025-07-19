@@ -56,6 +56,12 @@
             <version>9.3.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.junaid</groupId>
+            <artifactId>shared_library</artifactId>
+            <version>1.0</version>
+        </dependency>
 
+        
     </dependencies>
 </project>

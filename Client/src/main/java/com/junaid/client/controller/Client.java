@@ -1,24 +1,26 @@
 package com.junaid.client.controller;
 
-import com.junaid.client.model.Voter;
-import com.junaid.client.service.LoginRequest;
-import static com.junaid.client.service.LoginRequest.LoginStatus.*;
+import com.junaid.client.Main;
+import com.junaid.client.SessionData;
 import com.junaid.client.ui.MainFrame;
-import com.junaid.client.ui.model.OptionPane;
+import com.junaid.client.util.Popup;
+
+import com.junaid.shared_library.election.*;
+import com.junaid.shared_library.sockets.*;
+
 import java.io.*;
 import java.net.*;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class Client {
     private Socket clientSocket;
-
+    
     private ObjectInputStream in;  
     private ObjectOutputStream out;
     
     private boolean isConnected = false;
     private Thread messageListener;
-    
-    private static Voter currentUser;
     
     public boolean startConnection(String ip, int port) {
         try {
@@ -26,11 +28,11 @@ public class Client {
 
             out = new ObjectOutputStream(clientSocket.getOutputStream());
             in = new ObjectInputStream(clientSocket.getInputStream());
+
             
             isConnected = true;
             
             System.out.println("[CLIENT] : Connected to server at " + ip + ":" + port);
-            
             startMessageListener();
             
             return true;
@@ -43,46 +45,60 @@ public class Client {
     private void startMessageListener() {
         messageListener = new Thread(() -> {
             try {
-                String response;
-                while (isConnected && (response = in.readLine()) != null) {
-                    String[] response_chunk = response.split(",");
-                    System.out.println(response);
+                Message response;
+                System.out.println("is connected inside listener: " + isConnected());
+                while (isConnected && (Message) in.readObject() != null) {
                     
-                    if (response_chunk[0].equals("LOGIN")){
-                        System.out.println("inside if of client response");
-                        
-                        if (response_chunk[1].equals("REJECTED")){
-                            LoginRequest.setStatus(INVALID);
-                            System.out.println("login rejected at client");
+                    response = (Message) in.readObject();
+                    
+                    String type = (String) response.getType();
+                    Object message = response.getMessage();
+                    
+                    System.out.println("msg type: " + type);
+                    
+                    if (type.equalsIgnoreCase("PARTY")){
+                        System.out.println("party msg received");
+
+                        if (message == null){
+                            System.out.println("error occured while getting vote msg");
                         }
-                        
-                        if (response_chunk[1].equals("APPROVED")){
-                            LoginRequest.setStatus(APPROVED);
-                            System.out.println("login accepted at client");
-                            
-                            Object userObj = in.readObject();
-                            if (userObj instanceof Voter voter){
-                                currentUser = voter;
-                                MainFrame.login();
-                            }
-                            else {
-                                OptionPane.showMessage("Error while getting credentials");
-                            }
+                        else if (message instanceof ArrayList parties){
+                            SessionData.setPartyData(parties);
+                            System.out.println("parties load success");
+                            System.out.println(parties.toString());
+                        }
+                        else {
+                            System.out.println("unknown errors while loading parties");
                         }
                     }
-                    
-                    if (response_chunk[0].equalsIgnoreCase("VOTING")){
-                        
+                    else if (type.equalsIgnoreCase("LOGIN")){
+                        if (message == null){
+                            System.out.println("[AUTH]: login rejected");
+                        }
+                        else if (message instanceof Voter user){
+                            SessionData.setCurrentUser(user);
+
+                            Main.getUI().login();
+                            Main.getUI().LoadVotingScreen();
+                            Main.getUI().LoadVotingTable();
+                            Main.getUI().LoadVotingScreen();
+                        }
                     }
-                    
-                    if (response_chunk[0].equalsIgnoreCase("RESULT")){
-                        
+                    else if (type.equalsIgnoreCase("VOTE")){
+                        if (message == null){
+                            System.out.println("error occured while getting vote msg");
+                        }
+                        else if (message instanceof Vote[] votes){
+                            Popup.showMessage("vote has been successfully casted", "Vote Casted");
+
+                            SessionData.setVoteData(votes);
+
+                            Main.getUI().LoadPostVoteScreen();
+                        }
                     }
                 }
-            } catch (IOException e) {
-                if (isConnected) {
-                    System.err.println("[CLIENT] : Error reading from server: " + e.getMessage());
-                }
+            } catch (IOException ex) {
+                System.getLogger(Client.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             } catch (ClassNotFoundException ex) {
                 System.getLogger(Client.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
             }
@@ -99,8 +115,14 @@ public class Client {
             catch (IOException ex) {
                 System.err.println(ex.getMessage());
             }
-        } else {
-            System.err.println("[CLIENT] : Not connected to server");
+        }
+        else{
+            if (isConnected()) System.out.println("connected");
+            
+            if (out == null) System.out.println("out is null");
+            if (in == null) System.out.println("in is null");
+            
+            System.err.println("[CLIENT] awdwad: Not connected to server");
         }
     }
     
@@ -120,10 +142,6 @@ public class Client {
     
     public boolean isConnected() {
         return isConnected && clientSocket != null && !clientSocket.isClosed();
-    }
-    
-    public static Voter getCurrentUser(){
-        return currentUser;
     }
 }
 

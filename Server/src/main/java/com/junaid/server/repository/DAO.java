@@ -1,12 +1,11 @@
 package com.junaid.server.repository;
 
 // @author junaidxyz
-import com.junaid.server.model.City;
-import com.junaid.server.model.Division;
-import com.junaid.server.model.Election;
-import com.junaid.server.model.Party;
-import com.junaid.server.model.Province;
-import com.junaid.server.model.Voter;
+
+
+import com.junaid.shared_library.country.*;
+import com.junaid.shared_library.election.*;
+
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
@@ -14,11 +13,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class DAO {
+    public synchronized static void castVote(String cnic, String partyCode, VoteType voteType, LocalDateTime voteTime) {
+        String sql = "{CALL cast_vote(?, ?, ?, ?)}";
+
+        try (Connection conn = DBConnection.getConnection();
+             CallableStatement stmt = conn.prepareCall(sql)) {
+
+            stmt.setString(1, cnic);
+            stmt.setString(2, partyCode);
+            stmt.setString(3, voteType.toString());
+            stmt.setTimestamp(4, Timestamp.valueOf(voteTime));
+
+            stmt.execute();
+            System.out.println("Vote successfully cast!");
+
+        } catch (SQLException e) {
+            System.err.println("Error casting vote:");
+            e.printStackTrace();
+        }
+    }
+    
     public static Voter validateLogin(String cnic, String password) throws SQLException{
         String sql = "{CALL validate_voter_login(?, ?, ?, ?, ?)}";
         Connection conn = DBConnection.getConnection();
@@ -283,7 +303,7 @@ public class DAO {
             }
         } catch (SQLException e) {
         }
-
+        
         return result;
     }
 

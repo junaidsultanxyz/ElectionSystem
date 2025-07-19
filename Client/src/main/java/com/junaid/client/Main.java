@@ -4,6 +4,7 @@ package com.junaid.client;
 import com.junaid.client.controller.Client;
 import com.junaid.client.ui.MainFrame;
 import java.io.IOException;
+import javax.swing.SwingUtilities;
 
 
 public class Main {
@@ -11,6 +12,7 @@ public class Main {
     private static final String IP = "localhost";
     
     static Client client;
+    static MainFrame ui;
     
     public static void main(String[] args) throws IOException {
         client = new Client();
@@ -24,10 +26,18 @@ public class Main {
         connectionThread.setDaemon(true);
         connectionThread.start();
         
-        MainFrame.startGUI();
+        ui = new MainFrame();
+        ui.setVisible(true);
+        SwingUtilities.invokeLater(() -> {
+            ui.setVisible(true);
+        });
     }
     
     public static Client getClient(){
         return client;
+    }
+    
+    public static MainFrame getUI(){
+        return ui;
     }
 }

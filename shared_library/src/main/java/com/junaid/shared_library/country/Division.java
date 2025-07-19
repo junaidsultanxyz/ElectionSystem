@@ -1,8 +1,11 @@
-package com.junaid.server.model;
+package com.junaid.shared_library.country;
 
 // @author junaidxyz
 
-public class Division {
+import java.io.Serializable;
+
+
+public class Division implements Serializable {
     private final int id;
 
     public Division(int id) {

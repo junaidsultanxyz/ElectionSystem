@@ -3,6 +3,7 @@ package com.junaid.server.util;
 // @author junaidxyz
 
 
+import com.junaid.server.Attributes;
 import java.awt.Component;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class ImagePickerUtil {
-    public static String baseImageDir   = "../shared_images/";
+    public static String baseImageDir   = Attributes.getImageDirPath();
     
     public static String pickAndSaveFlag(Component parent, String filename) {
         return pickAndSaveImage(parent, "flag", filename);

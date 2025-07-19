@@ -1,4 +1,4 @@
-package com.junaid.server.model;
+package com.junaid.shared_library.country;
 
 // @author junaidxyz
 

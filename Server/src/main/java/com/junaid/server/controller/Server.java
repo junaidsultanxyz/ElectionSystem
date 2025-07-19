@@ -1,5 +1,6 @@
 package com.junaid.server.controller;
 
+import com.junaid.shared_library.sockets.Message;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -58,32 +59,23 @@ public class Server {
         System.out.println(clientId + " disconnected. Total clients: " + clients.size());
     }
     
-    
-    public void broadcastMessage(String message, String senderId) {
-        for (Map.Entry<String, ClientHandler> entry : clients.entrySet()) {
-            if (!entry.getKey().equals(senderId)) {
-                entry.getValue().sendMessage("Broadcast from " + senderId + ": " + message);
-            }
-        }
-    }
-    
     public Set<String> getConnectedClients() {
         return new HashSet<>(clients.keySet());
     }
     
-    public boolean sendServerMessageToClient(String targetClientId, String message) {
+    public boolean sendServerMessageToClient(String targetClientId, Object message) {
         ClientHandler targetClient = clients.get(targetClientId);
         if (targetClient != null) {
-            targetClient.sendMessage(message);
+            targetClient.sendMessage(new Message("PRIVATE", message));
             return true;
         }
         return false;
     }
     
     
-    public void sendServerBroadcast(String message) {
+    public void broadcastMessage(String message) {
         for (ClientHandler client : clients.values()) {
-            client.sendMessage(message);
+            client.sendMessage(new Message("ANNOUNCEMENT", message));
         }
     }
     
