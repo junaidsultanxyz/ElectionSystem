@@ -24,4 +24,14 @@ public class Services {
         Main.getClient().sendMessage(new Message("PARTY", null));
         System.out.println("party request sent");
     }
+    
+    public static void sendCountryResultRequest(){
+        Main.getClient().sendMessage(new Message("RESULT_COUNTRY", null));
+        System.out.println("country request sent");
+    }
+    
+    public static void sendAreaResultRequest(int div){
+        Main.getClient().sendMessage(new Message("RESULT_AREA", div));
+        System.out.println("area request sent");
+    }
 }

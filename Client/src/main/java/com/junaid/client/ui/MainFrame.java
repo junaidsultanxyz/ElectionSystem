@@ -7,6 +7,7 @@ package com.junaid.client.ui;
 import com.junaid.client.ui.model.CustomTable;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import com.junaid.client.Main;
 import com.junaid.client.SessionData;
 import com.junaid.client.service.Services;
 import com.junaid.client.util.Popup;
@@ -328,7 +329,12 @@ public final class MainFrame extends javax.swing.JFrame {
                                 post_vote_result_table = new javax.swing.JTable();
                                 jButton4 = new javax.swing.JButton();
                                 settingPanel = new javax.swing.JPanel();
-                                exampleLabel = new javax.swing.JLabel();
+                                jPanel10 = new javax.swing.JPanel();
+                                jButton7 = new javax.swing.JButton();
+                                jTextField1 = new javax.swing.JTextField();
+                                jTextField2 = new javax.swing.JTextField();
+                                jTextField3 = new javax.swing.JTextField();
+                                jLabel1 = new javax.swing.JLabel();
 
                                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                                 setMinimumSize(new java.awt.Dimension(1213, 784));
@@ -954,7 +960,7 @@ public final class MainFrame extends javax.swing.JFrame {
 
                                 jLabel16.setFont(new java.awt.Font("Ubuntu", 1, 14)); // NOI18N
                                 jLabel16.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-                                jLabel16.setText("NA-134 Lahore");
+                                jLabel16.setText("PP-134 Lahore");
 
                                 javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
                                 jPanel16.setLayout(jPanel16Layout);
@@ -1272,21 +1278,73 @@ public final class MainFrame extends javax.swing.JFrame {
 
                                 settingPanel.setBackground(new java.awt.Color(241, 250, 246));
 
+                                jPanel10.setBackground(new java.awt.Color(255, 255, 255));
+
+                                jButton7.setFont(new java.awt.Font("Ubuntu", 1, 18)); // NOI18N
+                                jButton7.setForeground(new java.awt.Color(255, 51, 51));
+                                jButton7.setText("Logout");
+
+                                jTextField1.setText("Name");
+
+                                jTextField2.setText("CNIC");
+
+                                jTextField3.setText("Address");
+                                jTextField3.addActionListener(new java.awt.event.ActionListener() {
+                                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                        jTextField3ActionPerformed(evt);
+                                    }
+                                });
+
+                                jLabel1.setFont(new java.awt.Font("Ubuntu", 1, 24)); // NOI18N
+                                jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+                                jLabel1.setText("Settings");
+
+                                javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
+                                jPanel10.setLayout(jPanel10Layout);
+                                jPanel10Layout.setHorizontalGroup(
+                                    jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel10Layout.createSequentialGroup()
+                                        .addGap(32, 32, 32)
+                                        .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)
+                                            .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jTextField3)
+                                                .addComponent(jTextField2)
+                                                .addComponent(jTextField1)
+                                                .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 353, Short.MAX_VALUE)))
+                                        .addGap(42, 42, 42))
+                                );
+                                jPanel10Layout.setVerticalGroup(
+                                    jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                                        .addGap(38, 38, 38)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(46, 46, 46)
+                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 179, Short.MAX_VALUE)
+                                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(46, 46, 46))
+                                );
+
                                 javax.swing.GroupLayout settingPanelLayout = new javax.swing.GroupLayout(settingPanel);
                                 settingPanel.setLayout(settingPanelLayout);
                                 settingPanelLayout.setHorizontalGroup(
                                     settingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(settingPanelLayout.createSequentialGroup()
-                                        .addGap(375, 375, 375)
-                                        .addComponent(exampleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(558, Short.MAX_VALUE))
+                                        .addGap(45, 45, 45)
+                                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addContainerGap(747, Short.MAX_VALUE))
                                 );
                                 settingPanelLayout.setVerticalGroup(
                                     settingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(settingPanelLayout.createSequentialGroup()
-                                        .addGap(174, 174, 174)
-                                        .addComponent(exampleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addContainerGap(343, Short.MAX_VALUE))
+                                        .addGap(46, 46, 46)
+                                        .addComponent(jPanel10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addContainerGap(58, Short.MAX_VALUE))
                                 );
 
                                 mainPanel.add(settingPanel, "card2");
@@ -1313,10 +1371,17 @@ public final class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_nav_settingMouseClicked
 
     private void nav_voteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nav_voteMouseClicked
-        cardlayout.show(mainPanel, "votingPanel");
+        if (SessionData.getVoteData() != null){
+            cardlayout.show(mainPanel, "postVotingPanel");
+        }
+        else {
+            cardlayout.show(mainPanel, "votingPanel");    
+        }
+        
     }//GEN-LAST:event_nav_voteMouseClicked
 
     private void nav_homeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nav_homeMouseClicked
+        LoadDashVoteTable();
         cardlayout.show(mainPanel, "dashboardPanel");
     }//GEN-LAST:event_nav_homeMouseClicked
 
@@ -1326,24 +1391,30 @@ public final class MainFrame extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         boolean valid = false;
-        Vote[] votes = null;
         
-        if (CustomTable.getSelectedRadioRow(voting_mna_table, 3) == -1 &&
-            CustomTable.getSelectedRadioRow(voting_mpa_table, 3) == -1)
-        {
-            Popup.showMessage("Select atleast one party", "Select Party");
-        }
-        else if (CustomTable.getSelectedRadioRow(voting_mna_table, 3) != -1 &&
-            CustomTable.getSelectedRadioRow(voting_mpa_table, 3) != -1)
-        {
-            if (Popup.showYesNo("Confirm Votes? You won't be able to redo")) {
-                votes = new Vote[2];
-                valid = true;
-            }
-            
+        Vote[] votes = null;
+               
+        if (SessionData.getVoteData() != null){
+            valid = false;
         }
         else {
-            valid = true;
+            if (CustomTable.getSelectedRadioRow(voting_mna_table, 3) == -1 &&
+            CustomTable.getSelectedRadioRow(voting_mpa_table, 3) == -1)
+            {
+                Popup.showMessage("Select atleast one party", "Select Party");
+            }
+            else if (CustomTable.getSelectedRadioRow(voting_mna_table, 3) != -1 &&
+                CustomTable.getSelectedRadioRow(voting_mpa_table, 3) != -1)
+            {
+                if (Popup.showYesNo("Confirm Votes? You won't be able to redo")) {
+                    votes = new Vote[2];
+                    valid = true;
+                }
+
+            }
+            else {
+                valid = true;
+            }
         }
         
         if (valid) {
@@ -1358,7 +1429,13 @@ public final class MainFrame extends javax.swing.JFrame {
                     VoteType.PA
             );
             
-            Services.sendCastVoteRequest(votes);
+            if (SessionData.getVoteData() == null)
+                Services.sendCastVoteRequest(votes);
+            
+            cardlayout.show(mainPanel, "postVotingPanel");
+        }
+        else {
+            Popup.showMessage("already voted");
             cardlayout.show(mainPanel, "postVotingPanel");
         }
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -1371,6 +1448,10 @@ public final class MainFrame extends javax.swing.JFrame {
         Services.sendLoginRequest(login_cnic_field.getText(), login_pass_field.getText());
         LoadVotingScreen();
     }//GEN-LAST:event_login_buttonActionPerformed
+
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
 
     
     public static void startGUI(){
@@ -1386,13 +1467,14 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JTable dash_mna_vote;
     private javax.swing.JTable dash_mpa_vote;
     private javax.swing.JPanel dashboardPanel;
-    private javax.swing.JLabel exampleLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
@@ -1410,6 +1492,7 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
@@ -1435,6 +1518,9 @@ public final class MainFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel jioawjdwa;
     private javax.swing.JPanel loginPanel;
     private javax.swing.JButton login_button;
@@ -1492,10 +1578,6 @@ public final class MainFrame extends javax.swing.JFrame {
 
             Image scaled_post_vote_tick = post_vote_tick.getImage().getScaledInstance(120, 120, Image.SCALE_SMOOTH);
             postVoteTickLabel.setIcon(new ImageIcon(scaled_post_vote_tick));
-            
-            URL imageUrl = new URL("https://i.postimg.cc/gkLQ3vKK/symbol-ppp.png");
-            ImageIcon icon = new ImageIcon(imageUrl);
-            exampleLabel.setIcon(icon);
 
         }
         catch (Exception e){
@@ -1523,31 +1605,23 @@ public final class MainFrame extends javax.swing.JFrame {
         voting_mna_table.setModel(CustomTable.getModelInstance_IISR());
         voting_mna_table.setRowHeight(70);
         
+        
         voting_mpa_table.setModel(CustomTable.getModelInstance_IISR());
         voting_mpa_table.setRowHeight(70);
         
         post_vote_result_table.setModel(CustomTable.getModelInstance_IISS_PV());
         post_vote_result_table.setRowHeight(70);
         
+        dash_mna_vote.setModel(CustomTable.getModelInstance_IISS_PV());
+        dash_mna_vote.setRowHeight(90);
+        dash_mpa_vote.setModel(CustomTable.getModelInstance_IISS_PV());
+        dash_mpa_vote.setRowHeight(90);
+                
+        
         CustomTable CT = new CustomTable();
         CT.setRadioRenderer(voting_mna_table, 3);
         CT.setRadioRenderer(voting_mpa_table, 3);
-        
-//            addRowVoting(voting_mna_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
-//            
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
+
     }
     
     
@@ -1568,6 +1642,23 @@ public final class MainFrame extends javax.swing.JFrame {
         ((DefaultTableModel) table.getModel()).addRow(data);
     }
     
+    public void addRowPostVote (JTable table, String partyFlagPath, String partyName, String partySymbolURL, VoteType type) throws MalformedURLException{
+        ImageIcon partyFlag     = new ImageIcon(partyFlagPath);
+        ImageIcon partySymbol   = new ImageIcon(partySymbolURL);
+        
+        Image scaled_partyFlag = partyFlag.getImage().getScaledInstance(80, 65, Image.SCALE_SMOOTH);
+        Image scaled_partySymbol = partySymbol.getImage().getScaledInstance(80, 65, Image.SCALE_SMOOTH);
+        
+        Object[] data = new Object[] {
+            new ImageIcon(scaled_partyFlag),
+            partyName,
+            new ImageIcon(scaled_partySymbol),
+            type.toString()
+        };
+        
+        ((DefaultTableModel) table.getModel()).addRow(data);
+    }
+    
     
     public static void hideTableHeader(JTable table) {
         table.setTableHeader(null);
@@ -1581,23 +1672,25 @@ public final class MainFrame extends javax.swing.JFrame {
     
     public void login(){
         Popup.showMessage("login success: " + SessionData.getCurrentUser().getCnic() + "," + SessionData.getCurrentUser().getName() + "," + SessionData.getCurrentUser().getDivision());
+        LoadVotingScreen();
     }
     
     public void voteSummary(){
-        LoadPostVoteScreen();
-        cardlayout.show(mainPanel, "postVotePanel");
+        try {
+            LoadPostVoteScreen();
+            cardlayout.show(mainPanel, "postVotePanel");
+        }
+        catch (MalformedURLException ex) {
+            System.getLogger(MainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+        
     }
     
     
     
-    public void LoadVotingScreen(){
-        
-        if (SessionData.getPartyData() == null){
+    public void LoadVotingScreen(){ 
+        if (SessionData.getPartyData() == null)
             Services.sendPartyInfoRequest();
-        }
-        else {
-            cardlayout.show(mainPanel, "votingPanel");
-        }
     }
     
     public void LoadVotingTable(){
@@ -1612,21 +1705,8 @@ public final class MainFrame extends javax.swing.JFrame {
                 addRowVoting(voting_mna_table, basePath + p.getFlagImagePath(), p.getCode(), basePath + p.getSymbolImagePath());
                 addRowVoting(voting_mpa_table, basePath + p.getFlagImagePath(), p.getCode(), basePath + p.getSymbolImagePath());
             }
-//            addRowVoting(voting_mna_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
-//            addRowVoting(voting_mna_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
-//            
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/PTI.png" , "PTI" , "../shared_images/symbol/PTI.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/PPP.png" , "PPP" , "../shared_images/symbol/PPP.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/PMLN.png", "PMLN", "../shared_images/symbol/PMLN.jpg");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/MQM.png" , "MQM" , "../shared_images/symbol/MQM.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/ANP.png" , "ANP" , "../shared_images/symbol/ANP.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/BNP.png" , "BNP" , "../shared_images/symbol/BNP.png");
-//            addRowVoting(voting_mpa_table, "../shared_images/flag/GDA.jpg" , "GDA" , "../shared_images/symbol/GDA.png");
+            
+            Main.getUI().SwitchToVoting();
 
         }
         catch (MalformedURLException ex) {
@@ -1638,8 +1718,76 @@ public final class MainFrame extends javax.swing.JFrame {
         }
     }
     
+    public void SwitchToVoting(){
+        cardlayout.show(mainPanel, "votingPanel");
+    }
     
-    public void LoadPostVoteScreen(){
+    public void LoadPostVoteScreen() throws MalformedURLException{
+        String basePath = "../shared_images/";
         
+        for (Vote v : SessionData.getVoteData()){
+            Party p = SessionData.getPartyByCode(v.getPartyCode());
+            addRowPostVote(post_vote_result_table, basePath + p.getFlagImagePath(), p.getCode(), basePath + p.getSymbolImagePath(), v.getVoteType());
+        }
+    }
+    
+    
+    public void LoadDashboardScreen(){
+        LoadDashVoteTable();
+        LoadAreaResult();
+        LoadCountryResult();
+    }
+    
+    public void LoadDashVoteTable(){
+        Vote[] votes = SessionData.getVoteData();
+        String basePath = "../shared_images/";
+        Party mna_party = SessionData.getPartyByCode(votes[0].getPartyCode());
+        Party mpa_party = SessionData.getPartyByCode(votes[1].getPartyCode());
+        
+        ((DefaultTableModel) dash_mna_vote.getModel()).setRowCount(0);
+        ((DefaultTableModel) dash_mpa_vote.getModel()).setRowCount(0);
+        
+        try {
+            addRowPostVote(dash_mna_vote, basePath+mna_party.getFlagImagePath(), mna_party.getCode(), basePath+mna_party.getSymbolImagePath(), votes[0].getVoteType());
+            addRowPostVote(dash_mpa_vote, basePath+mpa_party.getFlagImagePath(), mpa_party.getCode(), basePath+mpa_party.getSymbolImagePath(), votes[1].getVoteType());
+        } catch (MalformedURLException ex) {
+            System.getLogger(MainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+        }
+    }
+    
+    public void LoadAreaResult(){
+        Services.sendAreaResultRequest(SessionData.getCurrentUser().getDivision());
+        
+//        String basePath = "../shared_images/";
+//        Party mna_party = SessionData.getPartyByCode(votes[0].getPartyCode());
+//        Party mpa_party = SessionData.getPartyByCode(votes[1].getPartyCode());
+//        
+//        ((DefaultTableModel) dash_mna_vote.getModel()).setRowCount(0);
+//        ((DefaultTableModel) dash_mpa_vote.getModel()).setRowCount(0);
+//        
+//        try {
+//            addRowPostVote(dash_mna_vote, basePath+mna_party.getFlagImagePath(), mna_party.getCode(), basePath+mna_party.getSymbolImagePath(), votes[0].getVoteType());
+//            addRowPostVote(dash_mpa_vote, basePath+mpa_party.getFlagImagePath(), mpa_party.getCode(), basePath+mpa_party.getSymbolImagePath(), votes[1].getVoteType());
+//        } catch (MalformedURLException ex) {
+//            System.getLogger(MainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+//        }
+    }
+    
+    public void LoadCountryResult(){
+        Services.sendCountryResultRequest();
+        
+//        String basePath = "../shared_images/";
+//        Party mna_party = SessionData.getPartyByCode(votes[0].getPartyCode());
+//        Party mpa_party = SessionData.getPartyByCode(votes[1].getPartyCode());
+//        
+//        ((DefaultTableModel) dash_mna_vote.getModel()).setRowCount(0);
+//        ((DefaultTableModel) dash_mpa_vote.getModel()).setRowCount(0);
+//        
+//        try {
+//            addRowPostVote(dash_mna_vote, basePath+mna_party.getFlagImagePath(), mna_party.getCode(), basePath+mna_party.getSymbolImagePath(), votes[0].getVoteType());
+//            addRowPostVote(dash_mpa_vote, basePath+mpa_party.getFlagImagePath(), mpa_party.getCode(), basePath+mpa_party.getSymbolImagePath(), votes[1].getVoteType());
+//        } catch (MalformedURLException ex) {
+//            System.getLogger(MainFrame.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+//        }
     }
 }

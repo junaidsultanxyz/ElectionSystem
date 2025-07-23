@@ -46,7 +46,6 @@ public class Client {
         messageListener = new Thread(() -> {
             try {
                 Message response;
-                System.out.println("is connected inside listener: " + isConnected());
                 while (isConnected && (Message) in.readObject() != null) {
                     
                     response = (Message) in.readObject();
@@ -77,11 +76,10 @@ public class Client {
                         }
                         else if (message instanceof Voter user){
                             SessionData.setCurrentUser(user);
-
+                            
                             Main.getUI().login();
                             Main.getUI().LoadVotingScreen();
                             Main.getUI().LoadVotingTable();
-                            Main.getUI().LoadVotingScreen();
                         }
                     }
                     else if (type.equalsIgnoreCase("VOTE")){

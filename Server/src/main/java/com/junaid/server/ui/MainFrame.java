@@ -3240,9 +3240,6 @@ public class MainFrame extends javax.swing.JFrame {
                 String name = p.getName();
                 String flagPath = ImagePickerUtil.baseImageDir + p.getFlagImagePath();
                 String symbolPath = ImagePickerUtil.baseImageDir + p.getSymbolImagePath();
-                
-                System.out.println(flagPath);
-                System.out.println(symbolPath);
 
                 ImageIcon flagIcon = null;
                 File flagFile = new File(flagPath);
@@ -3418,13 +3415,14 @@ public class MainFrame extends javax.swing.JFrame {
                     v.getCnic(),
                     v.getName(),
                     v.getAge(),
-                    province.getCode() + "-" + div_id
+                    (String) province.getCode() + "-" + div_id
                 });
             }
 
         }
         catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Failed to load voter data: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 

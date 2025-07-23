@@ -6,9 +6,11 @@ package com.junaid.client;
 import com.junaid.shared_library.election.*;
 import com.junaid.shared_library.sockets.LoginRequest;
 import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
 
 
 public class SessionData {
+    
     private static Voter currentUser;
     private static Vote[] voteData;
     private static ArrayList<Party> partyData;
@@ -50,5 +52,13 @@ public class SessionData {
         SessionData.loginRequest = loginRequest;
     }
     
-    
+    public static Party getPartyByCode(String code){
+        for (Party p: partyData){
+            if (p.getCode().equalsIgnoreCase(code)){
+                return p;
+            }
+        }
+        
+        return null;
+    }
 }

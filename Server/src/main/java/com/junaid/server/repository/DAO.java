@@ -32,6 +32,7 @@ public class DAO {
 
             stmt.execute();
             System.out.println("Vote successfully cast!");
+            
 
         } catch (SQLException e) {
             System.err.println("Error casting vote:");
@@ -391,7 +392,7 @@ public class DAO {
                 String cnic = rs.getString("cnic");
                 String name = rs.getString("name");
                 int age = rs.getInt("age");
-                int divisionId = rs.getInt("division_id");
+                int divisionId = rs.getInt("division");
 
                 Voter voter = new Voter(cnic, name, age, divisionId, null);
                 voters.add(voter);
